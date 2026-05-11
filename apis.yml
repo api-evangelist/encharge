@@ -1,0 +1,92 @@
+aid: encharge
+name: Encharge
+description: >-
+  Encharge is a behavior-based marketing automation platform built for SaaS
+  companies, with a visual flow builder, broadcasts, segments, lead scoring,
+  A/B testing, and 50+ native integrations (HubSpot, Stripe, Salesforce,
+  Facebook Ads, and more). The platform combines email marketing automation,
+  user profiles, and product-event tracking to send targeted emails based on
+  what users do (or do not do) in a SaaS product. Encharge exposes REST,
+  Ingest, and Transactional Email APIs authenticated with an API token.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Email Marketing
+  - Marketing Automation
+  - Transactional Email
+  - SaaS
+  - Behavioral Email
+  - Customer Engagement
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/encharge/refs/heads/main/apis.yml
+created: '2026-05-11'
+modified: '2026-05-11'
+specificationVersion: '0.19'
+apis:
+  - aid: encharge:rest-api
+    name: Encharge REST API
+    description: >-
+      REST API (v1) for managing people, segments, tags, fields, flows,
+      broadcasts, and events in Encharge. Authentication is via an API key
+      passed as the token query parameter or X-Encharge-Token header.
+    humanURL: https://docs.encharge.io/api-documentation
+    baseURL: https://api.encharge.io/v1
+    tags:
+      - Marketing Automation
+      - Email Marketing
+      - SaaS
+    properties:
+      - type: Documentation
+        url: https://docs.encharge.io/api-documentation
+      - type: Developer Documentation
+        url: https://docs.encharge.io
+  - aid: encharge:transactional-email-api
+    name: Encharge Transactional Email API
+    description: >-
+      REST API for sending transactional emails through Encharge. Accepts
+      JSON payloads at POST /v1/emails/send and authenticates via the same
+      API token used by the core REST API.
+    humanURL: https://docs.encharge.io/transactional-email-api/overview
+    baseURL: https://api.encharge.io/v1
+    tags:
+      - Transactional Email
+      - Email
+    properties:
+      - type: Documentation
+        url: https://docs.encharge.io/transactional-email-api/overview
+      - type: Authentication
+        url: https://docs.encharge.io/transactional-email-api/authentication
+      - type: Reference
+        url: https://docs.encharge.io/transactional-email-api/reference
+  - aid: encharge:ingest-api
+    name: Encharge Ingest API
+    description: >-
+      Ingest API for streaming people and activity events into Encharge from
+      backend systems. Posts JSON payloads to ingest.encharge.io/v1/ using the
+      same API token.
+    humanURL: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
+    baseURL: https://ingest.encharge.io/v1
+    tags:
+      - Events
+      - Ingestion
+      - Customer Data
+    properties:
+      - type: Documentation
+        url: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
+
+common:
+  - type: Website
+    url: https://encharge.io
+  - type: Documentation
+    url: https://docs.encharge.io
+  - type: API Documentation
+    url: https://docs.encharge.io/api-documentation
+  - type: Pricing
+    url: https://encharge.io/pricing
+  - type: Sign Up
+    url: https://app.encharge.io/signup
+  - type: API Integration
+    url: https://encharge.io/integrations/api/
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
