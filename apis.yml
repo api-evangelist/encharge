@@ -83,7 +83,7 @@ common:
     url: https://docs.encharge.io/api-documentation
   - type: Pricing
     url: https://encharge.io/pricing
-  - type: Sign Up
+  - type: SignUp
     url: https://app.encharge.io/signup
   - type: API Integration
     url: https://encharge.io/integrations/api/
