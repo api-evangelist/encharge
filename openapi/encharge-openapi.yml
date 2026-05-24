@@ -1,0 +1,347 @@
+openapi: 3.1.0
+info:
+  title: Encharge REST API
+  description: >
+    Encharge is a behavior-based marketing automation platform built for SaaS
+    companies. The REST API exposes the core resources used by integrations:
+    people, fields, segments, tags, event subscriptions (webhooks), and
+    account information. Authentication uses the X-Encharge-Token header.
+    Also documented here: the Ingest API for backend event submission and the
+    Transactional Email API for templated and custom HTML/text email.
+  version: "1.0.0"
+  contact:
+    name: Encharge Developer Documentation
+    url: https://docs.encharge.io/api-documentation
+servers:
+  - url: https://api.encharge.io/v1
+    description: REST API and Transactional Email API
+  - url: https://ingest.encharge.io/v1
+    description: Ingest API for backend event submission
+security:
+  - tokenHeader: []
+  - bearer: []
+paths:
+  /accounts/info:
+    get:
+      summary: Get account info
+      operationId: getAccountInfo
+      tags: [Account]
+      responses:
+        "200":
+          description: Account info
+  /people:
+    get:
+      summary: List people
+      operationId: listPeople
+      tags: [People]
+      parameters:
+        - name: email
+          in: query
+          schema:
+            type: string
+        - name: userId
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: People
+    post:
+      summary: Create or update person
+      operationId: upsertPerson
+      tags: [People]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                userId:
+                  type: string
+      responses:
+        "200":
+          description: Person created or updated
+    delete:
+      summary: Archive person
+      operationId: archivePerson
+      tags: [People]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        "204":
+          description: Archived
+  /people/unsubscribe:
+    post:
+      summary: Unsubscribe a person
+      operationId: unsubscribePerson
+      tags: [People]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        "200":
+          description: Unsubscribed
+  /fields:
+    get:
+      summary: List person fields
+      operationId: listFields
+      tags: [Fields]
+      responses:
+        "200":
+          description: Fields
+    post:
+      summary: Create field
+      operationId: createField
+      tags: [Fields]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+      responses:
+        "201":
+          description: Field created
+  /fields/{fieldName}:
+    patch:
+      summary: Update field
+      operationId: updateField
+      tags: [Fields]
+      parameters:
+        - name: fieldName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Field updated
+    delete:
+      summary: Delete field
+      operationId: deleteField
+      tags: [Fields]
+      parameters:
+        - name: fieldName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Field deleted
+  /segments:
+    get:
+      summary: List segments
+      operationId: listSegments
+      tags: [Segments]
+      responses:
+        "200":
+          description: Segments
+  /segments/{segmentId}/people:
+    get:
+      summary: List people in segment
+      operationId: listSegmentPeople
+      tags: [Segments]
+      parameters:
+        - name: segmentId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: People in segment
+  /tags:
+    post:
+      summary: Add tags to users
+      operationId: addTags
+      tags: [Tags]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tag:
+                  type: string
+                users:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        "200":
+          description: Tags added
+    delete:
+      summary: Remove tags from users
+      operationId: removeTags
+      tags: [Tags]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tag:
+                  type: string
+                users:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        "200":
+          description: Tags removed
+  /event-subscriptions:
+    post:
+      summary: Create event subscription (webhook)
+      operationId: createEventSubscription
+      tags: [Events]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                eventName:
+                  type: string
+                url:
+                  type: string
+                  format: uri
+      responses:
+        "201":
+          description: Subscription created
+  /event-subscriptions/{id}:
+    delete:
+      summary: Delete event subscription
+      operationId: deleteEventSubscription
+      tags: [Events]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Subscription deleted
+  /emails/send:
+    post:
+      summary: Send transactional email
+      description: >
+        Send a transactional email via template or custom HTML/text.
+        Pass the API key as the `token` query parameter or via the
+        `X-Encharge-Token` header.
+      operationId: sendTransactionalEmail
+      tags: [Transactional Email]
+      parameters:
+        - name: token
+          in: query
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                templateId:
+                  type: string
+                to:
+                  type: array
+                  items:
+                    type: object
+                from:
+                  type: object
+                subject:
+                  type: string
+                html:
+                  type: string
+                text:
+                  type: string
+      responses:
+        "200":
+          description: Email queued
+  /:
+    post:
+      summary: Ingest people or events
+      description: >
+        Encharge Ingest API endpoint for sending people and events from your
+        backend. Use the matching server URL (https://ingest.encharge.io/v1).
+      operationId: ingest
+      tags: [Ingest]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                user:
+                  type: object
+                properties:
+                  type: object
+      responses:
+        "200":
+          description: Accepted
+components:
+  securitySchemes:
+    tokenHeader:
+      type: apiKey
+      in: header
+      name: X-Encharge-Token
+    bearer:
+      type: http
+      scheme: bearer
