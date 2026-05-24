@@ -89,6 +89,8 @@ common:
     url: https://app.encharge.io/signup
   - type: API Integration
     url: https://encharge.io/integrations/api/
+  - type: LLMsTxt
+    url: https://docs.encharge.io/llms.txt
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
