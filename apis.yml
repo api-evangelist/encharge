@@ -9,7 +9,7 @@ description: >-
   what users do (or do not do) in a SaaS product. Encharge exposes REST,
   Ingest, and Transactional Email APIs authenticated with an API token.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Email Marketing
   - Marketing Automation
