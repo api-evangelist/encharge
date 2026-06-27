@@ -38,7 +38,7 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.encharge.io/api-documentation
-      - type: Developer Documentation
+      - type: Documentation
         url: https://docs.encharge.io
   - aid: encharge:transactional-email-api
     name: Encharge Transactional Email API
@@ -85,11 +85,11 @@ common:
     url: https://docs.encharge.io/api-documentation
   - type: Pricing
     url: https://encharge.io/pricing
-  - type: SignUp
+  - type: Signup
     url: https://app.encharge.io/signup
   - type: API Integration
     url: https://encharge.io/integrations/api/
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://docs.encharge.io/llms.txt
 maintainers:
   - FN: Kin Lane
