@@ -75,6 +75,12 @@ apis:
         url: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
 
 common:
+  - type: VulnerabilityDisclosure
+    url: security/encharge-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/encharge-domain-security.yml
+  - type: Authentication
+    url: authentication/encharge-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/encharge
   - type: Website
@@ -91,6 +97,8 @@ common:
     url: https://encharge.io/integrations/api/
   - type: LlmsText
     url: https://docs.encharge.io/llms.txt
+  - url: https://encharge.io/feed/
+    type: Blog
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
