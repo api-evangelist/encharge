@@ -75,6 +75,8 @@ apis:
         url: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
 
 common:
+  - type: AgenticAccess
+    url: agentic-access/encharge-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/encharge-vulnerability-disclosure.yml
   - type: DomainSecurity
