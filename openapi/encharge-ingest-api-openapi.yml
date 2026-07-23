@@ -1,0 +1,55 @@
+openapi: 3.1.0
+info:
+  title: Encharge REST Account Ingest API
+  description: 'Encharge is a behavior-based marketing automation platform built for SaaS companies. The REST API exposes the core resources used by integrations: people, fields, segments, tags, event subscriptions (webhooks), and account information. Authentication uses the X-Encharge-Token header. Also documented here: the Ingest API for backend event submission and the Transactional Email API for templated and custom HTML/text email.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Encharge Developer Documentation
+    url: https://docs.encharge.io/api-documentation
+servers:
+- url: https://api.encharge.io/v1
+  description: REST API and Transactional Email API
+- url: https://ingest.encharge.io/v1
+  description: Ingest API for backend event submission
+security:
+- tokenHeader: []
+- bearer: []
+tags:
+- name: Ingest
+paths:
+  /:
+    post:
+      summary: Ingest people or events
+      description: 'Encharge Ingest API endpoint for sending people and events from your backend. Use the matching server URL (https://ingest.encharge.io/v1).
+
+        '
+      operationId: ingest
+      tags:
+      - Ingest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                user:
+                  type: object
+                properties:
+                  type: object
+      responses:
+        '200':
+          description: Accepted
+components:
+  securitySchemes:
+    tokenHeader:
+      type: apiKey
+      in: header
+      name: X-Encharge-Token
+    bearer:
+      type: http
+      scheme: bearer

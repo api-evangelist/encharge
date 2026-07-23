@@ -1,0 +1,68 @@
+openapi: 3.1.0
+info:
+  title: Encharge REST Account Transactional Email API
+  description: 'Encharge is a behavior-based marketing automation platform built for SaaS companies. The REST API exposes the core resources used by integrations: people, fields, segments, tags, event subscriptions (webhooks), and account information. Authentication uses the X-Encharge-Token header. Also documented here: the Ingest API for backend event submission and the Transactional Email API for templated and custom HTML/text email.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Encharge Developer Documentation
+    url: https://docs.encharge.io/api-documentation
+servers:
+- url: https://api.encharge.io/v1
+  description: REST API and Transactional Email API
+- url: https://ingest.encharge.io/v1
+  description: Ingest API for backend event submission
+security:
+- tokenHeader: []
+- bearer: []
+tags:
+- name: Transactional Email
+paths:
+  /emails/send:
+    post:
+      summary: Send transactional email
+      description: 'Send a transactional email via template or custom HTML/text. Pass the API key as the `token` query parameter or via the `X-Encharge-Token` header.
+
+        '
+      operationId: sendTransactionalEmail
+      tags:
+      - Transactional Email
+      parameters:
+      - name: token
+        in: query
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                templateId:
+                  type: string
+                to:
+                  type: array
+                  items:
+                    type: object
+                from:
+                  type: object
+                subject:
+                  type: string
+                html:
+                  type: string
+                text:
+                  type: string
+      responses:
+        '200':
+          description: Email queued
+components:
+  securitySchemes:
+    tokenHeader:
+      type: apiKey
+      in: header
+      name: X-Encharge-Token
+    bearer:
+      type: http
+      scheme: bearer
