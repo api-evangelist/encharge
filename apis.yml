@@ -9,7 +9,19 @@ description: >-
   what users do (or do not do) in a SaaS product. Encharge exposes REST,
   Ingest, and Transactional Email APIs authenticated with an API token.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/encharge.png
 tags:
   - Email Marketing
   - Marketing Automation
@@ -23,57 +35,133 @@ created: '2026-05-11'
 modified: '2026-05-11'
 specificationVersion: '0.19'
 apis:
-  - aid: encharge:rest-api
-    name: Encharge REST API
-    description: >-
-      REST API (v1) for managing people, segments, tags, fields, flows,
-      broadcasts, and events in Encharge. Authentication is via an API key
-      passed as the token query parameter or X-Encharge-Token header.
-    humanURL: https://docs.encharge.io/api-documentation
-    baseURL: https://api.encharge.io/v1
-    tags:
-      - Marketing Automation
-      - Email Marketing
-      - SaaS
-    properties:
-      - type: Documentation
-        url: https://docs.encharge.io/api-documentation
-      - type: Documentation
-        url: https://docs.encharge.io
-  - aid: encharge:transactional-email-api
-    name: Encharge Transactional Email API
-    description: >-
-      REST API for sending transactional emails through Encharge. Accepts
-      JSON payloads at POST /v1/emails/send and authenticates via the same
-      API token used by the core REST API.
-    humanURL: https://docs.encharge.io/transactional-email-api/overview
-    baseURL: https://api.encharge.io/v1
-    tags:
-      - Transactional Email
-      - Email
-    properties:
-      - type: Documentation
-        url: https://docs.encharge.io/transactional-email-api/overview
-      - type: Authentication
-        url: https://docs.encharge.io/transactional-email-api/authentication
-      - type: Reference
-        url: https://docs.encharge.io/transactional-email-api/reference
-  - aid: encharge:ingest-api
-    name: Encharge Ingest API
-    description: >-
-      Ingest API for streaming people and activity events into Encharge from
-      backend systems. Posts JSON payloads to ingest.encharge.io/v1/ using the
-      same API token.
-    humanURL: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
-    baseURL: https://ingest.encharge.io/v1
-    tags:
-      - Events
-      - Ingestion
-      - Customer Data
-    properties:
-      - type: Documentation
-        url: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
-
+- aid: encharge:rest-api
+  name: Encharge REST API
+  description: >-
+    REST API (v1) for managing people, segments, tags, fields, flows, broadcasts, and events in Encharge.
+    Authentication is via an API key passed as the token query parameter or X-Encharge-Token header.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Marketing Automation
+  - Email Marketing
+  - SaaS
+  properties:
+  - type: Documentation
+    url: https://docs.encharge.io/api-documentation
+  - type: Documentation
+    url: https://docs.encharge.io
+- aid: encharge:transactional-email-api
+  name: Encharge Transactional Email API
+  description: >-
+    REST API for sending transactional emails through Encharge. Accepts JSON payloads at POST /v1/emails/send
+    and authenticates via the same API token used by the core REST API.
+  humanURL: https://docs.encharge.io/transactional-email-api/overview
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Transactional Email
+  - Email
+  properties:
+  - type: Documentation
+    url: https://docs.encharge.io/transactional-email-api/overview
+  - type: Authentication
+    url: https://docs.encharge.io/transactional-email-api/authentication
+  - type: Reference
+    url: https://docs.encharge.io/transactional-email-api/reference
+- aid: encharge:ingest-api
+  name: Encharge Ingest API
+  description: >-
+    Ingest API for streaming people and activity events into Encharge from backend systems. Posts JSON
+    payloads to ingest.encharge.io/v1/ using the same API token.
+  humanURL: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
+  baseURL: https://ingest.encharge.io/v1
+  tags:
+  - Events
+  - Ingestion
+  - Customer Data
+  properties:
+  - type: Documentation
+    url: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
+- aid: encharge:encharge-account-api
+  name: Encharge Account API
+  description: The Account API from Encharge — 1 operation(s) for account.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-account-api-openapi.yml
+- aid: encharge:encharge-events-api
+  name: Encharge Events API
+  description: The Events API from Encharge — 2 operation(s) for events.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-events-api-openapi.yml
+- aid: encharge:encharge-fields-api
+  name: Encharge Fields API
+  description: The Fields API from Encharge — 2 operation(s) for fields.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Fields
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-fields-api-openapi.yml
+- aid: encharge:encharge-ingest-api
+  name: Encharge Ingest API
+  description: The Ingest API from Encharge — 1 operation(s) for ingest.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Ingest
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-ingest-api-openapi.yml
+- aid: encharge:encharge-people-api
+  name: Encharge People API
+  description: The People API from Encharge — 2 operation(s) for people.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - People
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-people-api-openapi.yml
+- aid: encharge:encharge-segments-api
+  name: Encharge Segments API
+  description: The Segments API from Encharge — 2 operation(s) for segments.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Segments
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-segments-api-openapi.yml
+- aid: encharge:encharge-tags-api
+  name: Encharge Tags API
+  description: The Tags API from Encharge — 1 operation(s) for tags.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-tags-api-openapi.yml
+- aid: encharge:encharge-transactional-email-api
+  name: Encharge Transactional Email API
+  description: The Transactional Email API from Encharge — 1 operation(s) for transactional email.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Transactional Email
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-transactional-email-api-openapi.yml
 common:
   - type: AgenticAccess
     url: agentic-access/encharge-agentic-access.yml
