@@ -3,24 +3,32 @@ name: Encharge
 description: >-
   Encharge is a behavior-based marketing automation platform built for SaaS
   companies, with a visual flow builder, broadcasts, segments, lead scoring,
-  A/B testing, and 50+ native integrations (HubSpot, Stripe, Salesforce,
-  Facebook Ads, and more). The platform combines email marketing automation,
-  user profiles, and product-event tracking to send targeted emails based on
-  what users do (or do not do) in a SaaS product. Encharge exposes REST,
-  Ingest, and Transactional Email APIs authenticated with an API token.
+  A/B testing, native forms, custom objects, and 50+ native integrations
+  (HubSpot, Stripe, Salesforce, Segment, Facebook Ads, and more). The platform
+  combines email marketing automation, user profiles, and product-event tracking
+  to send targeted emails based on what users do (or do not do) in a SaaS
+  product. Encharge exposes three developer surfaces: a REST API of 69
+  operations covering people, person fields, segments, tags, broadcasts, email
+  templates, sending domains, custom objects and event subscriptions, described
+  by a published OpenAPI 3.0 definition; a prose-documented Transactional Email
+  API; and an Ingest API for streaming people and product events from a backend.
+  All three authenticate with the same account token, passed in the
+  X-Encharge-Token header or a token query parameter, with OAuth 2 available for
+  partner apps.
 type: Index
 accessModel:
-  pricing: unknown
+  pricing: paid
   onboarding: self-serve
-  trial: false
+  trial: true
   try_now: false
   public: false
-  label: Self-serve signup
-  confidence: medium
+  label: Self-serve signup, 14-day free trial
+  confidence: high
   source:
+  - https://encharge.io/pricing
   - authentication
-  generated: '2026-07-22'
-  method: derived
+  generated: '2026-08-13'
+  method: searched
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/encharge.png
 tags:
   - Email Marketing
@@ -29,17 +37,23 @@ tags:
   - SaaS
   - Behavioral Email
   - Customer Engagement
+  - Customer Data
+  - Webhooks
 url: >-
   https://raw.githubusercontent.com/api-evangelist/encharge/refs/heads/main/apis.yml
 created: '2026-05-11'
-modified: '2026-05-11'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 apis:
 - aid: encharge:rest-api
   name: Encharge REST API
   description: >-
-    REST API (v1) for managing people, segments, tags, fields, flows, broadcasts, and events in Encharge.
-    Authentication is via an API key passed as the token query parameter or X-Encharge-Token header.
+    REST API (v1) for managing people, person fields, segments, tags, broadcasts,
+    email templates, sending domains, custom objects and event subscriptions in
+    Encharge. Encharge publishes an OpenAPI 3.0 definition covering 46 paths and
+    69 operations, rendered with ReDoc and RapiDoc. Authentication is an API key
+    in the X-Encharge-Token header or the token query parameter, with OAuth 2
+    authorization code available for partner apps.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
@@ -47,15 +61,24 @@ apis:
   - Email Marketing
   - SaaS
   properties:
+  - type: OpenAPI
+    url: openapi/_original/encharge-openapi.yml
   - type: Documentation
     url: https://docs.encharge.io/api-documentation
-  - type: Documentation
-    url: https://docs.encharge.io
+  - type: APIReference
+    url: https://app-encharge-resources.s3.amazonaws.com/redoc.html
+  - type: Overlay
+    url: overlays/encharge-openapi-overlay.yaml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/460427/TVRj5o3E
 - aid: encharge:transactional-email-api
   name: Encharge Transactional Email API
   description: >-
-    REST API for sending transactional emails through Encharge. Accepts JSON payloads at POST /v1/emails/send
-    and authenticates via the same API token used by the core REST API.
+    REST API for sending transactional emails through Encharge. Accepts JSON at
+    POST /v1/emails/send with exactly one of template, html or text, returns 202
+    Accepted, and authenticates via the same account token used by the core REST
+    API. Included with the Premium plan. Documented in prose only — this endpoint
+    is not part of Encharge's published OpenAPI.
   humanURL: https://docs.encharge.io/transactional-email-api/overview
   baseURL: https://api.encharge.io/v1
   tags:
@@ -66,13 +89,18 @@ apis:
     url: https://docs.encharge.io/transactional-email-api/overview
   - type: Authentication
     url: https://docs.encharge.io/transactional-email-api/authentication
-  - type: Reference
+  - type: APIReference
     url: https://docs.encharge.io/transactional-email-api/reference
+  - type: Postman
+    url: https://documenter.getpostman.com/view/460427/TVRj5o3E
 - aid: encharge:ingest-api
   name: Encharge Ingest API
   description: >-
-    Ingest API for streaming people and activity events into Encharge from backend systems. Posts JSON
-    payloads to ingest.encharge.io/v1/ using the same API token.
+    Single-endpoint Ingest API for creating/updating people and submitting product
+    events into Encharge from an application backend. POSTs JSON to
+    https://ingest.encharge.io/v1/ with the account write key, and supports the
+    special alias (re-key a person) and group (create/update a custom object)
+    event types. Documented in prose only — no machine-readable definition.
   humanURL: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
   baseURL: https://ingest.encharge.io/v1
   tags:
@@ -82,9 +110,11 @@ apis:
   properties:
   - type: Documentation
     url: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
+  - type: Postman
+    url: https://documenter.getpostman.com/view/460427/SVfNwVFU
 - aid: encharge:encharge-account-api
   name: Encharge Account API
-  description: The Account API from Encharge — 1 operation(s) for account.
+  description: The Account API from Encharge — 2 operation(s) for account information.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
@@ -92,39 +122,71 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/encharge-account-api-openapi.yml
-- aid: encharge:encharge-events-api
-  name: Encharge Events API
-  description: The Events API from Encharge — 2 operation(s) for events.
+- aid: encharge:encharge-broadcasts-api
+  name: Encharge Broadcasts API
+  description: The Broadcasts API from Encharge — 1 operation(s) for sending broadcasts.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
-  - Events
+  - Broadcasts
+  - Email Marketing
   properties:
   - type: OpenAPI
-    url: openapi/encharge-events-api-openapi.yml
-- aid: encharge:encharge-fields-api
-  name: Encharge Fields API
-  description: The Fields API from Encharge — 2 operation(s) for fields.
+    url: openapi/encharge-broadcasts-api-openapi.yml
+- aid: encharge:encharge-customobjects-api
+  name: Encharge Custom Objects API
+  description: >-
+    The Custom Objects API from Encharge — 18 operation(s) for creating, reading,
+    searching and associating custom objects and companies.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
-  - Fields
+  - Custom Objects
+  - Customer Data
   properties:
   - type: OpenAPI
-    url: openapi/encharge-fields-api-openapi.yml
-- aid: encharge:encharge-ingest-api
-  name: Encharge Ingest API
-  description: The Ingest API from Encharge — 1 operation(s) for ingest.
+    url: openapi/encharge-customobjects-api-openapi.yml
+- aid: encharge:encharge-customobjectsschema-api
+  name: Encharge Custom Objects Schema API
+  description: >-
+    The Custom Objects Schema API from Encharge — 10 operation(s) for defining
+    object types, their fields, and the associations between them.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
-  - Ingest
+  - Custom Objects
+  - Schema
   properties:
   - type: OpenAPI
-    url: openapi/encharge-ingest-api-openapi.yml
+    url: openapi/encharge-customobjectsschema-api-openapi.yml
+- aid: encharge:encharge-emailtemplates-api
+  name: Encharge Email Templates API
+  description: >-
+    The Email Templates API from Encharge — 9 operation(s) for creating and
+    versioning email templates.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Email
+  - Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-emailtemplates-api-openapi.yml
+- aid: encharge:encharge-folders-api
+  name: Encharge Folders API
+  description: The Folders API from Encharge — 2 operation(s) for organizing assets into folders.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Folders
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-folders-api-openapi.yml
 - aid: encharge:encharge-people-api
   name: Encharge People API
-  description: The People API from Encharge — 2 operation(s) for people.
+  description: >-
+    The People API from Encharge — 5 operation(s) for creating, updating,
+    reading, unsubscribing and archiving people.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
@@ -132,9 +194,20 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/encharge-people-api-openapi.yml
+- aid: encharge:encharge-personfields-api
+  name: Encharge Person Fields API
+  description: The Person Fields API from Encharge — 4 operation(s) for managing person fields.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Fields
+  - People
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-personfields-api-openapi.yml
 - aid: encharge:encharge-segments-api
   name: Encharge Segments API
-  description: The Segments API from Encharge — 2 operation(s) for segments.
+  description: The Segments API from Encharge — 4 operation(s) for dynamic segments.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
@@ -142,9 +215,22 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/encharge-segments-api-openapi.yml
+- aid: encharge:encharge-settings-api
+  name: Encharge Email Domain Settings API
+  description: >-
+    The email settings API from Encharge — 5 operation(s) for adding and
+    verifying sending domains.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Settings
+  - Deliverability
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-settings-api-openapi.yml
 - aid: encharge:encharge-tags-api
   name: Encharge Tags API
-  description: The Tags API from Encharge — 1 operation(s) for tags.
+  description: The Tags API from Encharge — 2 operation(s) for tagging and untagging people.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
@@ -152,43 +238,127 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/encharge-tags-api-openapi.yml
-- aid: encharge:encharge-transactional-email-api
-  name: Encharge Transactional Email API
-  description: The Transactional Email API from Encharge — 1 operation(s) for transactional email.
+- aid: encharge:encharge-tags-management-api
+  name: Encharge Tags Management API
+  description: >-
+    The Tags Management API from Encharge — 5 operation(s) for the account tag
+    registry and tag counts.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
-  - Transactional Email
+  - Tags
   properties:
   - type: OpenAPI
-    url: openapi/encharge-transactional-email-api-openapi.yml
+    url: openapi/encharge-tags-management-api-openapi.yml
+- aid: encharge:encharge-webhooks-api
+  name: Encharge Webhooks API
+  description: >-
+    The Webhooks API from Encharge — 2 operation(s) for creating and deleting
+    event subscriptions against Encharge's event catalog.
+  humanURL: https://docs.encharge.io/api-documentation
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Webhooks
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-webhooks-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/encharge-webhooks.yml
 common:
+  - type: OAuthScopes
+    url: scopes/encharge-scopes.yml
   - type: AgenticAccess
     url: agentic-access/encharge-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/encharge-vulnerability-disclosure.yml
+  - type: Security
+    url: https://encharge.io/responsible-disclosure/
   - type: DomainSecurity
     url: security/encharge-domain-security.yml
+  - type: TrustCenter
+    url: security/encharge-trust-center.yml
+  - type: Compliance
+    url: https://gdpr.encharge.io/
   - type: Authentication
     url: authentication/encharge-authentication.yml
+  - type: Conventions
+    url: conventions/encharge-conventions.yml
+  - type: ErrorCatalog
+    url: errors/encharge-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/encharge-lifecycle.yml
+  - type: Conformance
+    url: conformance/encharge-conformance.yml
+  - type: DataModel
+    url: data-model/encharge-data-model.yml
+  - type: Components
+    url: components/encharge-components.yml
+  - type: Packages
+    url: packages/encharge-packages.yml
+  - type: WellKnown
+    url: well-known/encharge-well-known.yml
+    x-note: >-
+      Probe record only — every /.well-known/ path 404s on every Encharge host.
+      Retained for the audit trail; this is a recorded absence, not a served
+      discovery surface.
+  - type: Plans
+    url: plans/encharge-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/encharge-rate-limits.yml
+  - type: ChangeLog
+    url: changelog/encharge-changelog.yml
+  - type: ChangeLog
+    url: https://encharge.noorahq.com/changelog
+  - type: Roadmap
+    url: https://encharge.noorahq.com/roadmap
+  - type: Webhooks
+    url: asyncapi/encharge-webhooks.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: Overlay
+    url: overlays/encharge-openapi-overlay.yaml
+  - type: LLMsTxt
+    url: llms/encharge-llms.txt
+  - type: LlmsText
+    url: https://docs.encharge.io/llms.txt
   - type: LinkedIn
     url: https://www.linkedin.com/company/encharge
   - type: Website
     url: https://encharge.io
+  - type: DeveloperPortal
+    url: https://docs.encharge.io
   - type: Documentation
     url: https://docs.encharge.io
   - type: API Documentation
     url: https://docs.encharge.io/api-documentation
+  - type: APIReference
+    url: https://app-encharge-resources.s3.amazonaws.com/redoc.html
+  - type: GettingStarted
+    url: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge
+  - type: Support
+    url: https://help.encharge.io
+  - type: Postman
+    url: https://documenter.getpostman.com/view/460427/TVRj5o3E
   - type: Pricing
     url: https://encharge.io/pricing
+  - type: SignUp
+    url: https://app.encharge.io/signup
   - type: Signup
     url: https://app.encharge.io/signup
+  - type: TermsOfService
+    url: https://encharge.io/terms-of-service/
+  - type: PrivacyPolicy
+    url: https://encharge.io/privacy-policy/
   - type: API Integration
     url: https://encharge.io/integrations/api/
-  - type: LlmsText
-    url: https://docs.encharge.io/llms.txt
   - url: https://encharge.io/feed/
     type: Blog
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v1
