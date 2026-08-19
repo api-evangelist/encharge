@@ -1,0 +1,64 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/encharge-account-api-openapi.yml, openapi/encharge-broadcasts-api-openapi.yml, openapi/encharge-customobjects-api-openapi.yml,
+  openapi/encharge-customobjectsschema-api-openapi.yml, openapi/encharge-emailtemplates-api-openapi.yml,
+  openapi/encharge-folders-api-openapi.yml, openapi/encharge-people-api-openapi.yml, openapi/encharge-personfields-api-openapi.yml,
+  openapi/encharge-segments-api-openapi.yml, openapi/encharge-settings-api-openapi.yml, openapi/encharge-tags-api-openapi.yml,
+  openapi/encharge-tags-management-api-openapi.yml, openapi/encharge-webhooks-api-openapi.yml
+schemes:
+- name: oauth2
+  source: openapi/_original/encharge-openapi.yml (13 refined specs carry the same scheme)
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+    tokenUrl: https://api.encharge.io/v1/oauth/token
+  description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for your OAuth\
+    \ credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+scopes:
+- scope: account:write
+  sources:
+  - openapi/encharge-customobjects-api-openapi.yml
+  - openapi/encharge-customobjectsschema-api-openapi.yml
+  - openapi/encharge-tags-management-api-openapi.yml
+  - openapi/encharge-webhooks-api-openapi.yml
+  description: Account-level writes — webhook/event subscriptions, custom object data and account tag
+    management.
+- scope: broadcasts:write
+  sources:
+  - openapi/encharge-broadcasts-api-openapi.yml
+  description: Confirm and send broadcasts.
+- scope: emailSettings:write
+  sources:
+  - openapi/encharge-settings-api-openapi.yml
+  description: Manage sending email domains and their DNS verification.
+- scope: emails:read
+  sources:
+  - openapi/encharge-emailtemplates-api-openapi.yml
+  description: Read email templates and their version history.
+- scope: emails:write
+  sources:
+  - openapi/encharge-emailtemplates-api-openapi.yml
+  description: Create, modify, delete and restore versions of email templates.
+- scope: people:read
+  sources:
+  - openapi/encharge-people-api-openapi.yml
+  - openapi/encharge-segments-api-openapi.yml
+  description: Read people and the people in a segment.
+- scope: people:write
+  sources:
+  - openapi/encharge-people-api-openapi.yml
+  - openapi/encharge-segments-api-openapi.yml
+  - openapi/encharge-tags-api-openapi.yml
+  description: Create, update, archive, unsubscribe and tag people; create and modify segments.
+- scope: personFields:write
+  sources:
+  - openapi/encharge-customobjectsschema-api-openapi.yml
+  - openapi/encharge-personfields-api-openapi.yml
+  description: Create, modify and delete person fields and custom-object fields.
+docs: null
+docs_note: Encharge publishes NO OAuth scope reference page, and the oauth2 flow in the published OpenAPI
+  declares an EMPTY scopes map. Every scope below was read out of the operation-level security[] requirements
+  in the spec, which is the only place they appear. Descriptions are derived from the operations each
+  scope guards, not from provider copy.
+oauth_credentials: Client id/secret are issued manually via a request form linked from the spec's oauth2
+  description; there is no self-serve app registration.

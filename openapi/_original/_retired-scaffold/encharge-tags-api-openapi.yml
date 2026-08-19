@@ -1,0 +1,73 @@
+openapi: 3.1.0
+info:
+  title: Encharge REST Account Tags API
+  description: 'Encharge is a behavior-based marketing automation platform built for SaaS companies. The REST API exposes the core resources used by integrations: people, fields, segments, tags, event subscriptions (webhooks), and account information. Authentication uses the X-Encharge-Token header. Also documented here: the Ingest API for backend event submission and the Transactional Email API for templated and custom HTML/text email.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Encharge Developer Documentation
+    url: https://docs.encharge.io/api-documentation
+servers:
+- url: https://api.encharge.io/v1
+  description: REST API and Transactional Email API
+- url: https://ingest.encharge.io/v1
+  description: Ingest API for backend event submission
+security:
+- tokenHeader: []
+- bearer: []
+tags:
+- name: Tags
+paths:
+  /tags:
+    post:
+      summary: Add tags to users
+      operationId: addTags
+      tags:
+      - Tags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tag:
+                  type: string
+                users:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        '200':
+          description: Tags added
+    delete:
+      summary: Remove tags from users
+      operationId: removeTags
+      tags:
+      - Tags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tag:
+                  type: string
+                users:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        '200':
+          description: Tags removed
+components:
+  securitySchemes:
+    tokenHeader:
+      type: apiKey
+      in: header
+      name: X-Encharge-Token
+    bearer:
+      type: http
+      scheme: bearer

@@ -1,62 +1,666 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Encharge REST Account Segments API
-  description: 'Encharge is a behavior-based marketing automation platform built for SaaS companies. The REST API exposes the core resources used by integrations: people, fields, segments, tags, event subscriptions (webhooks), and account information. Authentication uses the X-Encharge-Token header. Also documented here: the Ingest API for backend event submission and the Transactional Email API for templated and custom HTML/text email.
-
-    '
   version: 1.0.0
+  title: Encharge Segments API
+  description: The Encharge.io API
+  license:
+    name: MIT
   contact:
-    name: Encharge Developer Documentation
-    url: https://docs.encharge.io/api-documentation
+    url: https://help.encharge.io
+    name: unknown
 servers:
 - url: https://api.encharge.io/v1
-  description: REST API and Transactional Email API
-- url: https://ingest.encharge.io/v1
-  description: Ingest API for backend event submission
-security:
-- tokenHeader: []
-- bearer: []
 tags:
 - name: Segments
 paths:
   /segments:
     get:
-      summary: List segments
-      operationId: listSegments
-      tags:
-      - Segments
+      operationId: GetSegments
       responses:
         '200':
-          description: Segments
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  segments:
+                    items:
+                      $ref: '#/components/schemas/Segment'
+                    type: array
+                required:
+                - segments
+                type: object
+      description: Get all dynamic Segments in your account.
+      tags:
+      - Segments
+      security:
+      - oauth2:
+        - people:read
+      parameters: []
+    post:
+      operationId: CreateSegment
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  segment:
+                    $ref: '#/components/schemas/Segment'
+                required:
+                - segment
+                type: object
+      description: Create a dynamic segment.
+      tags:
+      - Segments
+      security:
+      - oauth2:
+        - people:write
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SegmentCreatable'
   /segments/{segmentId}/people:
     get:
-      summary: List people in segment
-      operationId: listSegmentPeople
-      tags:
-      - Segments
-      parameters:
-      - name: segmentId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: limit
-        in: query
-        schema:
-          type: integer
-      - name: offset
-        in: query
-        schema:
-          type: integer
+      operationId: GetPeopleInSegment
       responses:
         '200':
-          description: People in segment
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  people:
+                    items:
+                      $ref: '#/components/schemas/EndUser'
+                    type: array
+                required:
+                - people
+                type: object
+      description: Get people in Segment.
+      tags:
+      - Segments
+      security:
+      - oauth2:
+        - people:read
+      parameters:
+      - description: Id of the segment.
+        in: path
+        name: segmentId
+        required: true
+        schema:
+          format: double
+          type: number
+      - description: Number of people to retrieve.
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 100
+          format: double
+          type: number
+      - description: Number of records to skip
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          format: double
+          type: number
+      - description: Person Fields to retrieve. See [Person Fields](#tag/PersonFields) for possible field names.
+        in: query
+        name: attributes
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: sort
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: order
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - in: query
+        name: ignoreAnonymous
+        required: false
+        schema:
+          type: boolean
+  /segments/{id}:
+    patch:
+      operationId: ModifySegment
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  segment:
+                    $ref: '#/components/schemas/Segment'
+                required:
+                - segment
+                type: object
+      description: Modify a dynamic segment.
+      tags:
+      - Segments
+      security:
+      - oauth2:
+        - people:write
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partial_ISegment_'
 components:
+  schemas:
+    ConditionNestedSegment:
+      type: string
+      enum:
+      - in
+      - not in
+    SegmentCondition:
+      allOf:
+      - anyOf:
+        - $ref: '#/components/schemas/SegmentEventCondition'
+        - $ref: '#/components/schemas/SegmentTagCondition'
+        - $ref: '#/components/schemas/SegmentPropertyCondition'
+        - $ref: '#/components/schemas/SegmentNestedSegmentCondition'
+        - $ref: '#/components/schemas/SegmentConditionGroup'
+        - $ref: '#/components/schemas/SegmentAssociationCondition'
+        - $ref: '#/components/schemas/SegmentGoalCondition'
+      - properties:
+          uuid:
+            type: string
+        type: object
+    ConditionGeneric:
+      type: string
+      enum:
+      - is
+      - is not
+      - is empty
+      - is not empty
+      - is any
+      - is any of
+      - is not any of
+    SegmentEventRecencyCondition:
+      properties:
+        type:
+          type: string
+          enum:
+          - recencyCondition
+        value:
+          anyOf:
+          - type: number
+            format: double
+          - type: string
+        condition:
+          $ref: '#/components/schemas/ConditionDate'
+      required:
+      - type
+      - value
+      - condition
+      type: object
+      additionalProperties: false
+    ConditionAll:
+      anyOf:
+      - $ref: '#/components/schemas/ConditionGeneric'
+      - $ref: '#/components/schemas/ConditionText'
+      - $ref: '#/components/schemas/ConditionNumber'
+      - $ref: '#/components/schemas/ConditionDate'
+    Partial_ISegment_:
+      properties:
+        version:
+          type: number
+          enum:
+          - 1
+          - 2
+          description: Segment version. Should be 2 for non-legacy segments
+        id:
+          type: number
+          format: double
+          description: Id of the segment
+        name:
+          type: string
+          description: Name of the segment
+        objectName:
+          type: string
+          description: Type of object this segment is for
+        conditions:
+          $ref: '#/components/schemas/SegmentConditionGroup'
+          description: Segment conditions
+        accountId:
+          type: number
+          format: double
+          description: Account that owns the segment
+        readOnly:
+          type: boolean
+          description: Readonly segments cannot be modified. They are created by the system
+        autoSegment:
+          type: boolean
+          description: Internal.
+        color:
+          type: string
+          description: Hex color associated with the segment
+        templateId:
+          type: string
+          description: Name of the template this segment is based on
+      type: object
+      description: Make all properties in T optional
+    Partial_Omit_ISegment.id-or-accountId-or-version__:
+      properties:
+        name:
+          type: string
+          description: Name of the segment
+        objectName:
+          type: string
+          description: Type of object this segment is for
+        conditions:
+          $ref: '#/components/schemas/SegmentConditionGroup'
+          description: Segment conditions
+        readOnly:
+          type: boolean
+          description: Readonly segments cannot be modified. They are created by the system
+        autoSegment:
+          type: boolean
+          description: Internal.
+        color:
+          type: string
+          description: Hex color associated with the segment
+        templateId:
+          type: string
+          description: Name of the template this segment is based on
+      type: object
+      description: Make all properties in T optional
+    ConditionDateAbsolute:
+      type: string
+      enum:
+      - is empty
+      - is not empty
+      - is any
+      - after
+      - before
+      - true
+    SegmentEventFrequencyCondition:
+      properties:
+        type:
+          type: string
+          enum:
+          - frequencyCondition
+        value:
+          type: number
+          format: double
+        condition:
+          $ref: '#/components/schemas/ConditionNumberOnly'
+      required:
+      - type
+      - value
+      - condition
+      type: object
+      additionalProperties: false
+    ConditionNumber:
+      type: string
+      enum:
+      - is
+      - is not
+      - is empty
+      - is not empty
+      - is any
+      - is any of
+      - is not any of
+      - is more than
+      - is less than
+      - at least
+    SegmentPropertyCondition:
+      properties:
+        type:
+          type: string
+          enum:
+          - field
+        field:
+          type: string
+        condition:
+          $ref: '#/components/schemas/ConditionAll'
+        value: {}
+      required:
+      - type
+      - field
+      - condition
+      type: object
+      additionalProperties: false
+    SegmentEventProperty:
+      properties:
+        uuid:
+          type: string
+        value: {}
+        condition:
+          $ref: '#/components/schemas/EventPropertyConditionAll'
+        field:
+          type: string
+        type:
+          type: string
+          enum:
+          - field
+      required:
+      - condition
+      - field
+      - type
+      type: object
+    ConditionText:
+      type: string
+      enum:
+      - is
+      - is not
+      - is empty
+      - is not empty
+      - is any
+      - is any of
+      - is not any of
+      - starts with
+      - does not start with
+      - ends with
+      - does not end with
+      - contains
+      - does not contain
+    SegmentConditionGroup:
+      properties:
+        type:
+          type: string
+          enum:
+          - group
+        operator:
+          type: string
+          enum:
+          - and
+          - or
+        conditions:
+          items:
+            $ref: '#/components/schemas/SegmentCondition'
+          type: array
+      required:
+      - type
+      - operator
+      - conditions
+      type: object
+      additionalProperties: false
+    Segment:
+      properties:
+        version:
+          type: number
+          enum:
+          - 1
+          - 2
+          description: Segment version. Should be 2 for non-legacy segments
+        id:
+          type: number
+          format: double
+          description: Id of the segment
+        name:
+          type: string
+          description: Name of the segment
+        objectName:
+          type: string
+          description: Type of object this segment is for
+        conditions:
+          $ref: '#/components/schemas/SegmentConditionGroup'
+          description: Segment conditions
+        accountId:
+          type: number
+          format: double
+          description: Account that owns the segment
+        readOnly:
+          type: boolean
+          description: Readonly segments cannot be modified. They are created by the system
+        autoSegment:
+          type: boolean
+          description: Internal.
+        color:
+          type: string
+          description: Hex color associated with the segment
+        templateId:
+          type: string
+          description: Name of the template this segment is based on
+      required:
+      - version
+      - id
+      - name
+      - objectName
+      - accountId
+      - conditions
+      - autoSegment
+      - color
+      - templateId
+      type: object
+      additionalProperties: false
+    EventPropertyConditionAll:
+      anyOf:
+      - $ref: '#/components/schemas/ConditionGeneric'
+      - $ref: '#/components/schemas/ConditionText'
+      - $ref: '#/components/schemas/ConditionNumber'
+      - $ref: '#/components/schemas/ConditionDateAbsolute'
+    SegmentAssociationCondition:
+      properties:
+        type:
+          type: string
+          enum:
+          - association
+        condition:
+          $ref: '#/components/schemas/AssociationCondition'
+        value:
+          type: number
+          format: double
+        associationConditions:
+          $ref: '#/components/schemas/SegmentConditionGroup'
+      required:
+      - type
+      - condition
+      - value
+      type: object
+      additionalProperties: false
+    AssociationCondition:
+      properties:
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/ConditionNumberOnly'
+          - type: string
+            enum:
+            - any
+            - none
+            - exactly
+        value:
+          type: number
+          format: double
+      required:
+      - type
+      type: object
+      additionalProperties: false
+    SegmentGoalCondition:
+      properties:
+        type:
+          type: string
+          enum:
+          - goal
+        condition:
+          $ref: '#/components/schemas/ConditionGoal'
+        value:
+          type: number
+          format: double
+      required:
+      - type
+      - condition
+      - value
+      type: object
+      additionalProperties: false
+    SegmentNestedSegmentCondition:
+      properties:
+        type:
+          type: string
+          enum:
+          - segment
+        value:
+          type: number
+          format: double
+        condition:
+          $ref: '#/components/schemas/ConditionNestedSegment'
+      required:
+      - type
+      - value
+      - condition
+      type: object
+      additionalProperties: false
+    SegmentEventCondition:
+      properties:
+        type:
+          type: string
+          enum:
+          - event
+        condition:
+          $ref: '#/components/schemas/ConditionPerformed'
+        systemConditions:
+          $ref: '#/components/schemas/SegmentEventConditionGroup'
+          description: 'System conditions are conditions that added to the segment by the system.
+
+            They are not editable by the user.
+
+            For example, for email conditions we automatically add a condition that the event type is "email".'
+        propertiesConditions:
+          $ref: '#/components/schemas/SegmentEventConditionGroup'
+        frequencyCondition:
+          $ref: '#/components/schemas/SegmentEventFrequencyCondition'
+        recencyCondition:
+          $ref: '#/components/schemas/SegmentEventRecencyCondition'
+      required:
+      - type
+      - condition
+      - systemConditions
+      type: object
+      additionalProperties: false
+    ConditionGoal:
+      type: string
+      enum:
+      - in
+      - not in
+    SegmentEventConditionGroup:
+      properties:
+        type:
+          type: string
+          enum:
+          - group
+        operator:
+          type: string
+          enum:
+          - and
+          - or
+        conditions:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/SegmentEventConditionGroup'
+            - $ref: '#/components/schemas/SegmentEventProperty'
+          type: array
+        system:
+          type: boolean
+        uuid:
+          type: string
+      required:
+      - type
+      - operator
+      - conditions
+      type: object
+      additionalProperties: false
+    ConditionPerformed:
+      type: string
+      enum:
+      - has
+      - has not
+    SegmentCreatable:
+      $ref: '#/components/schemas/Partial_Omit_ISegment.id-or-accountId-or-version__'
+    SegmentTagCondition:
+      properties:
+        type:
+          type: string
+          enum:
+          - tag
+        value: {}
+        condition:
+          $ref: '#/components/schemas/ConditionPerformed'
+      required:
+      - type
+      - value
+      - condition
+      type: object
+      additionalProperties: false
+    ConditionDate:
+      type: string
+      enum:
+      - is empty
+      - is not empty
+      - is any
+      - after
+      - before
+      - true
+      - after period
+      - before period
+      - on period
+    EndUser:
+      type: object
+      description: This is the exposed EndUser class that proxies the unproxied one.
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      additionalProperties:
+        description: See [Person Fields](#tag/PersonFields) for other available properties.
+    ConditionNumberOnly:
+      type: string
+      enum:
+      - is more than
+      - is less than
+      - at least
   securitySchemes:
-    tokenHeader:
+    apiKeyHeader:
+      description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
       type: apiKey
       in: header
       name: X-Encharge-Token
-    bearer:
-      type: http
-      scheme: bearer
+    apiKeyQuery:
+      description: "You can use API key authentication if you are using the API for your Encharge account. \n\nIf you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: query
+      name: token
+    oauth2:
+      type: oauth2
+      description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for your OAuth credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+          tokenUrl: https://api.encharge.io/v1/oauth/token
+          refreshUrl: https://api.encharge.io/v1/oauth/token
+          scopes: {}

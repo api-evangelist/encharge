@@ -1,0 +1,55 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.encharge.io/transactional-email-api/technical-overview,
+  https://docs.encharge.io/transactional-email-api/reference,
+  derived cross-check against openapi/_original/encharge-openapi.yml
+format: custom-error-envelope
+rfc9457: false
+summary:
+  documented_error_catalog: false
+  spec_declares_error_responses: false
+  note: >-
+    Encharge publishes NO error-code reference. The 69 operations in the
+    published OpenAPI declare ONLY success responses (200/201/204) — not one
+    4xx or 5xx response is described anywhere in the spec, so an agent has no
+    machine-readable failure contract. The only error documentation Encharge
+    publishes is the envelope shape and a single worked 400 example on the
+    Transactional Email API pages, captured below.
+envelope:
+  wrapper: error
+  fields:
+    - {name: message, type: string, description: Human-readable error message}
+    - {name: markdown, type: string, description: The same message rendered as HTML/markdown}
+    - {name: traceId, type: string, description: Per-request trace id to quote to support}
+    - name: stack
+      type: string
+      description: >-
+        Server stack trace, present on at least some 400 responses in the
+        published example. Not a contract; treat as debug noise.
+  example: |
+    {
+      "error": {
+        "message": "Missing email content. Please pass `template`, `html` or `text`",
+        "markdown": "<p>Missing email content. Please pass <code>template</code>, <code>html</code> or <code>text</code></p>\n",
+        "traceId": "9751fe70-0957-11eb-a6b8-3baf67de29f8"
+      }
+    }
+problems:
+  - status: 400
+    title: Missing email content
+    detail: 'Missing email content. Please pass `template`, `html` or `text`'
+    source: https://docs.encharge.io/transactional-email-api/reference
+    operation: POST https://api.encharge.io/v1/emails/send
+    remediation: >-
+      Exactly one of `template`, `html` or `text` must be set on a transactional
+      send. Setting more than one, or none, fails validation.
+success_codes:
+  - {status: 200, note: default success on reads and most writes}
+  - {status: 201, note: creation — webhooks (CreateWebhook), tags (AddTag), associations}
+  - {status: 202, note: 'Transactional Email API: 202 Accepted on POST /emails/send'}
+  - {status: 204, note: deletes — ArchivePeople, DeleteField, RemoveTag, DeleteWebhook, etc.}
+gaps:
+  - No 4xx/5xx responses in the OpenAPI (0 of 69 operations).
+  - No published error-code registry or status-code reference page.
+  - No documented retry/backoff guidance, and no rate-limit error contract.

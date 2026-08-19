@@ -1,0 +1,96 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  openapi/_original/encharge-openapi.yml (Webhooks tag description +
+  /event-subscriptions operations), https://docs.encharge.io/advanced/activity-stream
+spec_type: none
+asyncapi_published: false
+note: >-
+  Encharge publishes no AsyncAPI document. It does ship a real, self-service
+  event surface: an event-subscription (webhook) API on the REST host with a
+  documented event-name catalog, plus a paid "Activity Stream" firehose add-on.
+  This artifact captures that surface; `type: Webhooks` is wired, `AsyncAPI`
+  is not.
+subscription_api:
+  create:
+    operation: CreateWebhook
+    method: POST
+    path: /event-subscriptions
+    spec: openapi/encharge-webhooks-api-openapi.yml
+    scope: account:write
+    request:
+      eventType: {required: true, description: Event to trigger on}
+      url: {required: true, description: URL to post the webhook to}
+      eventName: {required: false, nullable: true}
+      handlerData: {required: false}
+      service: {required: false}
+      operation: {required: false}
+    response: {status: 201, body: '{ subscription: { id } }'}
+  delete:
+    operation: DeleteWebhook
+    method: DELETE
+    path: /event-subscriptions/{id}
+    spec: openapi/encharge-webhooks-api-openapi.yml
+    scope: account:write
+    response: {status: 204}
+  transport: https-post
+  security: 'no signing secret, no signature header and no replay protection documented'
+events:
+  - name: newUser
+    description: An enduser (person) is created in Encharge.
+  - name: updatedUser
+    description: >-
+      An enduser (person) is updated. `changedFields` in `properties` carries
+      the previous and new values.
+  - name: unsubscribedUser
+    description: A person unsubscribed from receiving emails.
+  - name: added-tag-{tag}
+    description: >-
+      A person was tagged. Subscribe to the literal event name, e.g.
+      `added-tag-signed-up`.
+    templated: true
+  - name: removed-tag-{tag}
+    description: A person was untagged, e.g. `removed-tag-demo`.
+    templated: true
+  - name: native-form-submitted-{formId}
+    description: An Encharge native form was submitted, e.g. `native-form-submitted-123`.
+    templated: true
+  - name: newObject-{objectType}
+    description: >-
+      A custom object or company was created, e.g. `newObject-company`.
+    templated: true
+  - name: updatedObject-{objectType}
+    description: >-
+      A custom object or company was updated, e.g. `updatedObject-invoice`.
+    templated: true
+activity_stream:
+  docs: https://docs.encharge.io/advanced/activity-stream
+  availability: paid add-on — contact the account manager or support@encharge.io
+  delivery: HTTP POST to a customer-supplied endpoint
+  requirement: the receiving endpoint must return 2xx within 2 seconds
+  alternative_sink: 'a Segment.com HTTP Tracking API source may be supplied instead of your own endpoint'
+  timestamp: UNIX time in milliseconds on every event
+  event_types:
+    - {name: updatedUser, type: updatedUser}
+    - {name: newUser, type: newUser}
+    - {name: unsubscribedUser, type: unsubscribedUser}
+    - {name: 'added-tag-{tag}', type: tag}
+    - {name: 'removed-tag-{tag}', type: tag}
+    - {name: page-visited, type: page, note: requires Site Tracking}
+    - {name: form-submitted, note: requires Site Tracking; form data in `form` property}
+    - {name: sms-sent, type: sms}
+  note: >-
+    The published list continues beyond the entries captured here (email
+    open/click/send activity); only entries read verbatim from the docs page are
+    recorded.
+inbound_events:
+  note: >-
+    The Ingest API (POST https://ingest.encharge.io/v1/) is the INBOUND half of
+    the event surface — arbitrary named events plus the special `alias` and
+    `group` event types. It is documented at
+    https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
+    but has no OpenAPI of its own.
+gaps:
+  - No AsyncAPI document.
+  - No webhook payload schemas in the OpenAPI (only the subscription request/response).
+  - No signature/HMAC verification, retry policy or delivery-log documentation.

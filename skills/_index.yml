@@ -1,0 +1,27 @@
+generated: '2026-08-13'
+method: generated
+source: >-
+  openapi/_original/encharge-openapi.yml + the Encharge developer documentation
+  at https://docs.encharge.io
+note: >-
+  Encharge publishes no AGENTS.md or provider-authored skills; these are API
+  Evangelist packaged skills. Every operationId referenced was verified verbatim
+  against the published OpenAPI, except the transactional-email skill, which is
+  marked docs-only because that endpoint is absent from the spec.
+skills:
+  - file: encharge-sync-people-and-tags.md
+    name: Sync people and tags into Encharge
+    api: openapi/encharge-people-api-openapi.yml
+    operations: [CreateUpdatePeople, GetSpecificPeople, GetAllPeople, AddTag, RemoveTag, UnsubscribePerson, ArchivePeople]
+  - file: encharge-subscribe-to-events.md
+    name: Subscribe to Encharge events with webhooks
+    api: openapi/encharge-webhooks-api-openapi.yml
+    operations: [CreateWebhook, DeleteWebhook]
+  - file: encharge-model-custom-objects.md
+    name: Model and populate Encharge custom objects
+    api: openapi/encharge-customobjectsschema-api-openapi.yml
+    operations: [GetCustomObjectsSchema, CreateCustomObjectSchema, CreateObjectFields, DefineCustomObjectsAssociationSchema, CreateOrUpdateCustomObjects, SearchCustomObjects, GetCustomObjectByExternalId, AssociateObjectsByDefaultAssociation]
+  - file: encharge-send-transactional-email.md
+    name: Send a transactional email through Encharge
+    api: docs-only
+    operations: []

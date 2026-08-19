@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Encharge REST Account Fields API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Encharge-Token",
+      "value": "{{X-Encharge-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Fields",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List person fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.encharge.io/v1/fields"
+          },
+          "docs": "List person fields"
+        },
+        {
+          "info": {
+            "name": "Create field",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.encharge.io/v1/fields",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create field"
+        },
+        {
+          "info": {
+            "name": "Update field",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.encharge.io/v1/fields/:fieldName",
+            "params": [
+              {
+                "name": "fieldName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update field"
+        },
+        {
+          "info": {
+            "name": "Delete field",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.encharge.io/v1/fields/:fieldName",
+            "params": [
+              {
+                "name": "fieldName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete field"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

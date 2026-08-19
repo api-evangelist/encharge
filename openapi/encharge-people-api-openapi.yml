@@ -1,115 +1,294 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Encharge REST Account People API
-  description: 'Encharge is a behavior-based marketing automation platform built for SaaS companies. The REST API exposes the core resources used by integrations: people, fields, segments, tags, event subscriptions (webhooks), and account information. Authentication uses the X-Encharge-Token header. Also documented here: the Ingest API for backend event submission and the Transactional Email API for templated and custom HTML/text email.
-
-    '
   version: 1.0.0
+  title: Encharge People API
+  description: The Encharge.io API
+  license:
+    name: MIT
   contact:
-    name: Encharge Developer Documentation
-    url: https://docs.encharge.io/api-documentation
+    url: https://help.encharge.io
+    name: unknown
 servers:
 - url: https://api.encharge.io/v1
-  description: REST API and Transactional Email API
-- url: https://ingest.encharge.io/v1
-  description: Ingest API for backend event submission
-security:
-- tokenHeader: []
-- bearer: []
 tags:
 - name: People
 paths:
   /people:
-    get:
-      summary: List people
-      operationId: listPeople
-      tags:
-      - People
-      parameters:
-      - name: email
-        in: query
-        schema:
-          type: string
-      - name: userId
-        in: query
-        schema:
-          type: string
-      - name: limit
-        in: query
-        schema:
-          type: integer
-      - name: offset
-        in: query
-        schema:
-          type: integer
-      responses:
-        '200':
-          description: People
-    post:
-      summary: Create or update person
-      operationId: upsertPerson
-      tags:
-      - People
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                userId:
-                  type: string
-      responses:
-        '200':
-          description: Person created or updated
     delete:
-      summary: Archive person
-      operationId: archivePerson
-      tags:
-      - People
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
+      operationId: ArchivePeople
       responses:
         '204':
-          description: Archived
-  /people/unsubscribe:
-    post:
-      summary: Unsubscribe a person
-      operationId: unsubscribePerson
+          description: Deleted
+      description: 'Archive or delete one or multiple people.
+
+
+        Archiving is the preferred method of removing users in Encharge.
+
+
+        Alternatively, you can delete a person and all their data for GDPR purposes.
+
+        '
       tags:
       - People
+      security:
+      - oauth2:
+        - people:write
+      parameters:
+      - $ref: '#/components/parameters/PeopleQuery'
+      - name: force
+        description: If set to `true`, will delete the person's data. This is useful for GDPR-compliant removal of user data.
+        in: query
+        required: false
+        schema:
+          type: boolean
+    get:
+      operationId: GetSpecificPeople
+      description: Retrive specific people in your account.
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                description: Sample description
+                properties:
+                  users:
+                    items:
+                      $ref: '#/components/schemas/EndUser'
+                    type: array
+                required:
+                - users
+                type: object
+      tags:
+      - People
+      security:
+      - oauth2:
+        - people:read
+      parameters:
+      - $ref: '#/components/parameters/PeopleQuery'
+      - name: attributes
+        description: Comma separated list of custom fields to retrieve.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: includeArchived
+        description: Whether to include archived people in the response. By default archived people are not included.
+        in: query
+        required: false
+        schema:
+          type: boolean
+    post:
+      operationId: CreateUpdatePeople
+      summary: Create/Update People
+      description: 'Create or update people in Encharge.
+
+
+        If the people exist (identified by id/userId/email/another ID), they will be updated. Otherwise, people will be created.
+
+        '
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  users:
+                    items:
+                      $ref: '#/components/schemas/EndUser'
+                    type: array
+                required:
+                - users
+                type: object
+      tags:
+      - People
+      security:
+      - oauth2:
+        - people:write
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
+              description: Array of EndUser objects.
+              type: array
+              items:
+                $ref: '#/components/schemas/EndUser'
+  /people/all:
+    get:
+      operationId: GetAllPeople
       responses:
         '200':
-          description: Unsubscribed
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  people:
+                    items:
+                      $ref: '#/components/schemas/EndUser'
+                    type: array
+                required:
+                - people
+                type: object
+      description: Get all people in the account.
+      tags:
+      - People
+      security:
+      - oauth2:
+        - people:read
+      parameters:
+      - description: Number of people to retrieve.
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 100
+          format: double
+          type: number
+      - description: Number of records to skip
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          format: double
+          type: number
+      - description: Person Fields to retrieve. See [Person Fields](#tag/PersonFields) for possible field names.
+        in: query
+        name: attributes
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: sort
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: order
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - in: query
+        name: ignoreAnonymous
+        required: false
+        schema:
+          type: boolean
+  /people/unsubscribe:
+    post:
+      operationId: UnsubscribePerson
+      responses:
+        '204':
+          description: No content
+      description: Unsubscribe a person to prevent them from receiving any more email.
+      summary: Unsubscribe a Person
+      tags:
+      - People
+      security:
+      - oauth2:
+        - people:write
+      parameters:
+      - description: 'Email of the person to unsubscribe.
+
+
+          At least one of id/userId/email must be specified.'
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+      - description: 'userId of the person to unsubscribe.
+
+
+          At least one of id/userId/email must be specified.'
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: string
+      - description: 'Encharge ID of the person to unsubscribe.
+
+
+          At least one of id/userId/email must be specified.'
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
 components:
+  parameters:
+    PeopleQuery:
+      in: query
+      name: people
+      required: true
+      description: "People can be specified by any ID. \nFor example, for a person with an email `slav@encharge.io` use the following query: \n\n`?people[0][email]=slav@encharge.io`\n\nFor multiple people, pass multiple ids in the query like so:\n\n`?people[0][userId]=abc&people[1][userId]=xyz`. \n\nThis will specify people who have userId of `abc` and `xyz`.\n\nEmails, userIds and other IDs can used together in a single query.\n"
+      schema:
+        $ref: '#/components/schemas/EndUserIdentifiers'
+  schemas:
+    EndUser:
+      type: object
+      description: This is the exposed EndUser class that proxies the unproxied one.
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      additionalProperties:
+        description: See [Person Fields](#tag/PersonFields) for other available properties.
+    EndUserIdentifiers:
+      properties:
+        id:
+          type: string
+          description: 'Encharge ID of the person. An UUID.
+
+
+            At least one of id/userId/email must be specified.'
+        userId:
+          type: string
+          description: 'UserID of the person.
+
+
+            At least one of id/userId/email must be specified.'
+        email:
+          type: string
+          description: 'Email of the person.
+
+
+            At least one of id/userId/email must be specified.'
+      additionalProperties: {}
+      type: object
   securitySchemes:
-    tokenHeader:
+    apiKeyHeader:
+      description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
       type: apiKey
       in: header
       name: X-Encharge-Token
-    bearer:
-      type: http
-      scheme: bearer
+    apiKeyQuery:
+      description: "You can use API key authentication if you are using the API for your Encharge account. \n\nIf you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: query
+      name: token
+    oauth2:
+      type: oauth2
+      description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for your OAuth credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+          tokenUrl: https://api.encharge.io/v1/oauth/token
+          refreshUrl: https://api.encharge.io/v1/oauth/token
+          scopes: {}

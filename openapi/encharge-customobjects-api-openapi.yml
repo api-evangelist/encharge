@@ -1,0 +1,774 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Encharge Custom Objects API
+  description: The Encharge.io API
+  license:
+    name: MIT
+  contact:
+    url: https://help.encharge.io
+    name: unknown
+servers:
+- url: https://api.encharge.io/v1
+tags:
+- name: CustomObjects
+paths:
+  /objects/{objectName}:
+    get:
+      operationId: GetCustomObjects
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      $ref: '#/components/schemas/CustomObject'
+                    type: array
+                required:
+                - objects
+                type: object
+      description: Get multiple custom objects/companies.
+      tags:
+      - CustomObjects
+      security:
+      - oauth2: []
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: attributes
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: sort
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: order
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - in: query
+        name: offset
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: limit
+        required: false
+        schema:
+          format: double
+          type: number
+    post:
+      operationId: CreateCustomObjects
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      $ref: '#/components/schemas/CustomObject'
+                    type: array
+                required:
+                - objects
+                type: object
+      description: Create new custom objects/companies.
+      tags:
+      - CustomObjects
+      security:
+      - oauth2: []
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Objects to create.
+        required: true
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/ICustomObjectCreatable'
+              type: array
+              description: Objects to create.
+    put:
+      operationId: CreateOrUpdateCustomObjects
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  created:
+                    type: boolean
+                  object:
+                    $ref: '#/components/schemas/CustomObject'
+                required:
+                - created
+                - object
+                type: object
+      description: Create or Update (Upsert) a custom object/company.
+      tags:
+      - CustomObjects
+      security:
+      - oauth2: []
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Objects to create.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ICustomObjectCreatable'
+              description: Objects to create.
+  /objects/{objectName}/segments/{segmentId}:
+    get:
+      operationId: GetCustomObjectsInSegment
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      $ref: '#/components/schemas/CustomObject'
+                    type: array
+                required:
+                - objects
+                type: object
+      description: Get custom objects/companies in a segment.
+      tags:
+      - CustomObjects
+      security:
+      - oauth2: []
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: segmentId
+        required: true
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: attributes
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: sort
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: order
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - in: query
+        name: offset
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: limit
+        required: false
+        schema:
+          format: double
+          type: number
+  /objects/{objectName}/count:
+    get:
+      operationId: GetCustomObjectsCount
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    type: number
+                    format: double
+                required:
+                - count
+                type: object
+      description: Get custom objects/companies count.
+      tags:
+      - CustomObjects
+      security:
+      - oauth2: []
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+  /objects/{objectName}/segments/{segmentId}/count:
+    get:
+      operationId: GetCustomObjectsInSegmentCount
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    type: number
+                    format: double
+                required:
+                - count
+                type: object
+      description: Get count of custom objects/companies in a segment.
+      tags:
+      - CustomObjects
+      security:
+      - oauth2: []
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: segmentId
+        required: true
+        schema:
+          format: double
+          type: number
+  /objects/{objectName}/search:
+    get:
+      operationId: SearchCustomObjects
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects: {}
+                required:
+                - objects
+                type: object
+      description: Search custom objects/companies by their searchable fields
+      tags:
+      - CustomObjects
+      security:
+      - oauth2: []
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: query
+        required: true
+        schema:
+          type: string
+      - description: Id of segment to search in. If not specified, will search in all objects.
+        in: query
+        name: segmentId
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: offset
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: limit
+        required: false
+        schema:
+          format: double
+          type: number
+  /objects/{objectName}/{id}:
+    get:
+      operationId: GetCustomObjectById
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  object:
+                    $ref: '#/components/schemas/CustomObject'
+                required:
+                - object
+                type: object
+      description: Get custom object/company by id
+      tags:
+      - CustomObjects
+      security:
+      - oauth2: []
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+    patch:
+      operationId: UpdateCustomObject
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  object:
+                    $ref: '#/components/schemas/CustomObject'
+                required:
+                - object
+                type: object
+      description: Update custom object/company.
+      tags:
+      - CustomObjects
+      security:
+      - oauth2:
+        - account:write
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+      requestBody:
+        description: Custom object. Must have an id or externalId.
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ICustomObjectCreatable'
+              - properties: {}
+                additionalProperties: {}
+                type: object
+              description: Custom object. Must have an id or externalId.
+    delete:
+      operationId: DeleteCustomObject
+      responses:
+        '204':
+          description: Deleted
+      description: Remove custom object/company by Id
+      tags:
+      - CustomObjects
+      security:
+      - oauth2:
+        - account:write
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+  /objects/{objectName}/externalId/{externalId}:
+    get:
+      operationId: GetCustomObjectByExternalId
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  object:
+                    $ref: '#/components/schemas/CustomObject'
+                required:
+                - object
+                type: object
+      description: Get custom object/company by external ID
+      tags:
+      - CustomObjects
+      security:
+      - oauth2: []
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: externalId
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: UpdateCustomObjectByExternalId
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  object:
+                    $ref: '#/components/schemas/CustomObject'
+                required:
+                - object
+                type: object
+      description: Update custom object/company by external ID
+      tags:
+      - CustomObjects
+      security:
+      - oauth2:
+        - account:write
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: externalId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Custom object. Must have an id or externalId.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ICustomObjectCreatable'
+              description: Custom object. Must have an id or externalId.
+    delete:
+      operationId: DeleteCustomObjectByExternalId
+      responses:
+        '204':
+          description: Deleted
+      description: Remove custom object/company by external Id
+      tags:
+      - CustomObjects
+      security:
+      - oauth2:
+        - account:write
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: externalId
+        required: true
+        schema:
+          type: string
+  /objects/{objectName}/{id}/associations/{associationId}:
+    get:
+      operationId: GetObjectsByAssociation
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items: {}
+                    type: array
+                required:
+                - objects
+                type: object
+      description: Get objects by association with given custom object
+      tags:
+      - CustomObjects
+      security:
+      - oauth2:
+        - account:write
+      parameters:
+      - description: Name of the custom object to get associated objects for, e.g. "person" or "company".
+        in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - description: Id of the custom object to get associated objects for.
+        in: path
+        name: id
+        required: true
+        schema: {}
+      - description: Id of the association schema.
+        in: path
+        name: associationId
+        required: true
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: attributes
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: sort
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: order
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - in: query
+        name: offset
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: limit
+        required: false
+        schema:
+          format: double
+          type: number
+  /objects/{objectName}/{id}/associations:
+    get:
+      operationId: GetAllAssociatedObjects
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    properties: {}
+                    additionalProperties:
+                      items: {}
+                      type: array
+                    type: object
+                required:
+                - objects
+                type: object
+      description: Retrieve all objects associated in any way with a given custom object
+      tags:
+      - CustomObjects
+      security:
+      - oauth2:
+        - account:write
+      parameters:
+      - in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema: {}
+      - in: query
+        name: limit
+        required: false
+        schema:
+          format: double
+          type: number
+  /objects/{objectName}/{id}/associations/default/{targetObjectName}/{targetId}:
+    post:
+      operationId: AssociateObjectsByDefaultAssociation
+      responses:
+        '201':
+          description: Created
+      description: 'Associate a custom object with another object, using the default association.
+
+
+        If there is only one association between the objects (e.g. a contact and a company),
+
+        you might use this endpoint to associate them without passing the association id.'
+      tags:
+      - CustomObjects
+      security:
+      - oauth2:
+        - account:write
+      parameters:
+      - description: Name of the custom object on one side of the association, e.g. "person" or "company".
+        in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - description: Id of the custom object on one side of the association.
+        in: path
+        name: id
+        required: true
+        schema: {}
+      - description: Name of the custom object on the other side of the association.
+        in: path
+        name: targetObjectName
+        required: true
+        schema:
+          type: string
+      - description: Id of the custom object on the other side of the association.
+        in: path
+        name: targetId
+        required: true
+        schema: {}
+  /objects/{objectName}/{id}/associations/{associationId}/{targetId}:
+    post:
+      operationId: AssociateCustomObjects
+      responses:
+        '201':
+          description: Created
+      description: Associate an object with another object
+      tags:
+      - CustomObjects
+      security:
+      - oauth2:
+        - account:write
+      parameters:
+      - description: Name of the custom object on one side of the association, e.g. "person" or "company".
+        in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - description: Id of the custom object on one side of the association.
+        in: path
+        name: id
+        required: true
+        schema: {}
+      - description: Id of the association schema.
+        in: path
+        name: associationId
+        required: true
+        schema:
+          format: double
+          type: number
+      - description: Id of the custom object on the other side of the association.
+        in: path
+        name: targetId
+        required: true
+        schema: {}
+    delete:
+      operationId: RemoveCustomObjectsAssociation
+      responses:
+        '204':
+          description: Deleted
+      description: Remove association between objects
+      tags:
+      - CustomObjects
+      security:
+      - oauth2:
+        - account:write
+      parameters:
+      - description: Name of the custom object on one side of the association, e.g. "person" or "company".
+        in: path
+        name: objectName
+        required: true
+        schema:
+          type: string
+      - description: Id of the custom object on one side of the association.
+        in: path
+        name: id
+        required: true
+        schema: {}
+      - description: Id of the association schema.
+        in: path
+        name: associationId
+        required: true
+        schema:
+          format: double
+          type: number
+      - description: Id of the custom object on the other side of the association.
+        in: path
+        name: targetId
+        required: true
+        schema: {}
+components:
+  schemas:
+    CustomObject:
+      description: 'This is the base unproxied enduser class.
+
+        It shouldn''t be used without a proxy as defined below.'
+    ICustomObjectCreatable:
+      properties:
+        externalId:
+          type: string
+        id:
+          type: number
+          format: double
+      additionalProperties: {}
+      type: object
+  securitySchemes:
+    apiKeyHeader:
+      description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: header
+      name: X-Encharge-Token
+    apiKeyQuery:
+      description: "You can use API key authentication if you are using the API for your Encharge account. \n\nIf you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: query
+      name: token
+    oauth2:
+      type: oauth2
+      description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for your OAuth credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+          tokenUrl: https://api.encharge.io/v1/oauth/token
+          refreshUrl: https://api.encharge.io/v1/oauth/token
+          scopes: {}

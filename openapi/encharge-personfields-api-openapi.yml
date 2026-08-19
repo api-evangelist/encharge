@@ -1,0 +1,307 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Encharge Person Fields API
+  description: The Encharge.io API
+  license:
+    name: MIT
+  contact:
+    url: https://help.encharge.io
+    name: unknown
+servers:
+- url: https://api.encharge.io/v1
+tags:
+- name: PersonFields
+paths:
+  /fields:
+    get:
+      operationId: GetFields
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  items:
+                    items:
+                      $ref: '#/components/schemas/IPersonField'
+                    type: array
+                required:
+                - items
+                type: object
+      description: Get all Person Fields.
+      tags:
+      - PersonFields
+      security:
+      - oauth2: []
+      parameters: []
+    post:
+      operationId: CreateFields
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  items:
+                    items:
+                      $ref: '#/components/schemas/PersonField'
+                    type: array
+                required:
+                - items
+                type: object
+      description: Create Person Fields
+      tags:
+      - PersonFields
+      security:
+      - oauth2:
+        - personFields:write
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/IPersonField'
+              type: array
+  /fields/{fieldName}:
+    patch:
+      operationId: EditField
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  field:
+                    $ref: '#/components/schemas/PersonField'
+                required:
+                - field
+                type: object
+      description: Modify Person Field
+      tags:
+      - PersonFields
+      security:
+      - oauth2:
+        - personFields:write
+      parameters:
+      - in: path
+        name: fieldName
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IPersonField'
+    delete:
+      operationId: DeleteField
+      responses:
+        '204':
+          description: Deleted
+      description: Delete Person Field
+      tags:
+      - PersonFields
+      security:
+      - oauth2:
+        - personFields:write
+      parameters:
+      - in: path
+        name: fieldName
+        required: true
+        schema:
+          type: string
+components:
+  schemas:
+    PersonFieldFormat:
+      type:
+      - string
+      - 'null'
+      enum:
+      - date
+      - date-time
+      description: Format of the field. Applies to String fields only. JSON schema compatible
+    IPersonField:
+      description: Represents a field (i.e. property) of a person in Encharge.
+      properties:
+        name:
+          type: string
+          description: 'Unique ID of the field.
+
+
+            Use this "name" to refer to this field in any API operations.'
+        title:
+          type: string
+          description: Human readable name of the field.
+        type:
+          $ref: '#/components/schemas/Exclude_JSONSchema6TypeName.object-or-array-or-null_'
+          description: Type of the field. JSON schema compatible
+        format:
+          $ref: '#/components/schemas/PersonFieldFormat'
+          description: Format of the field. Applies to String fields only. JSON schema compatible
+        displayType:
+          $ref: '#/components/schemas/FieldDisplayType'
+          description: 'Reserved for future use.
+
+            How to display the field in the UI. If empty, the display will be deduced from the field type and format.'
+        readOnly:
+          type: boolean
+          description: Whether this field can be changed by the user or via the API.
+        tooltip:
+          type: string
+          description: More information about this field (to be shown in a tooltip)
+        icon:
+          type: string
+          description: Field icon, if set.
+        array:
+          type: boolean
+          description: Whether this field holds an array of values.
+        enum:
+          items:
+            type: string
+          type: array
+          description: Possible values for this field
+        enumNames:
+          items:
+            type: string
+          type: array
+          description: Labels for enum values. If be omitted, the enum values will be used as enum labels.
+        allowNewEnumValues:
+          type: boolean
+          description: If we allow other values than the ones in the "enum" property.
+        canMapFrom:
+          type: boolean
+          description: Internal
+        firstClassField:
+          type: boolean
+          description: Internal.
+        createdBy:
+          type: string
+          description: Internal. Field creator.
+      required:
+      - name
+      - type
+      type: object
+      additionalProperties: false
+    Exclude_JSONSchema6TypeName.object-or-array-or-null_:
+      type: string
+      enum:
+      - string
+      - number
+      - boolean
+      - integer
+      - any
+      description: Exclude from T those types that are assignable to U
+    FieldDisplayType:
+      type: string
+      enum:
+      - text
+      - textarea
+      - date
+      - datetime
+      - number
+      - select
+      - multiselect
+      - checkbox
+      - radio
+      - email
+      - url
+      - phone
+      - integer
+      - decimal
+      - currency
+      - currencyCents
+    PersonField:
+      properties:
+        name:
+          type: string
+          description: 'Unique ID of the field.
+
+
+            Use this "name" to refer to this field in any API operations.'
+        title:
+          type: string
+          description: Human readable name of the field.
+        type:
+          $ref: '#/components/schemas/Exclude_JSONSchema6TypeName.object-or-array-or-null_'
+          description: Type of the field. JSON schema compatible
+        format:
+          $ref: '#/components/schemas/PersonFieldFormat'
+          description: Format of the field. Applies to String fields only. JSON schema compatible
+        displayType:
+          $ref: '#/components/schemas/FieldDisplayType'
+          description: 'Reserved for future use.
+
+            How to display the field in the UI. If empty, the display will be deduced from the field type and format.'
+        readOnly:
+          type: boolean
+          description: Whether this field can be changed by the user or via the API.
+        tooltip:
+          type: string
+          description: More information about this field (to be shown in a tooltip)
+        icon:
+          type: string
+          description: Field icon, if set.
+        array:
+          type: boolean
+          description: Whether this field holds an array of values.
+        enum:
+          items:
+            type: string
+          type: array
+          description: Possible values for this field
+        enumNames:
+          items:
+            type: string
+          type: array
+          description: Labels for enum values. If be omitted, the enum values will be used as enum labels.
+        allowNewEnumValues:
+          type: boolean
+          description: If we allow other values than the ones in the "enum" property.
+        canMapFrom:
+          type: boolean
+          description: Internal
+        firstClassField:
+          type: boolean
+          description: Internal.
+        createdBy:
+          type: string
+          description: Internal. Field creator.
+      required:
+      - name
+      - type
+      - title
+      - format
+      - readOnly
+      - canMapFrom
+      - firstClassField
+      - array
+      - createdBy
+      type: object
+      additionalProperties: false
+  securitySchemes:
+    apiKeyHeader:
+      description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: header
+      name: X-Encharge-Token
+    apiKeyQuery:
+      description: "You can use API key authentication if you are using the API for your Encharge account. \n\nIf you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: query
+      name: token
+    oauth2:
+      type: oauth2
+      description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for your OAuth credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+          tokenUrl: https://api.encharge.io/v1/oauth/token
+          refreshUrl: https://api.encharge.io/v1/oauth/token
+          scopes: {}

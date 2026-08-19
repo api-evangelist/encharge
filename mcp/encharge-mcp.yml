@@ -1,0 +1,97 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: openapi/encharge-*-openapi.yml (69 operations across 13 refined specs)
+deployment:
+  mode: none
+  auth: unknown
+  verified: derived
+  note: >-
+    No first-party MCP server exists. Encharge's own changelog entry of
+    2026-06-02 (https://encharge.noorahq.com/changelog) says under "Coming
+    soon": "The Encharge MCP is in testing now - more on that soon." POST
+    tools/list probes returned 404 on https://api.encharge.io/mcp and
+    https://api.encharge.io/v1/mcp, DNS does not resolve for mcp.encharge.io,
+    and https://encharge.io/mcp is a 404. A third-party npm package
+    `encharge-mcp` (github.com/khach-m/encharge-mcp, v1.0.0, 2026-03-23) exists
+    but is NOT published by Encharge and is recorded in packages/ instead.
+probes:
+  - {url: 'https://mcp.encharge.io/mcp', method: POST, status: 'dns-failure'}
+  - {url: 'https://api.encharge.io/mcp', method: POST, status: 404}
+  - {url: 'https://api.encharge.io/v1/mcp', method: POST, status: 404}
+  - {url: 'https://encharge.io/mcp', method: POST, status: 404}
+  - {url: 'https://docs.encharge.io/mcp', method: POST, status: 405}
+server:
+  name: encharge
+  transport: null
+  url: null
+tools:
+  - name: get_account_info
+    description: Get information about your Encharge account.
+    source_operation: openapi/encharge-account-api-openapi.yml#GetInfo
+  - name: list_people
+    description: Retrieve specific people in the account by email or userId.
+    source_operation: openapi/encharge-people-api-openapi.yml#GetSpecificPeople
+  - name: list_all_people
+    description: Get all people in the account (paged with limit/offset).
+    source_operation: openapi/encharge-people-api-openapi.yml#GetAllPeople
+  - name: upsert_people
+    description: Create or update people in Encharge.
+    source_operation: openapi/encharge-people-api-openapi.yml#CreateUpdatePeople
+  - name: archive_people
+    description: Archive or delete one or multiple people.
+    source_operation: openapi/encharge-people-api-openapi.yml#ArchivePeople
+  - name: unsubscribe_person
+    description: Unsubscribe a person to prevent them receiving any more email.
+    source_operation: openapi/encharge-people-api-openapi.yml#UnsubscribePerson
+  - name: list_person_fields
+    description: Get all Person Fields defined on the account.
+    source_operation: openapi/encharge-personfields-api-openapi.yml#GetFields
+  - name: create_person_fields
+    description: Create Person Fields.
+    source_operation: openapi/encharge-personfields-api-openapi.yml#CreateFields
+  - name: list_segments
+    description: Get all dynamic Segments in the account.
+    source_operation: openapi/encharge-segments-api-openapi.yml#GetSegments
+  - name: create_segment
+    description: Create a dynamic segment.
+    source_operation: openapi/encharge-segments-api-openapi.yml#CreateSegment
+  - name: list_people_in_segment
+    description: Get the people in a segment.
+    source_operation: openapi/encharge-segments-api-openapi.yml#GetPeopleInSegment
+  - name: add_tag
+    description: Add tag(s) to an existing person.
+    source_operation: openapi/encharge-tags-api-openapi.yml#AddTag
+  - name: remove_tag
+    description: Remove tag(s) from an existing person.
+    source_operation: openapi/encharge-tags-api-openapi.yml#RemoveTag
+  - name: list_account_tags
+    description: Get all tags on the account, optionally with people counts.
+    source_operation: openapi/encharge-tags-management-api-openapi.yml#GetAccountTags
+  - name: create_webhook
+    description: Subscribe to an Encharge event and post it to a URL.
+    source_operation: openapi/encharge-webhooks-api-openapi.yml#CreateWebhook
+  - name: delete_webhook
+    description: Delete an existing event subscription.
+    source_operation: openapi/encharge-webhooks-api-openapi.yml#DeleteWebhook
+  - name: send_broadcast
+    description: Confirm that a broadcast is ready for sending.
+    source_operation: openapi/encharge-broadcasts-api-openapi.yml#SendBroadcast
+  - name: create_email_template
+    description: Create an email template.
+    source_operation: openapi/encharge-emailtemplates-api-openapi.yml#CreateEmail
+  - name: get_email_template
+    description: Get an email template by id.
+    source_operation: openapi/encharge-emailtemplates-api-openapi.yml#GetEmail
+  - name: search_custom_objects
+    description: Search custom objects/companies by their searchable fields.
+    source_operation: openapi/encharge-customobjects-api-openapi.yml#SearchCustomObjects
+  - name: upsert_custom_objects
+    description: Create or update (upsert) custom objects/companies.
+    source_operation: openapi/encharge-customobjects-api-openapi.yml#CreateOrUpdateCustomObjects
+  - name: list_custom_object_schemas
+    description: Get all custom object schemas.
+    source_operation: openapi/encharge-customobjectsschema-api-openapi.yml#GetCustomObjectsSchema
+  - name: list_email_domains
+    description: List all sending email domains for the account.
+    source_operation: openapi/encharge-settings-api-openapi.yml#GetDomains

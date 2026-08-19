@@ -1,0 +1,67 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Encharge
+  version: 1.0.0
+extends: openapi/_original/encharge-openapi.yml
+x-provenance:
+  generated: '2026-08-13'
+  method: generated
+  source: >-
+    API Evangelist enrichment of the OpenAPI 3.0.0 document Encharge publishes at
+    https://app-encharge-resources.s3.amazonaws.com/merged.yaml
+  note: >-
+    Non-destructive. Captures only API Evangelist findings ABOUT the spec — the
+    published document is never mutated. Every gap asserted here was verified
+    against the spec and the docs on 2026-08-13.
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-source: https://app-encharge-resources.s3.amazonaws.com/merged.yaml
+      x-apievangelist-discovered-via: https://docs.encharge.io/api-documentation
+      x-apievangelist-rendered-by:
+        - https://app-encharge-resources.s3.amazonaws.com/redoc.html
+        - https://app-encharge-resources.s3.amazonaws.com/rapidoc.html
+      x-apievangelist-operations: 69
+      x-apievangelist-gaps:
+        - no 4xx/5xx responses on any of the 69 operations
+        - no operation summaries (descriptions only)
+        - oauth2 flow declares an empty scopes map, yet 8 scopes are used at operation level
+        - no rate-limit contract and no 429 response
+        - no idempotency key
+      x-apievangelist-artifacts:
+        conventions: conventions/encharge-conventions.yml
+        errors: errors/encharge-problem-types.yml
+        webhooks: asyncapi/encharge-webhooks.yml
+        data_model: data-model/encharge-data-model.yml
+        scopes: scopes/encharge-scopes.yml
+  - target: $.info.contact
+    update:
+      name: Encharge Support
+      url: https://help.encharge.io
+      x-apievangelist-note: >-
+        The published spec carries contact.name "unknown"; the support surface is
+        help.encharge.io and support@encharge.io.
+  - target: $.components.securitySchemes.oauth2.flows.authorizationCode
+    update:
+      x-apievangelist-observed-scopes:
+        - account:write
+        - broadcasts:write
+        - emails:read
+        - emails:write
+        - emailSettings:write
+        - people:read
+        - people:write
+        - personFields:write
+      x-apievangelist-note: >-
+        The `scopes` map in the flow is empty in the published document even
+        though these eight scopes are required by operation-level `security`
+        blocks. Consumers reading only the flow definition would see no scopes
+        at all. See scopes/encharge-scopes.yml.
+  - target: $.servers
+    update:
+      x-apievangelist-note: >-
+        This document covers only the REST API on https://api.encharge.io/v1.
+        Two further Encharge APIs have no machine-readable definition: the
+        Transactional Email API (POST https://api.encharge.io/v1/emails/send)
+        and the Ingest API (POST https://ingest.encharge.io/v1/), both
+        documented in prose only.

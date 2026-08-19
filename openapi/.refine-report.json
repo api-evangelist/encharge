@@ -1,28 +1,44 @@
 {
   "provider": "encharge",
   "sources": [
-    "encharge-account-api-openapi.yml",
-    "encharge-events-api-openapi.yml",
-    "encharge-fields-api-openapi.yml",
-    "encharge-ingest-api-openapi.yml",
-    "encharge-people-api-openapi.yml",
-    "encharge-segments-api-openapi.yml",
-    "encharge-tags-api-openapi.yml",
-    "encharge-transactional-email-api-openapi.yml"
+    "encharge-openapi.yml"
   ],
   "outputs": [
     "encharge-account-api-openapi.yml",
-    "encharge-events-api-openapi.yml",
-    "encharge-fields-api-openapi.yml",
-    "encharge-ingest-api-openapi.yml",
+    "encharge-broadcasts-api-openapi.yml",
+    "encharge-customobjects-api-openapi.yml",
+    "encharge-customobjectsschema-api-openapi.yml",
+    "encharge-emailtemplates-api-openapi.yml",
+    "encharge-folders-api-openapi.yml",
     "encharge-people-api-openapi.yml",
+    "encharge-personfields-api-openapi.yml",
     "encharge-segments-api-openapi.yml",
+    "encharge-settings-api-openapi.yml",
     "encharge-tags-api-openapi.yml",
-    "encharge-transactional-email-api-openapi.yml"
+    "encharge-tags-management-api-openapi.yml",
+    "encharge-webhooks-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "archived openapi/encharge-openapi.yml"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
+  "notes": [
+    "encharge-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "encharge-openapi.yml: tagged paths GET /settings/email/domains -> Settings",
+    "encharge-openapi.yml: tagged paths POST /settings/email/domains -> Settings",
+    "encharge-openapi.yml: tagged paths GET /settings/email/domains/{id} -> Settings",
+    "encharge-openapi.yml: tagged paths DELETE /settings/email/domains/{id} -> Settings",
+    "encharge-openapi.yml: tagged paths POST /settings/email/domains/{id}/verify -> Settings",
+    "encharge-openapi.yml: declared missing tag: Broadcasts",
+    "encharge-openapi.yml: declared missing tag: CustomObjects",
+    "encharge-openapi.yml: declared missing tag: CustomObjectsSchema",
+    "encharge-openapi.yml: declared missing tag: EmailTemplates",
+    "encharge-openapi.yml: declared missing tag: Folders",
+    "encharge-openapi.yml: declared missing tag: PersonFields",
+    "encharge-openapi.yml: declared missing tag: Segments",
+    "encharge-openapi.yml: declared missing tag: Settings",
+    "encharge-openapi.yml: declared missing tag: Tags-Management"
+  ],
   "skipped": []
 }

@@ -1,0 +1,101 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.encharge.io/api-documentation,
+  https://docs.encharge.io/transactional-email-api/technical-overview,
+  https://docs.encharge.io/transactional-email-api/authentication,
+  https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api,
+  and openapi/_original/encharge-openapi.yml
+authentication:
+  style: api-key-or-oauth2
+  api_key:
+    header: X-Encharge-Token
+    query_param: token
+    where_to_get: https://app.encharge.io/account/info
+    note: >-
+      The same API key works on the REST API, the Transactional Email API and
+      (as the "write key") the Ingest API. Encharge's own spec says: "While all
+      operations in the API specify oauth2 security, instead you can use an API
+      key in the header or query string."
+  oauth2:
+    flow: authorizationCode
+    authorization_url: https://api.encharge.io/v1/oauth/authorize
+    token_url: https://api.encharge.io/v1/oauth/token
+    credential_request: manual — OAuth client id/secret are issued via a form, not self-serve
+    intended_for: apps built for other Encharge customers (partner integrations)
+  see_also: authentication/encharge-authentication.yml
+idempotency:
+  supported: false
+  evidence: >-
+    No Idempotency-Key header, parameter or documented retry contract anywhere in
+    the published OpenAPI (grep for "idempoten" returns 0 hits) or in the docs.
+    Write safety instead relies on upsert semantics — CreateUpdatePeople (POST
+    /people) and CreateOrUpdateCustomObjects (PUT /objects/{objectName}) are
+    idempotent-by-key on email/userId/externalId — but there is no request-level
+    deduplication contract. No `Idempotency` pointer is emitted.
+  upsert_operations:
+    - CreateUpdatePeople
+    - CreateOrUpdateCustomObjects
+    - UpdateCustomObjectByExternalId
+pagination:
+  style: limit-offset
+  params:
+    limit: {in: query, type: integer, used_by: 8 operations}
+    offset: {in: query, type: integer, used_by: 7 operations}
+  sorting:
+    sort: {in: query, note: field to sort by}
+    order: {in: query, note: sort direction}
+  note: >-
+    No cursor pagination and no documented default/maximum page size; the spec
+    declares limit/offset without bounds.
+field_selection:
+  attributes: >-
+    An `attributes` query parameter on 6 operations selects which fields come
+    back (sparse fieldsets), notably on the people and custom-object reads.
+  ignoreAnonymous: filters anonymous people out of people/segment reads
+  includeArchived: includes archived people
+error_envelope:
+  shape: |
+    {
+      "error": {
+        "message": "Missing email content. Please pass `template`, `html` or `text`",
+        "markdown": "<p>Missing email content...</p>",
+        "traceId": "9751fe70-0957-11eb-a6b8-3baf67de29f8"
+      }
+    }
+  fields:
+    message: human-readable error message
+    markdown: the same message rendered as HTML/markdown for display
+    traceId: per-request trace identifier — quote this to support
+    stack: >-
+      a server stack trace is returned on some 4xx responses (observed in the
+      published transactional-email docs) — an information-disclosure smell, not
+      a contract to rely on
+  format: custom (NOT RFC 9457 application/problem+json)
+  see_also: errors/encharge-problem-types.yml
+request_tracing:
+  correlation_id: traceId (response body, inside `error`)
+  request_id_header: none documented
+versioning:
+  scheme: uri-path
+  current: v1
+  base_urls:
+    - https://api.encharge.io/v1
+    - https://ingest.encharge.io/v1
+  see_also: lifecycle/encharge-lifecycle.yml
+rate_limiting:
+  published_limits: false
+  headers: none documented
+  see_also: rate-limits/encharge-rate-limits.yml
+content_type:
+  request: application/json
+  response: application/json
+  note: >-
+    The Ingest API requires Content-Type application/json and accepts the write
+    key in the URL path (https://ingest.encharge.io/v1/{write-key}) as a CORS
+    workaround — a credential-in-URL pattern Encharge documents explicitly.
+data_conventions:
+  dates: ISO 8601 datetime (e.g. 2020-10-27T07:58:19Z) on ingest properties
+  tags: comma-separated string in the `tags` property on ingest/identify calls
+  identity: a person is keyed by `email` or `userId`; the Ingest API `alias`
+    event re-keys either one

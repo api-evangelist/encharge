@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Encharge REST Account Transactional Email API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Encharge-Token",
+      "value": "{{X-Encharge-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactional Email",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send transactional email",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.encharge.io/v1/emails/send",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a transactional email via template or custom HTML/text. Pass the API key as the `token` query parameter or via the `X-Encharge-Token` header.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

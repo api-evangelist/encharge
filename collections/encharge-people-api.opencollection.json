@@ -1,0 +1,104 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Encharge REST Account People API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Encharge-Token",
+      "value": "{{X-Encharge-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "People",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List people",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.encharge.io/v1/people",
+            "params": [
+              {
+                "name": "email",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List people"
+        },
+        {
+          "info": {
+            "name": "Create or update person",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.encharge.io/v1/people",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or update person"
+        },
+        {
+          "info": {
+            "name": "Archive person",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.encharge.io/v1/people",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Archive person"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe a person",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.encharge.io/v1/people/unsubscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Unsubscribe a person"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,73 +1,118 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Encharge REST Account Tags API
-  description: 'Encharge is a behavior-based marketing automation platform built for SaaS companies. The REST API exposes the core resources used by integrations: people, fields, segments, tags, event subscriptions (webhooks), and account information. Authentication uses the X-Encharge-Token header. Also documented here: the Ingest API for backend event submission and the Transactional Email API for templated and custom HTML/text email.
-
-    '
   version: 1.0.0
+  title: Encharge Tags API
+  description: The Encharge.io API
+  license:
+    name: MIT
   contact:
-    name: Encharge Developer Documentation
-    url: https://docs.encharge.io/api-documentation
+    url: https://help.encharge.io
+    name: unknown
 servers:
 - url: https://api.encharge.io/v1
-  description: REST API and Transactional Email API
-- url: https://ingest.encharge.io/v1
-  description: Ingest API for backend event submission
-security:
-- tokenHeader: []
-- bearer: []
 tags:
 - name: Tags
 paths:
   /tags:
     post:
-      summary: Add tags to users
-      operationId: addTags
+      operationId: AddTag
+      responses:
+        '201':
+          description: Created
+      description: Add tag(s) to an existing user.
       tags:
       - Tags
+      security:
+      - oauth2:
+        - people:write
+      parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                tag:
-                  type: string
-                users:
-                  type: array
-                  items:
-                    type: object
-      responses:
-        '200':
-          description: Tags added
+              allOf:
+              - properties:
+                  tag:
+                    type: string
+                    description: 'Tag(s) to add.
+
+
+                      To add multiple tags, use a comma-separated list - "tag1,tag2"'
+                required:
+                - tag
+                type: object
+              - $ref: '#/components/schemas/EndUserIdentifiers'
     delete:
-      summary: Remove tags from users
-      operationId: removeTags
+      operationId: RemoveTag
+      responses:
+        '204':
+          description: Deleted
+      description: Remove tag(s) from existing user.
       tags:
       - Tags
+      security:
+      - oauth2:
+        - people:write
+      parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                tag:
-                  type: string
-                users:
-                  type: array
-                  items:
-                    type: object
-      responses:
-        '200':
-          description: Tags removed
+              allOf:
+              - properties:
+                  tag:
+                    type: string
+                    description: 'Tag(s) to remove.
+
+
+                      To remove multiple tags, use a comma-separated list - "tag1,tag2"'
+                required:
+                - tag
+                type: object
+              - $ref: '#/components/schemas/EndUserIdentifiers'
 components:
+  schemas:
+    EndUserIdentifiers:
+      properties:
+        id:
+          type: string
+          description: 'Encharge ID of the person. An UUID.
+
+
+            At least one of id/userId/email must be specified.'
+        userId:
+          type: string
+          description: 'UserID of the person.
+
+
+            At least one of id/userId/email must be specified.'
+        email:
+          type: string
+          description: 'Email of the person.
+
+
+            At least one of id/userId/email must be specified.'
+      additionalProperties: {}
+      type: object
   securitySchemes:
-    tokenHeader:
+    apiKeyHeader:
+      description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
       type: apiKey
       in: header
       name: X-Encharge-Token
-    bearer:
-      type: http
-      scheme: bearer
+    apiKeyQuery:
+      description: "You can use API key authentication if you are using the API for your Encharge account. \n\nIf you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: query
+      name: token
+    oauth2:
+      type: oauth2
+      description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for your OAuth credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+          tokenUrl: https://api.encharge.io/v1/oauth/token
+          refreshUrl: https://api.encharge.io/v1/oauth/token
+          scopes: {}

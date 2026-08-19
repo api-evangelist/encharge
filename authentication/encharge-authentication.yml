@@ -1,21 +1,114 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/encharge-openapi.yml
+generated: '2026-08-13'
+method: searched
+docs:
+  - https://docs.encharge.io/transactional-email-api/authentication
+  - https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
+  - https://app.encharge.io/account/info
+searched_notes:
+  api_key:
+    header: X-Encharge-Token
+    query_param: token
+    where_to_get: https://app.encharge.io/account/info
+    scope_of_use: >-
+      One account key authenticates all three Encharge APIs — the REST API, the
+      Transactional Email API (POST /v1/emails/send) and the Ingest API, where
+      the same value is called the "write key".
+    credential_in_url: >-
+      Documented CORS workaround for the Ingest API puts the write key in the
+      path: https://ingest.encharge.io/v1/{write-key}. Encharge publishes this
+      as supported; it leaks the credential into logs and referrers.
+  oauth2:
+    intended_for: apps built for other Encharge customers (partner integrations)
+    credential_issuance: manual — client id/secret requested through a form, not self-serve
+    scopes_reference: none published; the 8 live scopes were read out of operation-level security (see scopes/encharge-scopes.yml)
+  unauthenticated_operation:
+    - operation: GetAccountInfoByFormId
+      path: /accounts/form/{formId}
+      note: >-
+        The spec describes this as returning non-sensitive account information
+        by form id WITHOUT authentication.
+source: openapi/encharge-account-api-openapi.yml, openapi/encharge-broadcasts-api-openapi.yml,
+  openapi/encharge-customobjects-api-openapi.yml, openapi/encharge-customobjectsschema-api-openapi.yml,
+  openapi/encharge-emailtemplates-api-openapi.yml, openapi/encharge-folders-api-openapi.yml,
+  openapi/encharge-people-api-openapi.yml, openapi/encharge-personfields-api-openapi.yml, openapi/encharge-segments-api-openapi.yml,
+  openapi/encharge-settings-api-openapi.yml, openapi/encharge-tags-api-openapi.yml, openapi/encharge-tags-management-api-openapi.yml
+  ...
 summary:
   types:
   - apiKey
-  - http
+  - oauth2
   api_key_in:
   - header
+  - query
+  oauth2_flows:
+  - authorizationCode
 schemes:
-- name: tokenHeader
+- name: apiKeyHeader
   type: apiKey
   in: header
   parameter: X-Encharge-Token
+  description: "You can use API key authentication if you are using the API for your Encharge\
+    \ account. If you are building an app for others to use, please use the OAuth2 authentication\
+    \ below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations\
+    \ in the API specify oauth2 security, instead you can use an API key in the header or query\
+    \ string."
   sources:
-  - openapi/encharge-openapi.yml
-- name: bearer
-  type: http
-  scheme: bearer
+  - openapi/encharge-account-api-openapi.yml
+  - openapi/encharge-broadcasts-api-openapi.yml
+  - openapi/encharge-customobjects-api-openapi.yml
+  - openapi/encharge-customobjectsschema-api-openapi.yml
+  - openapi/encharge-emailtemplates-api-openapi.yml
+  - openapi/encharge-folders-api-openapi.yml
+  - openapi/encharge-people-api-openapi.yml
+  - openapi/encharge-personfields-api-openapi.yml
+  - openapi/encharge-segments-api-openapi.yml
+  - openapi/encharge-settings-api-openapi.yml
+  - openapi/encharge-tags-api-openapi.yml
+  - openapi/encharge-tags-management-api-openapi.yml
+  - openapi/encharge-webhooks-api-openapi.yml
+- name: apiKeyQuery
+  type: apiKey
+  in: query
+  parameter: token
+  description: "You can use API key authentication if you are using the API for your Encharge\
+    \ account. \n\nIf you are building an app for others to use, please use the OAuth2 authentication\
+    \ below. Find your API key from https://app.encharge.io/account/info \n\n While all operations\
+    \ in the API specify oauth2 security, instead you can use an API key in the header or query\
+    \ string."
   sources:
-  - openapi/encharge-openapi.yml
+  - openapi/encharge-account-api-openapi.yml
+  - openapi/encharge-broadcasts-api-openapi.yml
+  - openapi/encharge-customobjects-api-openapi.yml
+  - openapi/encharge-customobjectsschema-api-openapi.yml
+  - openapi/encharge-emailtemplates-api-openapi.yml
+  - openapi/encharge-folders-api-openapi.yml
+  - openapi/encharge-people-api-openapi.yml
+  - openapi/encharge-personfields-api-openapi.yml
+  - openapi/encharge-segments-api-openapi.yml
+  - openapi/encharge-settings-api-openapi.yml
+  - openapi/encharge-tags-api-openapi.yml
+  - openapi/encharge-tags-management-api-openapi.yml
+  - openapi/encharge-webhooks-api-openapi.yml
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+    tokenUrl: https://api.encharge.io/v1/oauth/token
+    scopes: 0
+  description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for\
+    \ your OAuth credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+  sources:
+  - openapi/encharge-account-api-openapi.yml
+  - openapi/encharge-broadcasts-api-openapi.yml
+  - openapi/encharge-customobjects-api-openapi.yml
+  - openapi/encharge-customobjectsschema-api-openapi.yml
+  - openapi/encharge-emailtemplates-api-openapi.yml
+  - openapi/encharge-folders-api-openapi.yml
+  - openapi/encharge-people-api-openapi.yml
+  - openapi/encharge-personfields-api-openapi.yml
+  - openapi/encharge-segments-api-openapi.yml
+  - openapi/encharge-settings-api-openapi.yml
+  - openapi/encharge-tags-api-openapi.yml
+  - openapi/encharge-tags-management-api-openapi.yml
+  - openapi/encharge-webhooks-api-openapi.yml

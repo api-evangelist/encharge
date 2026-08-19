@@ -1,0 +1,97 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  npm registry search + registry.npmjs.org metadata; PyPI, RubyGems checked;
+  https://docs.encharge.io/api-documentation
+summary:
+  official_client_sdks: 0
+  note: >-
+    Encharge publishes NO first-party API client SDK in any registry. The docs
+    point developers at the raw OpenAPI, a ReDoc/RapiDoc rendering of it, and two
+    public Postman collections instead of a client library. The npm packages
+    below that are first-party (published by slavivanov, Encharge's founder Slav
+    Ivanov) are internal platform utilities, not API clients — so no `SDKs`
+    pointer is emitted for this provider.
+packages:
+  - language: javascript
+    registry: npm
+    name: encharge-matchers
+    url: https://www.npmjs.com/package/encharge-matchers
+    install: npm install encharge-matchers
+    version: 1.0.6
+    published: '2023-05-09'
+    official: true
+    kind: internal-utility
+    repository: https://github.com/slavivanov/encharge-matchers
+    note: >-
+      "A set of matchers used throughout Encharge.io" — internal platform
+      library published by Encharge founder Slav Ivanov (npm user slavivanov).
+      Not an API client SDK.
+  - language: javascript
+    registry: npm
+    name: encharge-request
+    url: https://www.npmjs.com/package/encharge-request
+    install: npm install encharge-request
+    version: 2.0.11
+    published: '2020-12-16'
+    official: true
+    kind: internal-utility
+    repository: https://github.com/slavivanov/encharge-request
+    note: >-
+      Zapier-inspired fetch wrapper published by the Encharge founder. Internal
+      utility, not a client for the Encharge API.
+  - language: javascript
+    registry: npm
+    name: encharge-integration-schema
+    url: https://www.npmjs.com/package/encharge-integration-schema
+    install: npm install encharge-integration-schema
+    version: 1.0.2
+    published: '2020-01-06'
+    official: true
+    kind: internal-utility
+    note: >-
+      "Encharge integration schema tools", published by slavivanov. Last release
+      2020-01-06 — six years stale relative to the live API.
+  - language: javascript
+    registry: npm
+    name: encharge-mcp
+    url: https://www.npmjs.com/package/encharge-mcp
+    install: npx -y encharge-mcp
+    version: 1.0.0
+    published: '2026-03-23'
+    official: false
+    kind: mcp-server
+    repository: https://github.com/khach-m/encharge-mcp
+    note: >-
+      Third-party (community) MCP server for Encharge — NOT published by
+      Encharge. Encharge's own changelog (2026-06-02) says "The Encharge MCP is
+      in testing now", so no first-party MCP server exists yet.
+  - language: javascript
+    registry: npm
+    name: n8n-nodes-encharge
+    url: https://www.npmjs.com/package/n8n-nodes-encharge
+    install: npm install n8n-nodes-encharge
+    version: 1.0.4
+    published: '2024-05-23'
+    official: false
+    kind: workflow-node
+    repository: https://github.com/shanky1712/n8n-nodes-encharge
+  - language: javascript
+    registry: npm
+    name: '@pipedream/encharge'
+    url: https://www.npmjs.com/package/@pipedream/encharge
+    install: npm install @pipedream/encharge
+    version: 0.2.0
+    published: '2026-05-19'
+    official: false
+    kind: workflow-components
+    note: Pipedream-maintained Encharge components, not first-party.
+registries_checked:
+  - registry: npm
+    result: no first-party client SDK; internal + third-party packages recorded above
+  - registry: pypi
+    result: 404 — no `encharge` package
+  - registry: rubygems
+    result: 404 — no `encharge` gem
+  - registry: packagist
+    result: not searched — no PHP SDK referenced in the docs

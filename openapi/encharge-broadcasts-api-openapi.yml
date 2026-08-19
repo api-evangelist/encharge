@@ -1,0 +1,299 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Encharge Broadcasts API
+  description: The Encharge.io API
+  license:
+    name: MIT
+  contact:
+    url: https://help.encharge.io
+    name: unknown
+servers:
+- url: https://api.encharge.io/v1
+tags:
+- name: Broadcasts
+paths:
+  /broadcasts/{id}/send:
+    post:
+      operationId: SendBroadcast
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  item:
+                    $ref: '#/components/schemas/Broadcast'
+                required:
+                - item
+                type: object
+      description: 'Confirm that broadcast is ready for sending.
+
+        Note: If modified, a confirmed broadcast will need to be confirmed again.'
+      tags:
+      - Broadcasts
+      security:
+      - oauth2:
+        - broadcasts:write
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+components:
+  schemas:
+    MetricCachedData:
+      properties:
+        delivered:
+          type: number
+          format: double
+        click:
+          type: number
+          format: double
+        open:
+          type: number
+          format: double
+      required:
+      - delivered
+      - click
+      - open
+      type: object
+      additionalProperties: false
+    ABEmailTestVariant:
+      anyOf:
+      - $ref: '#/components/schemas/ABEmailTestVariantByEmail'
+      - $ref: '#/components/schemas/ABEmailTestVariantByEmailDetails'
+    ABTestConfig:
+      properties:
+        enabled:
+          type: boolean
+        variants:
+          items:
+            $ref: '#/components/schemas/ABEmailTestVariant'
+          type: array
+        pickWinner:
+          type: boolean
+        pickWinnerBy:
+          type: string
+          enum:
+          - open
+          - click
+        waitBeforeWinnerPeriod:
+          type: number
+          format: double
+        waitBeforeWinnerPeriodType:
+          type: string
+          enum:
+          - hours
+          - days
+        winner:
+          $ref: '#/components/schemas/ABEmailTestVariant'
+        distribution:
+          items:
+            type: number
+            format: double
+          type: array
+        winnerPickedAt:
+          type: string
+      required:
+      - enabled
+      - variants
+      - pickWinner
+      type: object
+      additionalProperties: false
+    ABEmailTestVariantByEmail:
+      properties:
+        emailId:
+          type: number
+          format: double
+        type:
+          type: string
+          enum:
+          - email
+        variantId:
+          type: string
+      required:
+      - type
+      type: object
+    ABEmailTestVariantByEmailDetails:
+      properties:
+        preheader:
+          type: string
+        fromName:
+          type: string
+        fromEmail:
+          type: string
+        subject:
+          type: string
+        type:
+          type: string
+          enum:
+          - emailDetails
+        variantId:
+          type: string
+      required:
+      - type
+      type: object
+    CachedMetric:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        data:
+          $ref: '#/components/schemas/MetricCachedData'
+        isStale:
+          type: boolean
+      type: object
+      additionalProperties: false
+    Broadcast:
+      properties:
+        id:
+          type: number
+          format: double
+          description: Broadcast Id.
+        name:
+          type: string
+          description: Broadcast name.
+        status:
+          type: string
+          enum:
+          - draft
+          - scheduled
+          - sending
+          - sent
+          - ab-testing
+          - ab-test-sending-winner
+          - canceled
+          - failed
+          description: Broadcast status
+        audience:
+          properties:
+            segmentId:
+              type: number
+              format: double
+            type:
+              type: string
+              enum:
+              - segment
+          required:
+          - segmentId
+          - type
+          type: object
+          description: Audience to send the broadcast to. Currently, the only supported audience is a segment.
+        emailId:
+          type: number
+          format: double
+          description: Id of the email associated with this broadcast.
+        time:
+          properties:
+            useContactsTimezones:
+              type: boolean
+          type: object
+          description: Whether to send the broadcast in the contacts' timezones.
+        sendAt:
+          type: string
+          format: date-time
+          description: 'Date and Time to begin sending the broadcast. Accepted format: ISO 8601 datetime.'
+        followUp:
+          properties:
+            newSubjectLine:
+              type: string
+            emailId:
+              type: number
+              format: double
+            time:
+              properties:
+                period:
+                  type: number
+                  format: double
+              required:
+              - period
+              type: object
+            audience:
+              type: string
+              enum:
+              - not-opened
+              - not-clicked
+          required:
+          - time
+          - audience
+          type: object
+          description: Not implemented.
+        abTest:
+          $ref: '#/components/schemas/ABTestConfig'
+          description: Config for the A/B Test associated with this broadcast.
+        createdAt:
+          type: string
+          description: Date the broadcast was created.
+        updatedAt:
+          type: string
+          description: Date the broadcast was last updated.
+        accountId:
+          type: number
+          format: double
+          description: Id of the account this broadcast belongs to.
+        createdBy:
+          type: number
+          format: double
+          description: Not implemented. User that created the broadcast
+        integrationId:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Internal. Id of the flow used to send this broadcast.
+        trackReplies:
+          type: boolean
+          description: 'Track replies to this broadcast. When on, the send step substitutes the
+
+            Reply-To with an Encharge address, forwards replies to the original sender,
+
+            and records reply email-events attributed to this broadcast. Default off.'
+        cachedMetric:
+          $ref: '#/components/schemas/CachedMetric'
+        sentEmailVersionId:
+          type: number
+          format: double
+          description: 'Internal. Id of the email_content_versions row captured when the broadcast started sending.
+
+            Records which email version recipients actually received, even if emails.data is mutated later.'
+        peopleEntered:
+          type: number
+          format: double
+          description: Internal. Number of people who entered this broadcast.
+        peopleExited:
+          type: number
+          format: double
+          description: Internal. Number of people who exited this broadcast.
+      required:
+      - id
+      - name
+      - status
+      - accountId
+      - peopleEntered
+      - peopleExited
+      type: object
+      additionalProperties: false
+  securitySchemes:
+    apiKeyHeader:
+      description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: header
+      name: X-Encharge-Token
+    apiKeyQuery:
+      description: "You can use API key authentication if you are using the API for your Encharge account. \n\nIf you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: query
+      name: token
+    oauth2:
+      type: oauth2
+      description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for your OAuth credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+          tokenUrl: https://api.encharge.io/v1/oauth/token
+          refreshUrl: https://api.encharge.io/v1/oauth/token
+          scopes: {}

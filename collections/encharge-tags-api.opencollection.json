@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Encharge REST Account Tags API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Encharge-Token",
+      "value": "{{X-Encharge-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add tags to users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.encharge.io/v1/tags",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add tags to users"
+        },
+        {
+          "info": {
+            "name": "Remove tags from users",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.encharge.io/v1/tags",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Remove tags from users"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

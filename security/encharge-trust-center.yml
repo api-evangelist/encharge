@@ -1,0 +1,34 @@
+generated: '2026-08-13'
+method: searched
+probe: true
+url: https://gdpr.encharge.io/
+title: Encharge (PXCH Holding I, LLC) Compliance Portal
+platform: ComplyDog-hosted GDPR compliance portal
+certifications: [GDPR]
+certifications_note: >-
+  GDPR is the only regime Encharge claims. No SOC 2, ISO 27001, PCI DSS, HIPAA
+  or FedRAMP attestation appears on any public Encharge page.
+sections:
+  - {name: Overview, path: /}
+  - {name: Compliance Checklist, path: '/#checklist'}
+  - {name: Subprocessors, path: '/#subprocessors'}
+  - {name: DPA, path: /dpa}
+  - {name: Security, path: /security}
+  - {name: Data Requests, path: /data_requests}
+  - {name: Data Breaches, path: /data_breaches}
+  - {name: FAQs, path: '/#faqs'}
+contact:
+  name: Slav Ivanov
+  role: Privacy and Security Contact
+  email: obfuscated on the portal (Cloudflare email protection)
+data_residency: AWS data center in Ireland hosts all application data
+legal_entity: PXCH Holding I, LLC
+related:
+  vulnerability_disclosure: https://encharge.io/responsible-disclosure/
+  privacy_policy: https://encharge.io/privacy-policy/
+  terms: https://encharge.io/terms-of-service/
+  cookies: https://encharge.io/cookies/
+evidence:
+  - source: https://gdpr.encharge.io/
+    status: 200
+    keywords: [gdpr, dpa, subprocessors, data breach, compliance portal, security]

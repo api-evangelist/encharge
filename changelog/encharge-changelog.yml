@@ -1,0 +1,75 @@
+generated: '2026-08-13'
+method: searched
+source: https://encharge.noorahq.com/changelog
+scheme: dated-release-notes
+platform: Noora (encharge.noorahq.com)
+current_version: null
+note: >-
+  Encharge publishes a dated, product-wide changelog on its Noora feedback
+  portal, linked from the encharge.io "Product Updates" nav item. It is a
+  product changelog, not an API changelog — API-affecting items appear inside
+  general monthly roundups rather than as versioned API release notes. An older
+  Headway changelog (https://headwayapp.co/encharge-changelog) is still online
+  but was abandoned after 2020-12-14; the Noora feed superseded it.
+entries:
+  - title: What was accomplished in May and June 2026
+    date: '2026-06-02'
+    labels: [Improvement, Bug Fix]
+    breaking: false
+    highlights:
+      - Multi-select fields fixed across forms and segment conditions
+      - >-
+        Signup/form hardening — rate limiting, disposable-email blocking,
+        fingerprinting; form notification emails now only send from verified
+        senders; new signups require email confirmation
+      - HubSpot dates now sync as real dates, with historical backfill
+      - Sending capacity scales up and back down faster under high volume
+      - 'Coming soon: "The Encharge MCP is in testing now"'
+  - title: What we have done in April 2026
+    date: '2026-05-04'
+    labels: [Improvement, Bug Fix]
+    breaking: false
+    highlights:
+      - Segment multi-select field fix; forms checkbox validation
+      - Salesforce sync activity and refresh-token fixes
+      - Improved bot detection on email clicks; caching and monitoring work
+      - Marketing consent field added to forms
+  - title: What we've been up to since the beginning of the year 2026
+    date: '2026-04-03'
+    labels: [Improvement, Bug Fix]
+    breaking: false
+    highlights:
+      - 'Exposed domain APIs (the /settings/email/domains operations)'
+      - Improved flow APIs to reduce payload size
+      - Email versioning fixes; email templates migrated to a new version
+      - Increased database capacity, new IP pool for sending
+      - Native forms — nested styles/pseudo-classes, default dropdown values
+      - Shopify connector app in development
+  - title: What we've been up to in 2025
+    date: '2025-11-20'
+    labels: [New Feature, Improvement]
+    breaking: false
+  - title: 'Snippets: Reusable blocks'
+    date: '2025-03-13'
+    labels: [New Feature]
+    breaking: false
+  - title: Add Facebook Ad leads to a flow
+    date: '2024-10-23'
+    labels: [New Feature]
+    breaking: false
+  - title: Google Sheets native integration
+    date: '2024-09-24'
+    labels: [New Feature]
+    breaking: false
+  - title: New and Improved Metrics
+    date: '2024-03-24'
+    labels: [New Feature, Improvement]
+    breaking: false
+  - title: Deliverability and Compliance Updates
+    date: '2024-02-08'
+    labels: [Improvement]
+    breaking: false
+superseded_sources:
+  - url: https://headwayapp.co/encharge-changelog
+    last_entry: '2020-12-14'
+    note: Legacy Headway changelog, no longer updated.

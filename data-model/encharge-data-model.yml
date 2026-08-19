@@ -1,0 +1,88 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/_original/encharge-openapi.yml (71 component schemas, 46 paths),
+  cross-checked against
+  https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
+summary:
+  entities: 10
+  root_entity: EndUser (person)
+  identity_keys: [id, email, userId]
+  note: >-
+    Encharge's model is a person graph: EndUser (person) is the root, described
+    by PersonFields, grouped by Tags and dynamic Segments, and — since custom
+    objects shipped — associated with arbitrary CustomObjects (companies,
+    invoices, …) whose shape is defined by a CustomObjectSchema.
+entities:
+  - name: EndUser
+    aka: [person, contact]
+    schema: '#/components/schemas/EndUser'
+    identity: {primary: id, natural_keys: [email, userId]}
+    fields: [id, email, userId, name, firstName, lastName]
+    extensible_by: PersonField (custom fields are added as person fields)
+    operations: [GetSpecificPeople, GetAllPeople, CreateUpdatePeople, ArchivePeople, UnsubscribePerson]
+  - name: PersonField
+    schema: '#/components/schemas/IPersonField'
+    fields: [name, title, type, format, displayType, readOnly, tooltip, icon, array, enum, enumNames, allowNewEnumValues, canMapFrom, firstClassField, createdBy]
+    operations: [GetFields, CreateFields, EditField, DeleteField]
+  - name: Tag
+    schema: '#/components/schemas/Tag'
+    fields: [tag, color, count, description, createdAt]
+    operations: [AddTag, RemoveTag, GetAccountTags, CreateAccountTags, GetTagCounts, UpdateAccountTag, DeleteAccountTag]
+  - name: Segment
+    schema: '#/components/schemas/Segment'
+    fields: [id, name, objectName, conditions, accountId, readOnly, autoSegment, color, templateId, version]
+    note: >-
+      A segment is a saved condition tree (SegmentCondition union of property,
+      tag, event, nested-segment, association and goal conditions) evaluated
+      dynamically — 25+ of the 71 schemas exist purely to type that tree.
+    operations: [GetSegments, CreateSegment, ModifySegment, GetPeopleInSegment]
+  - name: CustomObject
+    schema: '#/components/schemas/CustomObject'
+    identity: {primary: id, natural_key: externalId}
+    note: 'Free-form object instance; its shape is defined by CustomObjectSchema. Companies are a built-in custom object type.'
+    operations: [GetCustomObjects, CreateCustomObjects, CreateOrUpdateCustomObjects, GetCustomObjectById, GetCustomObjectByExternalId, UpdateCustomObject, DeleteCustomObject, SearchCustomObjects, GetCustomObjectsCount]
+  - name: CustomObjectSchema
+    schema: '#/components/schemas/CustomObjectSchema'
+    fields: [name, displayNameSingular, displayNamePlural, description, fields, secondaryFields, primaryField, searchableFields, associations]
+    operations: [GetCustomObjectsSchema, GetCustomObjectSchema, CreateCustomObjectSchema, UpdateCustomObjectSchema, DeleteCustomObjectSchema, CreateObjectFields, EditObjectField, DeleteObjectField]
+  - name: CustomObjectSchemaAssociation
+    schema: '#/components/schemas/CustomObjectSchemaAssociation'
+    fields: [id, type, name, fromObject, toObject]
+    operations: [DefineCustomObjectsAssociationSchema, RemoveCustomObjectsAssociationSchema, AssociateCustomObjects, AssociateObjectsByDefaultAssociation, RemoveCustomObjectsAssociation, GetObjectsByAssociation, GetAllAssociatedObjects]
+  - name: Broadcast
+    schema: '#/components/schemas/Broadcast'
+    fields: [id, name, status, audience, emailId, time, sendAt, followUp, abTest, cachedMetric, sentEmailVersionId, peopleEntered, peopleExited, accountId, createdBy, integrationId, trackReplies, createdAt, updatedAt]
+    operations: [SendBroadcast]
+  - name: EmailContent
+    aka: [email template]
+    versioned: true
+    version_schema: '#/components/schemas/EmailContentVersion'
+    operations: [CreateEmail, GetEmail, ModifyEmail, DeleteEmail, GetEmailVersions, GetEmailVersion, GetSelectedEmailVersion, UpdateLatestEmailVersion, RestoreEmailVersion]
+  - name: EmailDomain
+    schema: '#/components/schemas/EmailDomainResponse'
+    fields: [id, domain, status, dns, accountId, isSES, error, dnsRecordsExpiredAt, dnsRecordsExpiredCount]
+    operations: [GetDomains, GetDomain, CreateDomain, DeleteDomain, VerifyDomain]
+  - name: Folder
+    schema: '#/components/schemas/GenericFolderAPI'
+    fields: [id, name, type, folderType, root, expanded, childrenIds, autoFolderType, color, createdAt, updatedAt]
+    operations: [CreateFolder, EditFolder]
+relationships:
+  - {from: EndUser, to: PersonField, type: has_many, via: 'custom field values keyed by field name'}
+  - {from: EndUser, to: Tag, type: has_many, via: 'tag name (AddTag/RemoveTag)'}
+  - {from: Segment, to: EndUser, type: has_many, via: 'conditions (GetPeopleInSegment)'}
+  - {from: Segment, to: CustomObject, type: has_many, via: 'objectName + conditions (GetCustomObjectsInSegment)'}
+  - {from: Segment, to: Segment, type: has_many, via: 'SegmentNestedSegmentCondition (nested segments)'}
+  - {from: CustomObjectSchema, to: CustomObjectField, type: has_many, via: fields}
+  - {from: CustomObjectSchema, to: CustomObjectSchemaAssociation, type: has_many, via: associations}
+  - {from: CustomObject, to: CustomObject, type: has_many, via: 'associationId (AssociateCustomObjects)'}
+  - {from: CustomObject, to: EndUser, type: has_many, via: 'default association / ingest `group` event with email or userId'}
+  - {from: Broadcast, to: EmailContent, type: has_one, via: emailId}
+  - {from: Broadcast, to: Segment, type: has_one, via: audience}
+  - {from: EmailContent, to: EmailContentVersion, type: has_many, via: 'id + version'}
+  - {from: Folder, to: Folder, type: has_many, via: childrenIds}
+  - {from: EndUser, to: Account, type: belongs_to, via: accountId}
+id_conventions:
+  ids: numeric (type number/double in the spec), not prefixed strings
+  external_ids: 'CustomObject supports a customer-supplied externalId for upsert-by-key'
+  people: 'addressable by internal id, email, or your own userId'

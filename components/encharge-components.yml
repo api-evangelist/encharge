@@ -1,0 +1,40 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/javascript-event-tracking,
+  https://encharge.io/features/forms/, https://encharge.io/pricing
+summary:
+  families: 2
+  note: >-
+    Encharge ships no SDK-style embeddable component library. Its client-side
+    surface is a tracking snippet plus hosted/embeddable native forms — both
+    installed from the app UI rather than from a package registry.
+components:
+  - family: tracking
+    name: Encharge JS tracking snippet
+    global: EncTracking
+    distribution: script snippet, copied from https://app.encharge.io/settings/site-tracking
+    registry: null
+    version: null
+    version_note: >-
+      Unpinned — the snippet is installed from the app and floats to whatever
+      the CDN serves; there is no published version or registry package, so a
+      consumer cannot tell which build they are running.
+    docs: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/javascript-event-tracking
+    methods:
+      - {name: identify, description: 'Identify the current person and enrich their traits (email/userId, plus a comma-separated `tags` property)'}
+      - {name: track, description: Record an action the person took in your app}
+    behaviors:
+      - Pageviews are tracked automatically once installed.
+      - >-
+        A documented queue shim (`window.EncTracking = {queue:[], track, identify}`)
+        lets callers run before the snippet loads.
+  - family: forms
+    name: Encharge Native Forms
+    distribution: embed code generated in the Encharge app
+    docs: https://encharge.io/features/forms/
+    capabilities:
+      - Hosted and embedded form rendering with custom CSS (nested styles and pseudo-classes supported)
+      - Double opt-in (DOI) submissions and marketing-consent field
+      - 'Form submissions raise the `native-form-submitted-{formId}` webhook event'
+    related_events: asyncapi/encharge-webhooks.yml

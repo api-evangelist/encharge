@@ -1,0 +1,98 @@
+generated: '2026-08-13'
+method: searched
+source: https://encharge.io/pricing
+currency: USD
+billing_periods: [monthly, yearly]
+plan_count: 3
+trial: {length_days: 14, card_required: unknown, label: 14-day Free Trial}
+metering:
+  primary: subscribers (contacts stored)
+  secondary: monthly email sends, expressed as a multiple of the subscriber limit
+  overage: 'Email sending overages apply (rate not published on the pricing page)'
+plans:
+  - name: Growth
+    price: 99
+    price_yearly_monthly_equivalent: 79
+    currency: USD
+    period: month
+    entry_quota: {subscribers: 2000}
+    included:
+      monthly_email_sends: 10x subscriber limit
+      flows: unlimited
+      team_members: unlimited
+      support: live chat
+    features:
+      - Flow builder
+      - Advanced segmentation
+      - Behavior-based emails
+      - Webhooks
+      - 'Zapier, Stripe, Chargebee integrations'
+      - Free email verification
+    api_access:
+      rest_api: true
+      webhooks: true
+      transactional_email_api: false
+      event_based_segmentation: false
+      custom_objects: false
+      note: >-
+        The Transactional Email API, API events / event-based segmentation and
+        custom objects are NOT available on Growth — the developer surface is
+        effectively Premium-gated.
+    price_ladder_monthly: [99, 179, 249, 299, 349, 389, 449, 499, 550]
+    price_ladder_yearly: [79, 139, 199, 239, 279, 309, 359, 399, 439]
+    ladder_note: >-
+      Price rises with the subscriber tier selected on the pricing slider,
+      starting at 2,000 subscribers; the top listed rung is followed by custom
+      pricing.
+  - name: Premium
+    price: 159
+    price_yearly_monthly_equivalent: 129
+    currency: USD
+    period: month
+    entry_quota: {subscribers: 2000}
+    included:
+      monthly_email_sends: 12x subscriber limit
+      flows: unlimited
+      team_members: unlimited
+      support: live chat + Slack
+    features:
+      - Everything in Growth
+      - HubSpot integration
+      - Salesforce integration
+      - Segment.com integration
+      - WooCommerce integration
+      - Shopify integration
+      - Transactional emails
+      - API Events and Event-Based Segmentation
+      - Custom objects
+    api_access:
+      rest_api: true
+      webhooks: true
+      transactional_email_api: true
+      event_based_segmentation: true
+      custom_objects: true
+    price_ladder_monthly: [159, 269, 399, 489, 569, 649, 749, 809, 879]
+    price_ladder_yearly: [129, 219, 319, 389, 449, 519, 589, 649, 699]
+  - name: Enterprise
+    price: null
+    currency: USD
+    period: month
+    quota: {subscribers: 'over 50,000'}
+    contact_sales: true
+    included:
+      team_members: unlimited
+      support: live chat
+    features:
+      - Everything in Premium
+      - Dedicated account manager
+      - Free onboarding
+discounts:
+  yearly: 'Save 20% by paying yearly'
+notes:
+  - >-
+    Transactional Email API usage is included with the Premium plan — see
+    https://docs.encharge.io/transactional-email-api/overview/pricing — with no
+    separate per-message price published.
+  - >-
+    Sending to an email address not already in the account creates it as a
+    person, which consumes subscriber quota.

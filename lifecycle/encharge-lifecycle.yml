@@ -1,0 +1,58 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.encharge.io/api-documentation, https://encharge.io/pricing,
+  https://encharge.noorahq.com/changelog, probes of the advertised status pages
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://docs.encharge.io/api-documentation
+  spec_info_version: 1.0.0
+  note: >-
+    Both hosts are pinned at /v1 (https://api.encharge.io/v1,
+    https://ingest.encharge.io/v1). No version negotiation header, no dated
+    version train, and no published policy for how v2 would be introduced.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecated_operations: []
+  note: >-
+    No deprecation or sunset policy is published, and no operation in the
+    published OpenAPI carries `deprecated: true`. No `Deprecation` pointer is
+    emitted.
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No public SLA. The Activity Stream add-on doc states the customer-side
+    receiving endpoint must answer 2xx within 2 seconds, which is a requirement
+    ON the customer, not a commitment BY Encharge.
+status_page:
+  url: null
+  advertised: https://encharge.freshstatus.io
+  state: broken
+  evidence:
+    - url: https://encharge.freshstatus.io
+      status: 200
+      body: 'Error 404 - Page Not Found'
+      note: >-
+        Linked from the encharge.io footer/pricing page but the Freshstatus page
+        no longer exists — a soft-404 (HTTP 200 carrying a 404 body).
+    - url: https://status.encharge.io
+      status: 200
+      body: 'Instatus shell; embedded JSON says {"detail":"Status page not found"}'
+      note: Instatus subdomain resolves but no status page is configured.
+  note: >-
+    Encharge advertises a status page in two places and neither one serves one.
+    No `StatusPage` pointer is emitted — recording the advertisement as a
+    presence would be false credit.
+changelog:
+  url: https://encharge.noorahq.com/changelog
+  see_also: changelog/encharge-changelog.yml
+support:
+  help_center: https://help.encharge.io
+  email: support@encharge.io
+  channels: [live chat (all plans), Slack (Premium), email]
+roadmap:
+  url: https://encharge.noorahq.com/roadmap
+  feature_requests: https://encharge.noorahq.com/feature-requests

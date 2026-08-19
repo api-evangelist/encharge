@@ -1,0 +1,113 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Encharge Webhooks API
+  description: The Encharge.io API
+  license:
+    name: MIT
+  contact:
+    url: https://help.encharge.io
+    name: unknown
+servers:
+- url: https://api.encharge.io/v1
+tags:
+- name: Webhooks
+  x-displayName: Webhooks
+  description: "Subscribe to events happening in Encharge.\nCurrently supported events are:\n- `newUser`\n    - Triggers when an enduser (person) is created in Encharge.\n\n- `updatedUser`\n    - Triggers when an enduser (person) is updated in Encharge.\n\n- `unsubscribedUser`\n    - Triggers when an enduser (person) has unsubscribed from receiving emails in Encharge.\n\n- `added-tag-{tag}`\n    - Triggers when an enduser (person) is tagged.\n\n    For example, event named `added-tag-signed-up` will trigger when a person is tagged with a tag called \"signed-up\".\n\n- `removed-tag-{tag}`\n    - Triggers when an enduser (person) is untagged.\n\n    For example, event named `removed-tag-demo` will trigger when a person is removed with a tag called \"demo\". \n\n- `native-form-submitted-{formId}`\n    - Triggers when an Encharge native form is submitted.\n\n    For example, event named `native-form-submitted-123` will trigger when a native form with ID 123 is submitted.\n\n- `newObject-{objectType}`\n    - Triggers when an custom object or a company is created.\n\n    For example, event named `newObject-company` will trigger when a new company is created. \n  \n- `updatedObject-{objectType}`\n    - Triggers when an custom object or a company is updated.\n\n    For example, event named `updatedObject-invoice` will trigger when an invoice is updated.\n\n- `deletedObject-{objectType}`\n    - Triggers when an custom object or a company is deleted.\n\n    For example, event named `deletedObject-company` will trigger when a company is deleted.\n\n- `newAssociation-{associationId}`\n    - Triggers when a new association with a specific ID is created.\n\n    For example, event named `newAssociation-123` will trigger when a new association of ID 123 is created between objects.\n\n    \n__Webhook payload__\n\n`url` will be posted with the data of the person performing the event, as follows:\n```\n{\n  // endUserData is an array of people who performed the event.\n  // Only supplied for events related to a person, e.g. `newUser`, `updatedUser`, `unsubscribedUser`, `added-tag-{tag}`, `removed-tag-{tag}`, `native-form-submitted-{formId}`.\n  \"endUserData\": [\n    {\n      ... // See the Person Field Model for available properties.\n    }\n  ],\n  \"eventPayload\": {\n    ... // Any other data about the event. E.g. the tag applied to the user.\n  }\n}\n```\n"
+paths:
+  /event-subscriptions:
+    post:
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                properties:
+                  subscription:
+                    properties:
+                      id:
+                        type: number
+                        format: double
+                    required:
+                    - id
+                    type: object
+                required:
+                - subscription
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                eventType:
+                  type: string
+                  description: Event to trigger on
+                url:
+                  type: string
+                  description: URL to post the webhook to.
+                eventName:
+                  type:
+                  - string
+                  - 'null'
+                  default: null
+                handlerData: {}
+                service:
+                  type: string
+                operation:
+                  type: string
+              required:
+              - eventType
+              - url
+              - eventType
+              type: object
+      operationId: CreateWebhook
+      description: Subscribe to events happening in Encharge.
+      tags:
+      - Webhooks
+      security:
+      - oauth2:
+        - account:write
+      parameters: []
+  /event-subscriptions/{id}:
+    delete:
+      operationId: DeleteWebhook
+      responses:
+        '204':
+          description: Deleted
+      description: Delete an existing event subscription.
+      tags:
+      - Webhooks
+      security:
+      - oauth2:
+        - account:write
+      parameters:
+      - description: Id of the event subscription.
+        in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+components:
+  securitySchemes:
+    apiKeyHeader:
+      description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: header
+      name: X-Encharge-Token
+    apiKeyQuery:
+      description: "You can use API key authentication if you are using the API for your Encharge account. \n\nIf you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: query
+      name: token
+    oauth2:
+      type: oauth2
+      description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for your OAuth credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+          tokenUrl: https://api.encharge.io/v1/oauth/token
+          refreshUrl: https://api.encharge.io/v1/oauth/token
+          scopes: {}

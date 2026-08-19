@@ -1,0 +1,57 @@
+generated: '2026-08-13'
+method: probed
+source: live GET of /.well-known/* on every apis.yml + OpenAPI servers[] host
+summary:
+  documents_found: 0
+  note: >-
+    Encharge serves no /.well-known/ discovery surface. Every canonical path
+    404s on encharge.io, api.encharge.io and docs.encharge.io; ingest.encharge.io
+    answers 405 (POST-only endpoint). app.encharge.io is a single-page app whose
+    catch-all returns HTTP 200 with the same 7,829-byte HTML shell for EVERY
+    /.well-known/* path — that is an SPA fallback, not a document, and is
+    recorded as a miss. No WellKnown / SecurityTxt pointer is emitted.
+hosts:
+  - host: https://encharge.io
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+  - host: https://api.encharge.io
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+  - host: https://docs.encharge.io
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+  - host: https://ingest.encharge.io
+    documents:
+      - {path: /.well-known/security.txt, status: 405, note: endpoint accepts POST only}
+      - {path: /.well-known/agent-card.json, status: 405, note: endpoint accepts POST only}
+      - {path: /.well-known/agent.json, status: 405, note: endpoint accepts POST only}
+  - host: https://app.encharge.io
+    note: >-
+      SPA catch-all — every path below returned 200 with an identical 7,829-byte
+      HTML application shell. Treated as a MISS, not a hit.
+    documents:
+      - {path: /.well-known/security.txt, status: 200, content: html-spa-shell, hit: false}
+      - {path: /.well-known/openid-configuration, status: 200, content: html-spa-shell, hit: false}
+      - {path: /.well-known/oauth-authorization-server, status: 200, content: html-spa-shell, hit: false}
+      - {path: /.well-known/api-catalog, status: 200, content: html-spa-shell, hit: false}
+      - {path: /.well-known/ai-plugin.json, status: 200, content: html-spa-shell, hit: false}
+      - {path: /.well-known/agent-card.json, status: 200, content: html-spa-shell, hit: false}
+      - {path: /.well-known/agent.json, status: 200, content: html-spa-shell, hit: false}

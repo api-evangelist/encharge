@@ -1,0 +1,470 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Encharge Email Templates API
+  description: The Encharge.io API
+  license:
+    name: MIT
+  contact:
+    url: https://help.encharge.io
+    name: unknown
+servers:
+- url: https://api.encharge.io/v1
+tags:
+- name: EmailTemplates
+paths:
+  /emails/{id}:
+    get:
+      operationId: GetEmail
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  email: {}
+                required:
+                - email
+                type: object
+      description: Get email template
+      tags:
+      - EmailTemplates
+      security:
+      - oauth2:
+        - emails:read
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+    patch:
+      operationId: ModifyEmail
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  email:
+                    $ref: '#/components/schemas/EmailContent'
+                required:
+                - email
+                type: object
+      description: Modify email template
+      tags:
+      - EmailTemplates
+      security:
+      - oauth2:
+        - emails:write
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partial_IEmailContent_'
+    delete:
+      operationId: DeleteEmail
+      responses:
+        '204':
+          description: Deleted
+      description: Delete email template
+      tags:
+      - EmailTemplates
+      security:
+      - oauth2:
+        - emails:write
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+  /emails:
+    post:
+      operationId: CreateEmail
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  email:
+                    $ref: '#/components/schemas/EmailContent'
+                required:
+                - email
+                type: object
+      description: Create email template
+      tags:
+      - EmailTemplates
+      security:
+      - oauth2:
+        - emails:write
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailContentCreate'
+  /emails/{id}/versions:
+    get:
+      operationId: GetEmailVersions
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  versions:
+                    items:
+                      $ref: '#/components/schemas/EmailContentVersion'
+                    type: array
+                required:
+                - versions
+                type: object
+      description: Get version history for an email template
+      tags:
+      - EmailTemplates
+      security:
+      - oauth2:
+        - emails:read
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          format: double
+          type: number
+      - in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          format: double
+          type: number
+  /emails/{id}/versions/{version}:
+    get:
+      operationId: GetEmailVersion
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  version:
+                    $ref: '#/components/schemas/EmailContentVersion'
+                required:
+                - version
+                type: object
+      description: Get a specific version of an email template
+      tags:
+      - EmailTemplates
+      security:
+      - oauth2:
+        - emails:read
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+      - in: path
+        name: version
+        required: true
+        schema:
+          format: double
+          type: number
+  /emails/{id}/versions/selected:
+    get:
+      operationId: GetSelectedEmailVersion
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  version:
+                    $ref: '#/components/schemas/EmailContentVersion'
+                required:
+                - version
+                type: object
+      description: Get the currently selected version for an email template
+      tags:
+      - EmailTemplates
+      security:
+      - oauth2:
+        - emails:read
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+  /emails/{id}/versions/latest:
+    patch:
+      operationId: UpdateLatestEmailVersion
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  version:
+                    $ref: '#/components/schemas/EmailContentVersion'
+                  email:
+                    $ref: '#/components/schemas/EmailContent'
+                required:
+                - version
+                - email
+                type: object
+      description: Update the latest version of an email template
+      tags:
+      - EmailTemplates
+      security:
+      - oauth2:
+        - emails:write
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partial_IEmailContent_'
+  /emails/{id}/versions/{version}/restore:
+    post:
+      operationId: RestoreEmailVersion
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  newVersion:
+                    $ref: '#/components/schemas/EmailContentVersion'
+                  restoredFromVersion:
+                    type: number
+                    format: double
+                  email:
+                    $ref: '#/components/schemas/EmailContent'
+                required:
+                - newVersion
+                - restoredFromVersion
+                - email
+                type: object
+      description: Restore a specific version as the current email content
+      tags:
+      - EmailTemplates
+      security:
+      - oauth2:
+        - emails:write
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+      - in: path
+        name: version
+        required: true
+        schema:
+          format: double
+          type: number
+components:
+  schemas:
+    EmailContentCreate:
+      properties:
+        name:
+          type: string
+          description: Name of the email template
+        subject:
+          type: string
+          description: Subject of the email.
+        fromEmail:
+          type: string
+          description: From address to send the email from
+        fromName:
+          type: string
+          description: Name that most inboxes use to display instead of the From email address.
+        replyEmail:
+          type: string
+          description: Address that recipients will reply to by default.
+        replyName:
+          type: string
+          description: Name that most inboxes use to display instead of the Reply email address.
+        type:
+          type: string
+          enum:
+          - HTML
+          - text
+          description: Type of the email. HTML or plain-text. Currently only HTML is supported.
+        html:
+          type: string
+          description: HTML content of the email.
+        editor:
+          description: Internal representation of the email template to enable editing in the Encharge UI.
+        previewImage:
+          type: string
+          description: Thumbnail of the email contents
+        preheader:
+          type: string
+          description: The preheader is a summary text that follows a subject line when the email is viewed in an inbox.
+        cc:
+          type: string
+          description: CC recipients of this email. Please note that using CC in mass emails is not advised, as it will quickly flood the CCed inbox.
+        bcc:
+          type: string
+          description: BCC recipients of this email. Please note that using BCC in mass emails is not advised, as it will quickly flood the BCCed inbox.
+        communicationCategoryId:
+          type: number
+          format: double
+          description: The category of this email template
+        mergeTags:
+          items:
+            properties:
+              label:
+                type: string
+              value:
+                type: string
+            required:
+            - value
+            type: object
+          type: array
+          description: Custom merge tags for the email
+        isStandalone:
+          type: boolean
+          description: Whether this email template is standalone or part of a broadcast.
+        aiGenerated:
+          type: boolean
+          description: Whether this email template was generated by the AI assistant.
+      required:
+      - name
+      - subject
+      - fromEmail
+      type: object
+      additionalProperties: false
+    Partial_IEmailContent_:
+      properties:
+        id:
+          type: number
+          format: double
+        archived:
+          type: boolean
+        isStandalone:
+          type: boolean
+        accountId:
+          type: number
+          format: double
+        name:
+          type: string
+        subject:
+          type: string
+        fromEmail:
+          type: string
+        fromName:
+          type: string
+        replyName:
+          type: string
+        replyEmail:
+          type: string
+        type:
+          type: string
+          enum:
+          - HTML
+          - text
+        html:
+          type: string
+        editor: {}
+        previewImage:
+          type: string
+        preheader:
+          type: string
+        cc:
+          type: string
+        bcc:
+          type: string
+        canSpamCompliance:
+          type: string
+          enum:
+          - approved
+          - pending
+          - rejected
+          - manually_approved
+        communicationCategoryId:
+          type: number
+          format: double
+        mergeTags:
+          $ref: '#/components/schemas/EmailMergeTags'
+        aiGenerated:
+          type: boolean
+      type: object
+      description: Make all properties in T optional
+    EmailContent: {}
+    EmailContentVersion: {}
+    EmailMergeTag:
+      properties:
+        value:
+          type: string
+        label:
+          type: string
+      required:
+      - value
+      type: object
+      additionalProperties: false
+    EmailMergeTags:
+      items:
+        $ref: '#/components/schemas/EmailMergeTag'
+      type: array
+  securitySchemes:
+    apiKeyHeader:
+      description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: header
+      name: X-Encharge-Token
+    apiKeyQuery:
+      description: "You can use API key authentication if you are using the API for your Encharge account. \n\nIf you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: query
+      name: token
+    oauth2:
+      type: oauth2
+      description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for your OAuth credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+          tokenUrl: https://api.encharge.io/v1/oauth/token
+          refreshUrl: https://api.encharge.io/v1/oauth/token
+          scopes: {}

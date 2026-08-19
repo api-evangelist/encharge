@@ -1,0 +1,153 @@
+{
+  "item": [
+    {
+      "id": "e9ceaeed-e80a-4a3f-b12d-5dd7a0d7eb2e",
+      "name": "Transactional Email",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fb4be234-47d3-46a6-a398-ece6c1c69bc3",
+          "name": "Send transactional email",
+          "request": {
+            "name": "Send transactional email",
+            "description": {
+              "content": "Send a transactional email via template or custom HTML/text. Pass the API key as the `token` query parameter or via the `X-Encharge-Token` header.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "emails",
+                "send"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "token",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"templateId\": \"<string>\",\n  \"to\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"from\": \"<object>\",\n  \"subject\": \"<string>\",\n  \"html\": \"<string>\",\n  \"text\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "59c3eceb-f477-4eb2-83d7-d73af0edd67c",
+              "name": "Email queued",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "emails",
+                    "send"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Encharge-Token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"templateId\": \"<string>\",\n  \"to\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"from\": \"<object>\",\n  \"subject\": \"<string>\",\n  \"html\": \"<string>\",\n  \"text\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.encharge.io/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Encharge-Token"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "eb96ba12-8489-4593-bd9a-84c50d711dbd",
+    "name": "Encharge REST Account Transactional Email API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Encharge is a behavior-based marketing automation platform built for SaaS companies. The REST API exposes the core resources used by integrations: people, fields, segments, tags, event subscriptions (webhooks), and account information. Authentication uses the X-Encharge-Token header. Also documented here: the Ingest API for backend event submission and the Transactional Email API for templated and custom HTML/text email.\n\n\nContact Support:\n Name: Encharge Developer Documentation",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.encharge.io/api-documentation,
+  https://docs.encharge.io/transactional-email-api/technical-overview,
+  https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api,
+  openapi/_original/encharge-openapi.yml, https://docs.encharge.io/llms.txt
+limit_count: 0
+limits: []
+headers: []
+exhaustion_status: null
+note: >-
+  Encharge publishes NO API rate limits. The complete developer documentation
+  index (llms.txt lists 21 pages) contains no rate-limit, throttling or quota
+  page; the published OpenAPI declares no 429 response and no RateLimit/
+  X-RateLimit/Retry-After headers on any of its 69 operations; and the
+  Transactional Email API technical overview documents the error envelope but
+  no throttling contract. An integrator has no published runtime signal for
+  backing off. The only rate limiting Encharge mentions anywhere is
+  anti-bot/spam rate limiting on marketing signup forms (changelog 2026-06-02),
+  which is not an API limit. The commercial ceiling is a monthly send volume
+  (10x/12x the subscriber limit by plan) rather than a request rate — see
+  plans/encharge-plans-pricing.yml.
+evidence:
+  - {url: 'https://docs.encharge.io/llms.txt', status: 200, finding: no rate-limit page listed}
+  - {url: 'https://docs.encharge.io/transactional-email-api/technical-overview', status: 200, finding: error envelope documented, no limits}
+  - {url: 'https://docs.encharge.io/api-documentation', status: 200, finding: no limits}

@@ -1,0 +1,200 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Encharge Folders API
+  description: The Encharge.io API
+  license:
+    name: MIT
+  contact:
+    url: https://help.encharge.io
+    name: unknown
+servers:
+- url: https://api.encharge.io/v1
+tags:
+- name: Folders
+paths:
+  /folders:
+    post:
+      operationId: CreateFolder
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericFolderAPI'
+      description: Create a folder.
+      tags:
+      - Folders
+      security:
+      - oauth2: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenericFolderAPI'
+  /folders/{id}:
+    patch:
+      operationId: EditFolder
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  folder:
+                    $ref: '#/components/schemas/GenericFolderAPI'
+                required:
+                - folder
+                type: object
+      description: Edit a folder.
+      tags:
+      - Folders
+      security:
+      - oauth2: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/Partial_GenericFolderAPI_'
+              - $ref: '#/components/schemas/GenericFolderAPI'
+components:
+  schemas:
+    FolderType:
+      anyOf:
+      - $ref: '#/components/schemas/ObjectsSegmentFolderType'
+      - type: string
+        enum:
+        - segments
+        - emails
+        - flows
+        - personFields
+        - broadcasts
+        - tags
+        - forms
+        - eventManagement
+    ObjectsSegmentFolderType:
+      anyOf:
+      - $ref: '#/components/schemas/CommonObjectsSegmentFolderType'
+      - type: string
+    CommonObjectsSegmentFolderType:
+      type: string
+      enum:
+      - objects-company
+      - objects-person
+      - objects-invoice
+      - objects-contact
+      - objects-deal
+      - objects-product
+      - objects-opportunity
+      - objects-lead
+      - objects-account
+      - objects-case
+      - objects-task
+      - objects-event
+    Partial_GenericFolderAPI_:
+      properties:
+        type:
+          type: string
+          enum:
+          - folder
+        folderType:
+          $ref: '#/components/schemas/FolderType'
+        id:
+          type: string
+        root:
+          type: boolean
+        name:
+          type: string
+        expanded:
+          type: boolean
+        childrenIds:
+          items:
+            anyOf:
+            - type: string
+            - type: number
+              format: double
+          type: array
+        autoFolderType:
+          type: string
+          enum:
+          - favorites
+        color:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      type: object
+      description: Make all properties in T optional
+    GenericFolderAPI:
+      properties:
+        type:
+          type: string
+          enum:
+          - folder
+        folderType:
+          $ref: '#/components/schemas/FolderType'
+        id:
+          type: string
+        root:
+          type: boolean
+        name:
+          type: string
+        expanded:
+          type: boolean
+        childrenIds:
+          items:
+            anyOf:
+            - type: string
+            - type: number
+              format: double
+          type: array
+        autoFolderType:
+          type: string
+          enum:
+          - favorites
+        color:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+      - type
+      - folderType
+      - id
+      - name
+      type: object
+      additionalProperties: false
+  securitySchemes:
+    apiKeyHeader:
+      description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: header
+      name: X-Encharge-Token
+    apiKeyQuery:
+      description: "You can use API key authentication if you are using the API for your Encharge account. \n\nIf you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: query
+      name: token
+    oauth2:
+      type: oauth2
+      description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for your OAuth credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+          tokenUrl: https://api.encharge.io/v1/oauth/token
+          refreshUrl: https://api.encharge.io/v1/oauth/token
+          scopes: {}

@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Encharge REST Account Ingest API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Encharge-Token",
+      "value": "{{X-Encharge-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Ingest",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Ingest people or events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.encharge.io/v1/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Encharge Ingest API endpoint for sending people and events from your backend. Use the matching server URL (https://ingest.encharge.io/v1).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

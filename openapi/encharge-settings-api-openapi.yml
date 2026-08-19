@@ -1,0 +1,247 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Encharge Settings API
+  description: The Encharge.io API
+  license:
+    name: MIT
+  contact:
+    url: https://help.encharge.io
+    name: unknown
+servers:
+- url: https://api.encharge.io/v1
+tags:
+- name: Settings
+paths:
+  /settings/email/domains:
+    get:
+      operationId: GetDomains
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  domains:
+                    items:
+                      $ref: '#/components/schemas/EmailDomainResponse'
+                    type: array
+                required:
+                - domains
+                type: object
+      description: List all email domains for the account.
+      security:
+      - oauth2: []
+      parameters: []
+      tags:
+      - Settings
+    post:
+      operationId: CreateDomain
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                properties:
+                  domain:
+                    $ref: '#/components/schemas/EmailDomainResponse'
+                required:
+                - domain
+                type: object
+      description: 'Add an email domain for verification.
+
+        Starts the domain verification process; DNS records must be added to complete verification.'
+      security:
+      - oauth2:
+        - emailSettings:write
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailDomainCreateBody'
+      tags:
+      - Settings
+  /settings/email/domains/{id}:
+    get:
+      operationId: GetDomain
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  domain:
+                    $ref: '#/components/schemas/EmailDomainResponse'
+                required:
+                - domain
+                type: object
+      description: Get a single email domain by ID.
+      security:
+      - oauth2: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+      tags:
+      - Settings
+    delete:
+      operationId: DeleteDomain
+      responses:
+        '204':
+          description: No Content
+      description: Remove an email domain and its verification.
+      security:
+      - oauth2:
+        - emailSettings:write
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+      tags:
+      - Settings
+  /settings/email/domains/{id}/verify:
+    post:
+      operationId: VerifyDomain
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  domain:
+                    $ref: '#/components/schemas/EmailDomainResponse'
+                required:
+                - domain
+                type: object
+      description: 'Trigger verification check for an email domain.
+
+        Re-checks DNS records and updates verification status.'
+      security:
+      - oauth2:
+        - emailSettings:write
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: double
+          type: number
+      tags:
+      - Settings
+components:
+  schemas:
+    EmailDomainCreateBody:
+      description: Request body for adding an email domain for verification.
+      properties:
+        domain:
+          type: string
+          description: Domain name to verify (e.g. example.com)
+      required:
+      - domain
+      type: object
+      additionalProperties: false
+    EmailDomainResponse:
+      description: Email domain (verification status and DNS records).
+      properties:
+        id:
+          type: number
+          format: double
+        domain:
+          type: string
+        status:
+          type: string
+        dns:
+          items:
+            $ref: '#/components/schemas/EmailDomainDNSRecordResponse'
+          type: array
+        accountId:
+          type: number
+          format: double
+        isSES:
+          type: boolean
+        error:
+          type: string
+        hasRestrictiveSubdomainPolicy:
+          type: boolean
+        externalIds:
+          properties:
+            sendgridAccountName:
+              type: string
+            sendgridDomainAuthentication:
+              type: number
+              format: double
+          type: object
+        dnsRecordsExpiredAt:
+          type:
+          - string
+          - 'null'
+        dnsRecordsExpiredCount:
+          type: number
+          format: double
+        dontRecheckDNSRecords:
+          type: boolean
+      required:
+      - id
+      - domain
+      - status
+      - dns
+      - accountId
+      type: object
+      additionalProperties: false
+    EmailDomainDNSRecordResponse:
+      description: DNS record for domain verification.
+      properties:
+        type:
+          type: string
+          enum:
+          - CNAME
+          - TXT
+        host:
+          type: string
+        data:
+          type: string
+        valid:
+          type: boolean
+        reason:
+          type: string
+        optional:
+          type: boolean
+      required:
+      - type
+      - host
+      - data
+      - valid
+      type: object
+      additionalProperties: false
+  securitySchemes:
+    apiKeyHeader:
+      description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: header
+      name: X-Encharge-Token
+    apiKeyQuery:
+      description: "You can use API key authentication if you are using the API for your Encharge account. \n\nIf you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
+      type: apiKey
+      in: query
+      name: token
+    oauth2:
+      type: oauth2
+      description: "The Encharge API uses OAuth 2 with the authorization code flow. \n\nGet for your OAuth credentials (Client ID and Client Secret) by filling out [this form](https://research.typeform.com/to/I680YtLA)."
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.encharge.io/v1/oauth/authorize
+          tokenUrl: https://api.encharge.io/v1/oauth/token
+          refreshUrl: https://api.encharge.io/v1/oauth/token
+          scopes: {}
