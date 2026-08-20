@@ -34,6 +34,15 @@ tags:
   - Email Marketing
   - Marketing Automation
   - Transactional Email
+  - Software-as-a-Service
+  - Behavioral Email
+  - Customer Engagement
+  - Customer Data
+  - Webhook
+tags_raw:
+  - Email Marketing
+  - Marketing Automation
+  - Transactional Email
   - SaaS
   - Behavioral Email
   - Customer Engagement
@@ -57,6 +66,10 @@ apis:
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
+  - Marketing Automation
+  - Email Marketing
+  - Software-as-a-Service
+  tags_raw:
   - Marketing Automation
   - Email Marketing
   - SaaS
@@ -104,6 +117,10 @@ apis:
   humanURL: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
   baseURL: https://ingest.encharge.io/v1
   tags:
+  - Event
+  - Ingestion
+  - Customer Data
+  tags_raw:
   - Events
   - Ingestion
   - Customer Data
@@ -258,6 +275,9 @@ apis:
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
+  - Webhook
+  - Event
+  tags_raw:
   - Webhooks
   - Events
   properties:
