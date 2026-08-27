@@ -54,43 +54,12 @@ created: '2026-05-11'
 modified: '2026-08-13'
 specificationVersion: '0.23'
 apis:
-- aid: encharge:rest-api
-  name: Encharge REST API
-  description: >-
-    REST API (v1) for managing people, person fields, segments, tags, broadcasts,
-    email templates, sending domains, custom objects and event subscriptions in
-    Encharge. Encharge publishes an OpenAPI 3.0 definition covering 46 paths and
-    69 operations, rendered with ReDoc and RapiDoc. Authentication is an API key
-    in the X-Encharge-Token header or the token query parameter, with OAuth 2
-    authorization code available for partner apps.
-  humanURL: https://docs.encharge.io/api-documentation
-  baseURL: https://api.encharge.io/v1
-  tags:
-  - Marketing Automation
-  - Email Marketing
-  - Software-as-a-Service
-  tags_raw:
-  - Marketing Automation
-  - Email Marketing
-  - SaaS
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/encharge-openapi.yml
-  - type: Documentation
-    url: https://docs.encharge.io/api-documentation
-  - type: APIReference
-    url: https://app-encharge-resources.s3.amazonaws.com/redoc.html
-  - type: Overlay
-    url: overlays/encharge-openapi-overlay.yaml
-  - type: Postman
-    url: https://documenter.getpostman.com/view/460427/TVRj5o3E
 - aid: encharge:transactional-email-api
   name: Encharge Transactional Email API
   description: >-
-    REST API for sending transactional emails through Encharge. Accepts JSON at
-    POST /v1/emails/send with exactly one of template, html or text, returns 202
-    Accepted, and authenticates via the same account token used by the core REST
-    API. Included with the Premium plan. Documented in prose only — this endpoint
+    REST API for sending transactional emails through Encharge. Accepts JSON at POST /v1/emails/send with
+    exactly one of template, html or text, returns 202 Accepted, and authenticates via the same account
+    token used by the core REST API. Included with the Premium plan. Documented in prose only — this endpoint
     is not part of Encharge's published OpenAPI.
   humanURL: https://docs.encharge.io/transactional-email-api/overview
   baseURL: https://api.encharge.io/v1
@@ -109,11 +78,10 @@ apis:
 - aid: encharge:ingest-api
   name: Encharge Ingest API
   description: >-
-    Single-endpoint Ingest API for creating/updating people and submitting product
-    events into Encharge from an application backend. POSTs JSON to
-    https://ingest.encharge.io/v1/ with the account write key, and supports the
-    special alias (re-key a person) and group (create/update a custom object)
-    event types. Documented in prose only — no machine-readable definition.
+    Single-endpoint Ingest API for creating/updating people and submitting product events into Encharge
+    from an application backend. POSTs JSON to https://ingest.encharge.io/v1/ with the account write key,
+    and supports the special alias (re-key a person) and group (create/update a custom object) event types.
+    Documented in prose only — no machine-readable definition.
   humanURL: https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api
   baseURL: https://ingest.encharge.io/v1
   tags:
@@ -153,8 +121,8 @@ apis:
 - aid: encharge:encharge-customobjects-api
   name: Encharge Custom Objects API
   description: >-
-    The Custom Objects API from Encharge — 18 operation(s) for creating, reading,
-    searching and associating custom objects and companies.
+    The Custom Objects API from Encharge — 18 operation(s) for creating, reading, searching and associating
+    custom objects and companies.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
@@ -166,8 +134,8 @@ apis:
 - aid: encharge:encharge-customobjectsschema-api
   name: Encharge Custom Objects Schema API
   description: >-
-    The Custom Objects Schema API from Encharge — 10 operation(s) for defining
-    object types, their fields, and the associations between them.
+    The Custom Objects Schema API from Encharge — 10 operation(s) for defining object types, their fields,
+    and the associations between them.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
@@ -179,8 +147,7 @@ apis:
 - aid: encharge:encharge-emailtemplates-api
   name: Encharge Email Templates API
   description: >-
-    The Email Templates API from Encharge — 9 operation(s) for creating and
-    versioning email templates.
+    The Email Templates API from Encharge — 9 operation(s) for creating and versioning email templates.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
@@ -202,8 +169,8 @@ apis:
 - aid: encharge:encharge-people-api
   name: Encharge People API
   description: >-
-    The People API from Encharge — 5 operation(s) for creating, updating,
-    reading, unsubscribing and archiving people.
+    The People API from Encharge — 5 operation(s) for creating, updating, reading, unsubscribing and archiving
+    people.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
@@ -235,8 +202,7 @@ apis:
 - aid: encharge:encharge-settings-api
   name: Encharge Email Domain Settings API
   description: >-
-    The email settings API from Encharge — 5 operation(s) for adding and
-    verifying sending domains.
+    The email settings API from Encharge — 5 operation(s) for adding and verifying sending domains.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
@@ -258,8 +224,7 @@ apis:
 - aid: encharge:encharge-tags-management-api
   name: Encharge Tags Management API
   description: >-
-    The Tags Management API from Encharge — 5 operation(s) for the account tag
-    registry and tag counts.
+    The Tags Management API from Encharge — 5 operation(s) for the account tag registry and tag counts.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
@@ -270,8 +235,8 @@ apis:
 - aid: encharge:encharge-webhooks-api
   name: Encharge Webhooks API
   description: >-
-    The Webhooks API from Encharge — 2 operation(s) for creating and deleting
-    event subscriptions against Encharge's event catalog.
+    The Webhooks API from Encharge — 2 operation(s) for creating and deleting event subscriptions against
+    Encharge's event catalog.
   humanURL: https://docs.encharge.io/api-documentation
   baseURL: https://api.encharge.io/v1
   tags:
