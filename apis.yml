@@ -130,19 +130,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/encharge-broadcasts-api-openapi.yml
-- aid: encharge:encharge-customobjects-api
-  name: Encharge Custom Objects API
-  description: >-
-    The Custom Objects API from Encharge — 18 operation(s) for creating, reading, searching and associating
-    custom objects and companies.
-  humanURL: https://docs.encharge.io/api-documentation
-  baseURL: https://api.encharge.io/v1
-  tags:
-  - Custom Objects
-  - Customer Data
-  properties:
-  - type: OpenAPI
-    url: openapi/encharge-customobjects-api-openapi.yml
 - aid: encharge:encharge-customobjectsschema-api
   name: Encharge Custom Objects Schema API
   description: >-
@@ -156,18 +143,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/encharge-customobjectsschema-api-openapi.yml
-- aid: encharge:encharge-emailtemplates-api
-  name: Encharge Email Templates API
-  description: >-
-    The Email Templates API from Encharge — 9 operation(s) for creating and versioning email templates.
-  humanURL: https://docs.encharge.io/api-documentation
-  baseURL: https://api.encharge.io/v1
-  tags:
-  - Email
-  - Templates
-  properties:
-  - type: OpenAPI
-    url: openapi/encharge-emailtemplates-api-openapi.yml
 - aid: encharge:encharge-folders-api
   name: Encharge Folders API
   description: The Folders API from Encharge — 2 operation(s) for organizing assets into folders.
@@ -262,6 +237,26 @@ apis:
     url: openapi/encharge-webhooks-api-openapi.yml
   - type: Webhooks
     url: asyncapi/encharge-webhooks.yml
+- aid: encharge:encharge-custom-objects-api
+  name: Encharge Custom Objects API
+  description: The Custom Objects API from Encharge — 11 operation(s) for custom objects.
+  humanURL: https://docs.encharge.io/transactional-email-api/overview
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Custom Objects
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-custom-objects-api-openapi.yml
+- aid: encharge:encharge-email-templates-api
+  name: Encharge Email Templates API
+  description: The Email Templates API from Encharge — 7 operation(s) for email templates.
+  humanURL: https://docs.encharge.io/transactional-email-api/overview
+  baseURL: https://api.encharge.io/v1
+  tags:
+  - Email Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/encharge-email-templates-api-openapi.yml
 common:
   - type: OAuthScopes
     url: scopes/encharge-scopes.yml
