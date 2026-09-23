@@ -35,6 +35,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GenericFolderAPI'
+      summary: Create folder
+      x-summary-source: derived
   /folders/{id}:
     patch:
       operationId: EditFolder
@@ -69,40 +71,10 @@ paths:
               anyOf:
               - $ref: '#/components/schemas/Partial_GenericFolderAPI_'
               - $ref: '#/components/schemas/GenericFolderAPI'
+      summary: Edit folder
+      x-summary-source: derived
 components:
   schemas:
-    FolderType:
-      anyOf:
-      - $ref: '#/components/schemas/ObjectsSegmentFolderType'
-      - type: string
-        enum:
-        - segments
-        - emails
-        - flows
-        - personFields
-        - broadcasts
-        - tags
-        - forms
-        - eventManagement
-    ObjectsSegmentFolderType:
-      anyOf:
-      - $ref: '#/components/schemas/CommonObjectsSegmentFolderType'
-      - type: string
-    CommonObjectsSegmentFolderType:
-      type: string
-      enum:
-      - objects-company
-      - objects-person
-      - objects-invoice
-      - objects-contact
-      - objects-deal
-      - objects-product
-      - objects-opportunity
-      - objects-lead
-      - objects-account
-      - objects-case
-      - objects-task
-      - objects-event
     Partial_GenericFolderAPI_:
       properties:
         type:
@@ -138,6 +110,38 @@ components:
           type: string
       type: object
       description: Make all properties in T optional
+    FolderType:
+      anyOf:
+      - $ref: '#/components/schemas/ObjectsSegmentFolderType'
+      - type: string
+        enum:
+        - segments
+        - emails
+        - flows
+        - personFields
+        - broadcasts
+        - tags
+        - forms
+        - eventManagement
+    CommonObjectsSegmentFolderType:
+      type: string
+      enum:
+      - objects-company
+      - objects-person
+      - objects-invoice
+      - objects-contact
+      - objects-deal
+      - objects-product
+      - objects-opportunity
+      - objects-lead
+      - objects-account
+      - objects-case
+      - objects-task
+      - objects-event
+    ObjectsSegmentFolderType:
+      anyOf:
+      - $ref: '#/components/schemas/CommonObjectsSegmentFolderType'
+      - type: string
     GenericFolderAPI:
       properties:
         type:

@@ -36,6 +36,8 @@ paths:
       parameters: []
       tags:
       - Settings
+      summary: Get domains
+      x-summary-source: derived
     post:
       operationId: CreateDomain
       responses:
@@ -65,6 +67,8 @@ paths:
               $ref: '#/components/schemas/EmailDomainCreateBody'
       tags:
       - Settings
+      summary: Create domain
+      x-summary-source: derived
   /settings/email/domains/{id}:
     get:
       operationId: GetDomain
@@ -92,6 +96,8 @@ paths:
           type: number
       tags:
       - Settings
+      summary: Get domain
+      x-summary-source: derived
     delete:
       operationId: DeleteDomain
       responses:
@@ -110,6 +116,8 @@ paths:
           type: number
       tags:
       - Settings
+      summary: Delete domain
+      x-summary-source: derived
   /settings/email/domains/{id}/verify:
     post:
       operationId: VerifyDomain
@@ -140,18 +148,10 @@ paths:
           type: number
       tags:
       - Settings
+      summary: Verify domain
+      x-summary-source: derived
 components:
   schemas:
-    EmailDomainCreateBody:
-      description: Request body for adding an email domain for verification.
-      properties:
-        domain:
-          type: string
-          description: Domain name to verify (e.g. example.com)
-      required:
-      - domain
-      type: object
-      additionalProperties: false
     EmailDomainResponse:
       description: Email domain (verification status and DNS records).
       properties:
@@ -223,6 +223,16 @@ components:
       - host
       - data
       - valid
+      type: object
+      additionalProperties: false
+    EmailDomainCreateBody:
+      description: Request body for adding an email domain for verification.
+      properties:
+        domain:
+          type: string
+          description: Domain name to verify (e.g. example.com)
+      required:
+      - domain
       type: object
       additionalProperties: false
   securitySchemes:

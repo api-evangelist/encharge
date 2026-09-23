@@ -36,6 +36,8 @@ paths:
       security:
       - oauth2: []
       parameters: []
+      summary: Get fields
+      x-summary-source: derived
     post:
       operationId: CreateFields
       responses:
@@ -67,6 +69,8 @@ paths:
               items:
                 $ref: '#/components/schemas/IPersonField'
               type: array
+      summary: Create fields
+      x-summary-source: derived
   /fields/{fieldName}:
     patch:
       operationId: EditField
@@ -100,6 +104,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/IPersonField'
+      summary: Edit field
+      x-summary-source: derived
     delete:
       operationId: DeleteField
       responses:
@@ -117,8 +123,29 @@ paths:
         required: true
         schema:
           type: string
+      summary: Delete field
+      x-summary-source: derived
 components:
   schemas:
+    FieldDisplayType:
+      type: string
+      enum:
+      - text
+      - textarea
+      - date
+      - datetime
+      - number
+      - select
+      - multiselect
+      - checkbox
+      - radio
+      - email
+      - url
+      - phone
+      - integer
+      - decimal
+      - currency
+      - currencyCents
     PersonFieldFormat:
       type:
       - string
@@ -198,25 +225,6 @@ components:
       - integer
       - any
       description: Exclude from T those types that are assignable to U
-    FieldDisplayType:
-      type: string
-      enum:
-      - text
-      - textarea
-      - date
-      - datetime
-      - number
-      - select
-      - multiselect
-      - checkbox
-      - radio
-      - email
-      - url
-      - phone
-      - integer
-      - decimal
-      - currency
-      - currencyCents
     PersonField:
       properties:
         name:

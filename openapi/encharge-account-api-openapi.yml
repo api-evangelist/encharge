@@ -63,6 +63,8 @@ paths:
       security:
       - oauth2: []
       parameters: []
+      summary: Get info
+      x-summary-source: derived
   /accounts/form/{formId}:
     get:
       operationId: GetAccountInfoByFormId
@@ -103,6 +105,8 @@ paths:
         required: true
         schema:
           type: string
+      summary: Get account info by form id
+      x-summary-source: derived
 components:
   securitySchemes:
     apiKeyHeader:

@@ -25,9 +25,7 @@ paths:
         Archiving is the preferred method of removing users in Encharge.
 
 
-        Alternatively, you can delete a person and all their data for GDPR purposes.
-
-        '
+        Alternatively, you can delete a person and all their data for GDPR purposes.'
       tags:
       - People
       security:
@@ -41,6 +39,8 @@ paths:
         required: false
         schema:
           type: boolean
+      summary: Archive people
+      x-summary-source: derived
     get:
       operationId: GetSpecificPeople
       description: Retrive specific people in your account.
@@ -78,15 +78,15 @@ paths:
         required: false
         schema:
           type: boolean
+      summary: Get specific people
+      x-summary-source: derived
     post:
       operationId: CreateUpdatePeople
       summary: Create/Update People
       description: 'Create or update people in Encharge.
 
 
-        If the people exist (identified by id/userId/email/another ID), they will be updated. Otherwise, people will be created.
-
-        '
+        If the people exist (identified by id/userId/email/another ID), they will be updated. Otherwise, people will be created.'
       responses:
         '200':
           description: Ok
@@ -181,6 +181,8 @@ paths:
         required: false
         schema:
           type: boolean
+      summary: Get all people
+      x-summary-source: derived
   /people/unsubscribe:
     post:
       operationId: UnsubscribePerson
@@ -223,33 +225,7 @@ paths:
         schema:
           type: string
 components:
-  parameters:
-    PeopleQuery:
-      in: query
-      name: people
-      required: true
-      description: "People can be specified by any ID. \nFor example, for a person with an email `slav@encharge.io` use the following query: \n\n`?people[0][email]=slav@encharge.io`\n\nFor multiple people, pass multiple ids in the query like so:\n\n`?people[0][userId]=abc&people[1][userId]=xyz`. \n\nThis will specify people who have userId of `abc` and `xyz`.\n\nEmails, userIds and other IDs can used together in a single query.\n"
-      schema:
-        $ref: '#/components/schemas/EndUserIdentifiers'
   schemas:
-    EndUser:
-      type: object
-      description: This is the exposed EndUser class that proxies the unproxied one.
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        userId:
-          type: string
-        name:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-      additionalProperties:
-        description: See [Person Fields](#tag/PersonFields) for other available properties.
     EndUserIdentifiers:
       properties:
         id:
@@ -272,6 +248,32 @@ components:
             At least one of id/userId/email must be specified.'
       additionalProperties: {}
       type: object
+    EndUser:
+      type: object
+      description: This is the exposed EndUser class that proxies the unproxied one.
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      additionalProperties:
+        description: See [Person Fields](#tag/PersonFields) for other available properties.
+  parameters:
+    PeopleQuery:
+      in: query
+      name: people
+      required: true
+      description: "People can be specified by any ID. \nFor example, for a person with an email `slav@encharge.io` use the following query: \n\n`?people[0][email]=slav@encharge.io`\n\nFor multiple people, pass multiple ids in the query like so:\n\n`?people[0][userId]=abc&people[1][userId]=xyz`. \n\nThis will specify people who have userId of `abc` and `xyz`.\n\nEmails, userIds and other IDs can used together in a single query.\n"
+      schema:
+        $ref: '#/components/schemas/EndUserIdentifiers'
   securitySchemes:
     apiKeyHeader:
       description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."

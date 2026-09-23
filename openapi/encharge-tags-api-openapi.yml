@@ -43,6 +43,8 @@ paths:
                 - tag
                 type: object
               - $ref: '#/components/schemas/EndUserIdentifiers'
+      summary: Add tag
+      x-summary-source: derived
     delete:
       operationId: RemoveTag
       responses:
@@ -72,6 +74,8 @@ paths:
                 - tag
                 type: object
               - $ref: '#/components/schemas/EndUserIdentifiers'
+      summary: Remove tag
+      x-summary-source: derived
 components:
   schemas:
     EndUserIdentifiers:

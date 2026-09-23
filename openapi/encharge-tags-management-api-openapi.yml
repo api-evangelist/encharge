@@ -36,6 +36,8 @@ paths:
       security:
       - oauth2: []
       parameters: []
+      summary: Get account tags
+      x-summary-source: derived
     post:
       operationId: CreateAccountTags
       responses:
@@ -72,6 +74,8 @@ paths:
               required:
               - tags
               type: object
+      summary: Create account tags
+      x-summary-source: derived
   /tags-management/counts:
     get:
       operationId: GetTagCounts
@@ -104,6 +108,8 @@ paths:
       security:
       - oauth2: []
       parameters: []
+      summary: Get tag counts
+      x-summary-source: derived
   /tags-management/{tag}:
     patch:
       operationId: UpdateAccountTag
@@ -139,6 +145,8 @@ paths:
             schema:
               $ref: '#/components/schemas/Tag'
               description: Update existing tag
+      summary: Update account tag
+      x-summary-source: derived
     delete:
       operationId: DeleteAccountTag
       responses:
@@ -156,6 +164,8 @@ paths:
         required: true
         schema:
           type: string
+      summary: Delete account tag
+      x-summary-source: derived
 components:
   schemas:
     Tag:

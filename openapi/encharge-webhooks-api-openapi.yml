@@ -13,7 +13,7 @@ servers:
 tags:
 - name: Webhooks
   x-displayName: Webhooks
-  description: "Subscribe to events happening in Encharge.\nCurrently supported events are:\n- `newUser`\n    - Triggers when an enduser (person) is created in Encharge.\n\n- `updatedUser`\n    - Triggers when an enduser (person) is updated in Encharge.\n\n- `unsubscribedUser`\n    - Triggers when an enduser (person) has unsubscribed from receiving emails in Encharge.\n\n- `added-tag-{tag}`\n    - Triggers when an enduser (person) is tagged.\n\n    For example, event named `added-tag-signed-up` will trigger when a person is tagged with a tag called \"signed-up\".\n\n- `removed-tag-{tag}`\n    - Triggers when an enduser (person) is untagged.\n\n    For example, event named `removed-tag-demo` will trigger when a person is removed with a tag called \"demo\". \n\n- `native-form-submitted-{formId}`\n    - Triggers when an Encharge native form is submitted.\n\n    For example, event named `native-form-submitted-123` will trigger when a native form with ID 123 is submitted.\n\n- `newObject-{objectType}`\n    - Triggers when an custom object or a company is created.\n\n    For example, event named `newObject-company` will trigger when a new company is created. \n  \n- `updatedObject-{objectType}`\n    - Triggers when an custom object or a company is updated.\n\n    For example, event named `updatedObject-invoice` will trigger when an invoice is updated.\n\n- `deletedObject-{objectType}`\n    - Triggers when an custom object or a company is deleted.\n\n    For example, event named `deletedObject-company` will trigger when a company is deleted.\n\n- `newAssociation-{associationId}`\n    - Triggers when a new association with a specific ID is created.\n\n    For example, event named `newAssociation-123` will trigger when a new association of ID 123 is created between objects.\n\n    \n__Webhook payload__\n\n`url` will be posted with the data of the person performing the event, as follows:\n```\n{\n  // endUserData is an array of people who performed the event.\n  // Only supplied for events related to a person, e.g. `newUser`, `updatedUser`, `unsubscribedUser`, `added-tag-{tag}`, `removed-tag-{tag}`, `native-form-submitted-{formId}`.\n  \"endUserData\": [\n    {\n      ... // See the Person Field Model for available properties.\n    }\n  ],\n  \"eventPayload\": {\n    ... // Any other data about the event. E.g. the tag applied to the user.\n  }\n}\n```\n"
+  description: Subscribe to events happening in Encharge.
 paths:
   /event-subscriptions:
     post:
@@ -70,6 +70,8 @@ paths:
       - oauth2:
         - account:write
       parameters: []
+      summary: Create webhook
+      x-summary-source: derived
   /event-subscriptions/{id}:
     delete:
       operationId: DeleteWebhook
@@ -90,6 +92,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Delete webhook
+      x-summary-source: derived
 components:
   securitySchemes:
     apiKeyHeader:

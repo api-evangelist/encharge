@@ -37,6 +37,8 @@ paths:
       - oauth2:
         - people:read
       parameters: []
+      summary: Get segments
+      x-summary-source: derived
     post:
       operationId: CreateSegment
       responses:
@@ -64,6 +66,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/SegmentCreatable'
+      summary: Create segment
+      x-summary-source: derived
   /segments/{segmentId}/people:
     get:
       operationId: GetPeopleInSegment
@@ -137,6 +141,8 @@ paths:
         required: false
         schema:
           type: boolean
+      summary: Get people in segment
+      x-summary-source: derived
   /segments/{id}:
     patch:
       operationId: ModifySegment
@@ -171,62 +177,69 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Partial_ISegment_'
+      summary: Modify segment
+      x-summary-source: derived
 components:
   schemas:
-    ConditionNestedSegment:
+    ConditionDate:
       type: string
       enum:
-      - in
-      - not in
-    SegmentCondition:
-      allOf:
-      - anyOf:
-        - $ref: '#/components/schemas/SegmentEventCondition'
-        - $ref: '#/components/schemas/SegmentTagCondition'
-        - $ref: '#/components/schemas/SegmentPropertyCondition'
-        - $ref: '#/components/schemas/SegmentNestedSegmentCondition'
-        - $ref: '#/components/schemas/SegmentConditionGroup'
-        - $ref: '#/components/schemas/SegmentAssociationCondition'
-        - $ref: '#/components/schemas/SegmentGoalCondition'
-      - properties:
-          uuid:
-            type: string
-        type: object
-    ConditionGeneric:
-      type: string
-      enum:
-      - is
-      - is not
       - is empty
       - is not empty
       - is any
-      - is any of
-      - is not any of
-    SegmentEventRecencyCondition:
+      - after
+      - before
+      - true
+      - after period
+      - before period
+      - on period
+    SegmentEventCondition:
       properties:
         type:
           type: string
           enum:
-          - recencyCondition
-        value:
-          anyOf:
-          - type: number
-            format: double
-          - type: string
+          - event
         condition:
-          $ref: '#/components/schemas/ConditionDate'
+          $ref: '#/components/schemas/ConditionPerformed'
+        systemConditions:
+          $ref: '#/components/schemas/SegmentEventConditionGroup'
+          description: 'System conditions are conditions that added to the segment by the system.
+
+            They are not editable by the user.
+
+            For example, for email conditions we automatically add a condition that the event type is "email".'
+        propertiesConditions:
+          $ref: '#/components/schemas/SegmentEventConditionGroup'
+        frequencyCondition:
+          $ref: '#/components/schemas/SegmentEventFrequencyCondition'
+        recencyCondition:
+          $ref: '#/components/schemas/SegmentEventRecencyCondition'
       required:
       - type
-      - value
       - condition
+      - systemConditions
       type: object
       additionalProperties: false
-    ConditionAll:
-      anyOf:
-      - $ref: '#/components/schemas/ConditionGeneric'
-      - $ref: '#/components/schemas/ConditionText'
-      - $ref: '#/components/schemas/ConditionNumber'
-      - $ref: '#/components/schemas/ConditionDate'
+    SegmentCreatable:
+      $ref: '#/components/schemas/Partial_Omit_ISegment.id-or-accountId-or-version__'
+    EndUser:
+      type: object
+      description: This is the exposed EndUser class that proxies the unproxied one.
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      additionalProperties:
+        description: See [Person Fields](#tag/PersonFields) for other available properties.
     Partial_ISegment_:
       properties:
         version:
@@ -266,6 +279,100 @@ components:
           description: Name of the template this segment is based on
       type: object
       description: Make all properties in T optional
+    SegmentConditionGroup:
+      properties:
+        type:
+          type: string
+          enum:
+          - group
+        operator:
+          type: string
+          enum:
+          - and
+          - or
+        conditions:
+          items:
+            $ref: '#/components/schemas/SegmentCondition'
+          type: array
+      required:
+      - type
+      - operator
+      - conditions
+      type: object
+      additionalProperties: false
+    SegmentEventRecencyCondition:
+      properties:
+        type:
+          type: string
+          enum:
+          - recencyCondition
+        value:
+          anyOf:
+          - type: number
+            format: double
+          - type: string
+        condition:
+          $ref: '#/components/schemas/ConditionDate'
+      required:
+      - type
+      - value
+      - condition
+      type: object
+      additionalProperties: false
+    ConditionNumber:
+      type: string
+      enum:
+      - is
+      - is not
+      - is empty
+      - is not empty
+      - is any
+      - is any of
+      - is not any of
+      - is more than
+      - is less than
+      - at least
+    SegmentAssociationCondition:
+      properties:
+        type:
+          type: string
+          enum:
+          - association
+        condition:
+          $ref: '#/components/schemas/AssociationCondition'
+        value:
+          type: number
+          format: double
+        associationConditions:
+          $ref: '#/components/schemas/SegmentConditionGroup'
+      required:
+      - type
+      - condition
+      - value
+      type: object
+      additionalProperties: false
+    ConditionText:
+      type: string
+      enum:
+      - is
+      - is not
+      - is empty
+      - is not empty
+      - is any
+      - is any of
+      - is not any of
+      - starts with
+      - does not start with
+      - ends with
+      - does not end with
+      - contains
+      - does not contain
+    ConditionAll:
+      anyOf:
+      - $ref: '#/components/schemas/ConditionGeneric'
+      - $ref: '#/components/schemas/ConditionText'
+      - $ref: '#/components/schemas/ConditionNumber'
+      - $ref: '#/components/schemas/ConditionDate'
     Partial_Omit_ISegment.id-or-accountId-or-version__:
       properties:
         name:
@@ -291,62 +398,6 @@ components:
           description: Name of the template this segment is based on
       type: object
       description: Make all properties in T optional
-    ConditionDateAbsolute:
-      type: string
-      enum:
-      - is empty
-      - is not empty
-      - is any
-      - after
-      - before
-      - true
-    SegmentEventFrequencyCondition:
-      properties:
-        type:
-          type: string
-          enum:
-          - frequencyCondition
-        value:
-          type: number
-          format: double
-        condition:
-          $ref: '#/components/schemas/ConditionNumberOnly'
-      required:
-      - type
-      - value
-      - condition
-      type: object
-      additionalProperties: false
-    ConditionNumber:
-      type: string
-      enum:
-      - is
-      - is not
-      - is empty
-      - is not empty
-      - is any
-      - is any of
-      - is not any of
-      - is more than
-      - is less than
-      - at least
-    SegmentPropertyCondition:
-      properties:
-        type:
-          type: string
-          enum:
-          - field
-        field:
-          type: string
-        condition:
-          $ref: '#/components/schemas/ConditionAll'
-        value: {}
-      required:
-      - type
-      - field
-      - condition
-      type: object
-      additionalProperties: false
     SegmentEventProperty:
       properties:
         uuid:
@@ -365,7 +416,34 @@ components:
       - field
       - type
       type: object
-    ConditionText:
+    SegmentEventFrequencyCondition:
+      properties:
+        type:
+          type: string
+          enum:
+          - frequencyCondition
+        value:
+          type: number
+          format: double
+        condition:
+          $ref: '#/components/schemas/ConditionNumberOnly'
+      required:
+      - type
+      - value
+      - condition
+      type: object
+      additionalProperties: false
+    ConditionNestedSegment:
+      type: string
+      enum:
+      - in
+      - not in
+    ConditionPerformed:
+      type: string
+      enum:
+      - has
+      - has not
+    ConditionGeneric:
       type: string
       enum:
       - is
@@ -375,33 +453,15 @@ components:
       - is any
       - is any of
       - is not any of
-      - starts with
-      - does not start with
-      - ends with
-      - does not end with
-      - contains
-      - does not contain
-    SegmentConditionGroup:
-      properties:
-        type:
-          type: string
-          enum:
-          - group
-        operator:
-          type: string
-          enum:
-          - and
-          - or
-        conditions:
-          items:
-            $ref: '#/components/schemas/SegmentCondition'
-          type: array
-      required:
-      - type
-      - operator
-      - conditions
-      type: object
-      additionalProperties: false
+    ConditionDateAbsolute:
+      type: string
+      enum:
+      - is empty
+      - is not empty
+      - is any
+      - after
+      - before
+      - true
     Segment:
       properties:
         version:
@@ -451,31 +511,54 @@ components:
       - templateId
       type: object
       additionalProperties: false
+    ConditionNumberOnly:
+      type: string
+      enum:
+      - is more than
+      - is less than
+      - at least
     EventPropertyConditionAll:
       anyOf:
       - $ref: '#/components/schemas/ConditionGeneric'
       - $ref: '#/components/schemas/ConditionText'
       - $ref: '#/components/schemas/ConditionNumber'
       - $ref: '#/components/schemas/ConditionDateAbsolute'
-    SegmentAssociationCondition:
+    ConditionGoal:
+      type: string
+      enum:
+      - in
+      - not in
+    SegmentPropertyCondition:
       properties:
         type:
           type: string
           enum:
-          - association
+          - field
+        field:
+          type: string
         condition:
-          $ref: '#/components/schemas/AssociationCondition'
-        value:
-          type: number
-          format: double
-        associationConditions:
-          $ref: '#/components/schemas/SegmentConditionGroup'
+          $ref: '#/components/schemas/ConditionAll'
+        value: {}
       required:
       - type
+      - field
       - condition
-      - value
       type: object
       additionalProperties: false
+    SegmentCondition:
+      allOf:
+      - anyOf:
+        - $ref: '#/components/schemas/SegmentEventCondition'
+        - $ref: '#/components/schemas/SegmentTagCondition'
+        - $ref: '#/components/schemas/SegmentPropertyCondition'
+        - $ref: '#/components/schemas/SegmentNestedSegmentCondition'
+        - $ref: '#/components/schemas/SegmentConditionGroup'
+        - $ref: '#/components/schemas/SegmentAssociationCondition'
+        - $ref: '#/components/schemas/SegmentGoalCondition'
+      - properties:
+          uuid:
+            type: string
+        type: object
     AssociationCondition:
       properties:
         type:
@@ -527,38 +610,6 @@ components:
       - condition
       type: object
       additionalProperties: false
-    SegmentEventCondition:
-      properties:
-        type:
-          type: string
-          enum:
-          - event
-        condition:
-          $ref: '#/components/schemas/ConditionPerformed'
-        systemConditions:
-          $ref: '#/components/schemas/SegmentEventConditionGroup'
-          description: 'System conditions are conditions that added to the segment by the system.
-
-            They are not editable by the user.
-
-            For example, for email conditions we automatically add a condition that the event type is "email".'
-        propertiesConditions:
-          $ref: '#/components/schemas/SegmentEventConditionGroup'
-        frequencyCondition:
-          $ref: '#/components/schemas/SegmentEventFrequencyCondition'
-        recencyCondition:
-          $ref: '#/components/schemas/SegmentEventRecencyCondition'
-      required:
-      - type
-      - condition
-      - systemConditions
-      type: object
-      additionalProperties: false
-    ConditionGoal:
-      type: string
-      enum:
-      - in
-      - not in
     SegmentEventConditionGroup:
       properties:
         type:
@@ -586,13 +637,6 @@ components:
       - conditions
       type: object
       additionalProperties: false
-    ConditionPerformed:
-      type: string
-      enum:
-      - has
-      - has not
-    SegmentCreatable:
-      $ref: '#/components/schemas/Partial_Omit_ISegment.id-or-accountId-or-version__'
     SegmentTagCondition:
       properties:
         type:
@@ -608,42 +652,6 @@ components:
       - condition
       type: object
       additionalProperties: false
-    ConditionDate:
-      type: string
-      enum:
-      - is empty
-      - is not empty
-      - is any
-      - after
-      - before
-      - true
-      - after period
-      - before period
-      - on period
-    EndUser:
-      type: object
-      description: This is the exposed EndUser class that proxies the unproxied one.
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        userId:
-          type: string
-        name:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-      additionalProperties:
-        description: See [Person Fields](#tag/PersonFields) for other available properties.
-    ConditionNumberOnly:
-      type: string
-      enum:
-      - is more than
-      - is less than
-      - at least
   securitySchemes:
     apiKeyHeader:
       description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."

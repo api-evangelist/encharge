@@ -11,7 +11,7 @@ info:
 servers:
 - url: https://api.encharge.io/v1
 tags:
-- name: CustomObjects
+- name: Custom Objects
 paths:
   /objects/{objectName}:
     get:
@@ -32,7 +32,7 @@ paths:
                 type: object
       description: Get multiple custom objects/companies.
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2: []
       parameters:
@@ -73,6 +73,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Get custom objects
+      x-summary-source: derived
     post:
       operationId: CreateCustomObjects
       responses:
@@ -91,7 +93,7 @@ paths:
                 type: object
       description: Create new custom objects/companies.
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2: []
       parameters:
@@ -110,6 +112,8 @@ paths:
                 $ref: '#/components/schemas/ICustomObjectCreatable'
               type: array
               description: Objects to create.
+      summary: Create custom objects
+      x-summary-source: derived
     put:
       operationId: CreateOrUpdateCustomObjects
       responses:
@@ -129,7 +133,7 @@ paths:
                 type: object
       description: Create or Update (Upsert) a custom object/company.
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2: []
       parameters:
@@ -146,6 +150,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ICustomObjectCreatable'
               description: Objects to create.
+      summary: Create or update custom objects
+      x-summary-source: derived
   /objects/{objectName}/segments/{segmentId}:
     get:
       operationId: GetCustomObjectsInSegment
@@ -165,7 +171,7 @@ paths:
                 type: object
       description: Get custom objects/companies in a segment.
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2: []
       parameters:
@@ -212,6 +218,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Get custom objects in segment
+      x-summary-source: derived
   /objects/{objectName}/count:
     get:
       operationId: GetCustomObjectsCount
@@ -230,7 +238,7 @@ paths:
                 type: object
       description: Get custom objects/companies count.
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2: []
       parameters:
@@ -239,6 +247,8 @@ paths:
         required: true
         schema:
           type: string
+      summary: Get custom objects count
+      x-summary-source: derived
   /objects/{objectName}/segments/{segmentId}/count:
     get:
       operationId: GetCustomObjectsInSegmentCount
@@ -257,7 +267,7 @@ paths:
                 type: object
       description: Get count of custom objects/companies in a segment.
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2: []
       parameters:
@@ -272,6 +282,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Get custom objects in segment count
+      x-summary-source: derived
   /objects/{objectName}/search:
     get:
       operationId: SearchCustomObjects
@@ -288,7 +300,7 @@ paths:
                 type: object
       description: Search custom objects/companies by their searchable fields
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2: []
       parameters:
@@ -321,6 +333,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Search custom objects
+      x-summary-source: derived
   /objects/{objectName}/{id}:
     get:
       operationId: GetCustomObjectById
@@ -338,7 +352,7 @@ paths:
                 type: object
       description: Get custom object/company by id
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2: []
       parameters:
@@ -353,6 +367,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Get custom object by id
+      x-summary-source: derived
     patch:
       operationId: UpdateCustomObject
       responses:
@@ -369,7 +385,7 @@ paths:
                 type: object
       description: Update custom object/company.
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2:
         - account:write
@@ -397,6 +413,8 @@ paths:
                 additionalProperties: {}
                 type: object
               description: Custom object. Must have an id or externalId.
+      summary: Update custom object
+      x-summary-source: derived
     delete:
       operationId: DeleteCustomObject
       responses:
@@ -404,7 +422,7 @@ paths:
           description: Deleted
       description: Remove custom object/company by Id
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2:
         - account:write
@@ -420,6 +438,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Delete custom object
+      x-summary-source: derived
   /objects/{objectName}/externalId/{externalId}:
     get:
       operationId: GetCustomObjectByExternalId
@@ -437,7 +457,7 @@ paths:
                 type: object
       description: Get custom object/company by external ID
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2: []
       parameters:
@@ -451,6 +471,8 @@ paths:
         required: true
         schema:
           type: string
+      summary: Get custom object by external id
+      x-summary-source: derived
     patch:
       operationId: UpdateCustomObjectByExternalId
       responses:
@@ -467,7 +489,7 @@ paths:
                 type: object
       description: Update custom object/company by external ID
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2:
         - account:write
@@ -490,6 +512,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ICustomObjectCreatable'
               description: Custom object. Must have an id or externalId.
+      summary: Update custom object by external id
+      x-summary-source: derived
     delete:
       operationId: DeleteCustomObjectByExternalId
       responses:
@@ -497,7 +521,7 @@ paths:
           description: Deleted
       description: Remove custom object/company by external Id
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2:
         - account:write
@@ -512,6 +536,8 @@ paths:
         required: true
         schema:
           type: string
+      summary: Delete custom object by external id
+      x-summary-source: derived
   /objects/{objectName}/{id}/associations/{associationId}:
     get:
       operationId: GetObjectsByAssociation
@@ -530,7 +556,7 @@ paths:
                 type: object
       description: Get objects by association with given custom object
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2:
         - account:write
@@ -585,6 +611,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Get objects by association
+      x-summary-source: derived
   /objects/{objectName}/{id}/associations:
     get:
       operationId: GetAllAssociatedObjects
@@ -606,7 +634,7 @@ paths:
                 type: object
       description: Retrieve all objects associated in any way with a given custom object
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2:
         - account:write
@@ -626,6 +654,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Get all associated objects
+      x-summary-source: derived
   /objects/{objectName}/{id}/associations/default/{targetObjectName}/{targetId}:
     post:
       operationId: AssociateObjectsByDefaultAssociation
@@ -639,7 +669,7 @@ paths:
 
         you might use this endpoint to associate them without passing the association id.'
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2:
         - account:write
@@ -666,6 +696,8 @@ paths:
         name: targetId
         required: true
         schema: {}
+      summary: Associate objects by default association
+      x-summary-source: derived
   /objects/{objectName}/{id}/associations/{associationId}/{targetId}:
     post:
       operationId: AssociateCustomObjects
@@ -674,7 +706,7 @@ paths:
           description: Created
       description: Associate an object with another object
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2:
         - account:write
@@ -702,6 +734,8 @@ paths:
         name: targetId
         required: true
         schema: {}
+      summary: Associate custom objects
+      x-summary-source: derived
     delete:
       operationId: RemoveCustomObjectsAssociation
       responses:
@@ -709,7 +743,7 @@ paths:
           description: Deleted
       description: Remove association between objects
       tags:
-      - CustomObjects
+      - Custom Objects
       security:
       - oauth2:
         - account:write
@@ -737,12 +771,10 @@ paths:
         name: targetId
         required: true
         schema: {}
+      summary: Remove custom objects association
+      x-summary-source: derived
 components:
   schemas:
-    CustomObject:
-      description: 'This is the base unproxied enduser class.
-
-        It shouldn''t be used without a proxy as defined below.'
     ICustomObjectCreatable:
       properties:
         externalId:
@@ -752,6 +784,10 @@ components:
           format: double
       additionalProperties: {}
       type: object
+    CustomObject:
+      description: 'This is the base unproxied enduser class.
+
+        It shouldn''t be used without a proxy as defined below.'
   securitySchemes:
     apiKeyHeader:
       description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."

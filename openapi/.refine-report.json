@@ -1,7 +1,7 @@
 {
   "provider": "encharge",
   "sources": [
-    "encharge-openapi.yml"
+    "_original/encharge-openapi.yml"
   ],
   "outputs": [
     "encharge-account-api-openapi.yml",
@@ -19,11 +19,12 @@
     "encharge-webhooks-api-openapi.yml"
   ],
   "archived": [
-    "archived openapi/encharge-openapi.yml"
+    "deleted 2 superseded output(s) from the previous generation"
   ],
   "errors": [],
   "warnings": [],
   "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "encharge-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "encharge-openapi.yml: tagged paths GET /settings/email/domains -> Settings",
     "encharge-openapi.yml: tagged paths POST /settings/email/domains -> Settings",
@@ -38,7 +39,23 @@
     "encharge-openapi.yml: declared missing tag: PersonFields",
     "encharge-openapi.yml: declared missing tag: Segments",
     "encharge-openapi.yml: declared missing tag: Settings",
-    "encharge-openapi.yml: declared missing tag: Tags-Management"
+    "encharge-openapi.yml: declared missing tag: Tags-Management",
+    "superseded outputs removed: encharge-custom-objects-api-openapi.yml, encharge-email-templates-api-openapi.yml",
+    "apis.yml register: written (+2 apis, 15 total)"
   ],
-  "skipped": []
+  "skipped": [
+    "encharge-account-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-broadcasts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-custom-objects-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-customobjectsschema-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-email-templates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-folders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-people-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-personfields-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-segments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-settings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-tags-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-tags-management-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "encharge-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

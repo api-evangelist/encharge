@@ -11,7 +11,7 @@ info:
 servers:
 - url: https://api.encharge.io/v1
 tags:
-- name: EmailTemplates
+- name: Email Templates
 paths:
   /emails/{id}:
     get:
@@ -29,7 +29,7 @@ paths:
                 type: object
       description: Get email template
       tags:
-      - EmailTemplates
+      - Email Templates
       security:
       - oauth2:
         - emails:read
@@ -40,6 +40,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Get email
+      x-summary-source: derived
     patch:
       operationId: ModifyEmail
       responses:
@@ -56,7 +58,7 @@ paths:
                 type: object
       description: Modify email template
       tags:
-      - EmailTemplates
+      - Email Templates
       security:
       - oauth2:
         - emails:write
@@ -73,6 +75,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Partial_IEmailContent_'
+      summary: Modify email
+      x-summary-source: derived
     delete:
       operationId: DeleteEmail
       responses:
@@ -80,7 +84,7 @@ paths:
           description: Deleted
       description: Delete email template
       tags:
-      - EmailTemplates
+      - Email Templates
       security:
       - oauth2:
         - emails:write
@@ -91,6 +95,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Delete email
+      x-summary-source: derived
   /emails:
     post:
       operationId: CreateEmail
@@ -108,7 +114,7 @@ paths:
                 type: object
       description: Create email template
       tags:
-      - EmailTemplates
+      - Email Templates
       security:
       - oauth2:
         - emails:write
@@ -119,6 +125,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EmailContentCreate'
+      summary: Create email
+      x-summary-source: derived
   /emails/{id}/versions:
     get:
       operationId: GetEmailVersions
@@ -138,7 +146,7 @@ paths:
                 type: object
       description: Get version history for an email template
       tags:
-      - EmailTemplates
+      - Email Templates
       security:
       - oauth2:
         - emails:read
@@ -163,6 +171,8 @@ paths:
           default: 0
           format: double
           type: number
+      summary: Get email versions
+      x-summary-source: derived
   /emails/{id}/versions/{version}:
     get:
       operationId: GetEmailVersion
@@ -180,7 +190,7 @@ paths:
                 type: object
       description: Get a specific version of an email template
       tags:
-      - EmailTemplates
+      - Email Templates
       security:
       - oauth2:
         - emails:read
@@ -197,6 +207,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Get email version
+      x-summary-source: derived
   /emails/{id}/versions/selected:
     get:
       operationId: GetSelectedEmailVersion
@@ -214,7 +226,7 @@ paths:
                 type: object
       description: Get the currently selected version for an email template
       tags:
-      - EmailTemplates
+      - Email Templates
       security:
       - oauth2:
         - emails:read
@@ -225,6 +237,8 @@ paths:
         schema:
           format: double
           type: number
+      summary: Get selected email version
+      x-summary-source: derived
   /emails/{id}/versions/latest:
     patch:
       operationId: UpdateLatestEmailVersion
@@ -245,7 +259,7 @@ paths:
                 type: object
       description: Update the latest version of an email template
       tags:
-      - EmailTemplates
+      - Email Templates
       security:
       - oauth2:
         - emails:write
@@ -262,6 +276,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Partial_IEmailContent_'
+      summary: Update latest email version
+      x-summary-source: derived
   /emails/{id}/versions/{version}/restore:
     post:
       operationId: RestoreEmailVersion
@@ -286,7 +302,7 @@ paths:
                 type: object
       description: Restore a specific version as the current email content
       tags:
-      - EmailTemplates
+      - Email Templates
       security:
       - oauth2:
         - emails:write
@@ -303,8 +319,21 @@ paths:
         schema:
           format: double
           type: number
+      summary: Restore email version
+      x-summary-source: derived
 components:
   schemas:
+    EmailMergeTag:
+      properties:
+        value:
+          type: string
+        label:
+          type: string
+      required:
+      - value
+      type: object
+      additionalProperties: false
+    EmailContentVersion: {}
     EmailContentCreate:
       properties:
         name:
@@ -376,6 +405,11 @@ components:
       - fromEmail
       type: object
       additionalProperties: false
+    EmailMergeTags:
+      items:
+        $ref: '#/components/schemas/EmailMergeTag'
+      type: array
+    EmailContent: {}
     Partial_IEmailContent_:
       properties:
         id:
@@ -432,22 +466,6 @@ components:
           type: boolean
       type: object
       description: Make all properties in T optional
-    EmailContent: {}
-    EmailContentVersion: {}
-    EmailMergeTag:
-      properties:
-        value:
-          type: string
-        label:
-          type: string
-      required:
-      - value
-      type: object
-      additionalProperties: false
-    EmailMergeTags:
-      items:
-        $ref: '#/components/schemas/EmailMergeTag'
-      type: array
   securitySchemes:
     apiKeyHeader:
       description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
