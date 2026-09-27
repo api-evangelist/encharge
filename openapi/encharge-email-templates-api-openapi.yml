@@ -323,6 +323,8 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    EmailContentVersion: {}
+    EmailContent: {}
     EmailMergeTag:
       properties:
         value:
@@ -333,7 +335,66 @@ components:
       - value
       type: object
       additionalProperties: false
-    EmailContentVersion: {}
+    EmailMergeTags:
+      items:
+        $ref: '#/components/schemas/EmailMergeTag'
+      type: array
+    Partial_IEmailContent_:
+      properties:
+        id:
+          type: number
+          format: double
+        archived:
+          type: boolean
+        isStandalone:
+          type: boolean
+        accountId:
+          type: number
+          format: double
+        name:
+          type: string
+        subject:
+          type: string
+        fromEmail:
+          type: string
+        fromName:
+          type: string
+        replyName:
+          type: string
+        replyEmail:
+          type: string
+        type:
+          type: string
+          enum:
+          - HTML
+          - text
+        html:
+          type: string
+        editor: {}
+        previewImage:
+          type: string
+        preheader:
+          type: string
+        cc:
+          type: string
+        bcc:
+          type: string
+        canSpamCompliance:
+          type: string
+          enum:
+          - approved
+          - pending
+          - rejected
+          - manually_approved
+        communicationCategoryId:
+          type: number
+          format: double
+        mergeTags:
+          $ref: '#/components/schemas/EmailMergeTags'
+        aiGenerated:
+          type: boolean
+      type: object
+      description: Make all properties in T optional
     EmailContentCreate:
       properties:
         name:
@@ -405,67 +466,6 @@ components:
       - fromEmail
       type: object
       additionalProperties: false
-    EmailMergeTags:
-      items:
-        $ref: '#/components/schemas/EmailMergeTag'
-      type: array
-    EmailContent: {}
-    Partial_IEmailContent_:
-      properties:
-        id:
-          type: number
-          format: double
-        archived:
-          type: boolean
-        isStandalone:
-          type: boolean
-        accountId:
-          type: number
-          format: double
-        name:
-          type: string
-        subject:
-          type: string
-        fromEmail:
-          type: string
-        fromName:
-          type: string
-        replyName:
-          type: string
-        replyEmail:
-          type: string
-        type:
-          type: string
-          enum:
-          - HTML
-          - text
-        html:
-          type: string
-        editor: {}
-        previewImage:
-          type: string
-        preheader:
-          type: string
-        cc:
-          type: string
-        bcc:
-          type: string
-        canSpamCompliance:
-          type: string
-          enum:
-          - approved
-          - pending
-          - rejected
-          - manually_approved
-        communicationCategoryId:
-          type: number
-          format: double
-        mergeTags:
-          $ref: '#/components/schemas/EmailMergeTags'
-        aiGenerated:
-          type: boolean
-      type: object
-      description: Make all properties in T optional
   securitySchemes:
     apiKeyHeader:
       description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."

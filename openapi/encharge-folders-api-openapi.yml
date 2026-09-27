@@ -110,38 +110,6 @@ components:
           type: string
       type: object
       description: Make all properties in T optional
-    FolderType:
-      anyOf:
-      - $ref: '#/components/schemas/ObjectsSegmentFolderType'
-      - type: string
-        enum:
-        - segments
-        - emails
-        - flows
-        - personFields
-        - broadcasts
-        - tags
-        - forms
-        - eventManagement
-    CommonObjectsSegmentFolderType:
-      type: string
-      enum:
-      - objects-company
-      - objects-person
-      - objects-invoice
-      - objects-contact
-      - objects-deal
-      - objects-product
-      - objects-opportunity
-      - objects-lead
-      - objects-account
-      - objects-case
-      - objects-task
-      - objects-event
-    ObjectsSegmentFolderType:
-      anyOf:
-      - $ref: '#/components/schemas/CommonObjectsSegmentFolderType'
-      - type: string
     GenericFolderAPI:
       properties:
         type:
@@ -182,6 +150,38 @@ components:
       - name
       type: object
       additionalProperties: false
+    CommonObjectsSegmentFolderType:
+      type: string
+      enum:
+      - objects-company
+      - objects-person
+      - objects-invoice
+      - objects-contact
+      - objects-deal
+      - objects-product
+      - objects-opportunity
+      - objects-lead
+      - objects-account
+      - objects-case
+      - objects-task
+      - objects-event
+    ObjectsSegmentFolderType:
+      anyOf:
+      - $ref: '#/components/schemas/CommonObjectsSegmentFolderType'
+      - type: string
+    FolderType:
+      anyOf:
+      - $ref: '#/components/schemas/ObjectsSegmentFolderType'
+      - type: string
+        enum:
+        - segments
+        - emails
+        - flows
+        - personFields
+        - broadcasts
+        - tags
+        - forms
+        - eventManagement
   securitySchemes:
     apiKeyHeader:
       description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."
