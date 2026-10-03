@@ -47,6 +47,20 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ABEmailTestVariantByEmail:
+      properties:
+        emailId:
+          type: number
+          format: double
+        type:
+          type: string
+          enum:
+          - email
+        variantId:
+          type: string
+      required:
+      - type
+      type: object
     MetricCachedData:
       properties:
         delivered:
@@ -64,39 +78,55 @@ components:
       - open
       type: object
       additionalProperties: false
-    ABEmailTestVariantByEmailDetails:
+    CachedMetric:
       properties:
-        preheader:
+        updatedAt:
           type: string
-        fromName:
-          type: string
-        fromEmail:
-          type: string
-        subject:
-          type: string
-        type:
+          format: date-time
+        data:
+          $ref: '#/components/schemas/MetricCachedData'
+        isStale:
+          type: boolean
+      type: object
+      additionalProperties: false
+    ABTestConfig:
+      properties:
+        enabled:
+          type: boolean
+        variants:
+          items:
+            $ref: '#/components/schemas/ABEmailTestVariant'
+          type: array
+        pickWinner:
+          type: boolean
+        pickWinnerBy:
           type: string
           enum:
-          - emailDetails
-        variantId:
-          type: string
-      required:
-      - type
-      type: object
-    ABEmailTestVariantByEmail:
-      properties:
-        emailId:
+          - open
+          - click
+        waitBeforeWinnerPeriod:
           type: number
           format: double
-        type:
+        waitBeforeWinnerPeriodType:
           type: string
           enum:
-          - email
-        variantId:
+          - hours
+          - days
+        winner:
+          $ref: '#/components/schemas/ABEmailTestVariant'
+        distribution:
+          items:
+            type: number
+            format: double
+          type: array
+        winnerPickedAt:
           type: string
       required:
-      - type
+      - enabled
+      - variants
+      - pickWinner
       type: object
+      additionalProperties: false
     Broadcast:
       properties:
         id:
@@ -226,59 +256,29 @@ components:
       - peopleExited
       type: object
       additionalProperties: false
+    ABEmailTestVariantByEmailDetails:
+      properties:
+        preheader:
+          type: string
+        fromName:
+          type: string
+        fromEmail:
+          type: string
+        subject:
+          type: string
+        type:
+          type: string
+          enum:
+          - emailDetails
+        variantId:
+          type: string
+      required:
+      - type
+      type: object
     ABEmailTestVariant:
       anyOf:
       - $ref: '#/components/schemas/ABEmailTestVariantByEmail'
       - $ref: '#/components/schemas/ABEmailTestVariantByEmailDetails'
-    ABTestConfig:
-      properties:
-        enabled:
-          type: boolean
-        variants:
-          items:
-            $ref: '#/components/schemas/ABEmailTestVariant'
-          type: array
-        pickWinner:
-          type: boolean
-        pickWinnerBy:
-          type: string
-          enum:
-          - open
-          - click
-        waitBeforeWinnerPeriod:
-          type: number
-          format: double
-        waitBeforeWinnerPeriodType:
-          type: string
-          enum:
-          - hours
-          - days
-        winner:
-          $ref: '#/components/schemas/ABEmailTestVariant'
-        distribution:
-          items:
-            type: number
-            format: double
-          type: array
-        winnerPickedAt:
-          type: string
-      required:
-      - enabled
-      - variants
-      - pickWinner
-      type: object
-      additionalProperties: false
-    CachedMetric:
-      properties:
-        updatedAt:
-          type: string
-          format: date-time
-        data:
-          $ref: '#/components/schemas/MetricCachedData'
-        isStale:
-          type: boolean
-      type: object
-      additionalProperties: false
   securitySchemes:
     apiKeyHeader:
       description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."

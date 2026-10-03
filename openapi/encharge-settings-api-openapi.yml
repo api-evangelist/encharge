@@ -152,6 +152,41 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    EmailDomainCreateBody:
+      description: Request body for adding an email domain for verification.
+      properties:
+        domain:
+          type: string
+          description: Domain name to verify (e.g. example.com)
+      required:
+      - domain
+      type: object
+      additionalProperties: false
+    EmailDomainDNSRecordResponse:
+      description: DNS record for domain verification.
+      properties:
+        type:
+          type: string
+          enum:
+          - CNAME
+          - TXT
+        host:
+          type: string
+        data:
+          type: string
+        valid:
+          type: boolean
+        reason:
+          type: string
+        optional:
+          type: boolean
+      required:
+      - type
+      - host
+      - data
+      - valid
+      type: object
+      additionalProperties: false
     EmailDomainResponse:
       description: Email domain (verification status and DNS records).
       properties:
@@ -198,41 +233,6 @@ components:
       - status
       - dns
       - accountId
-      type: object
-      additionalProperties: false
-    EmailDomainCreateBody:
-      description: Request body for adding an email domain for verification.
-      properties:
-        domain:
-          type: string
-          description: Domain name to verify (e.g. example.com)
-      required:
-      - domain
-      type: object
-      additionalProperties: false
-    EmailDomainDNSRecordResponse:
-      description: DNS record for domain verification.
-      properties:
-        type:
-          type: string
-          enum:
-          - CNAME
-          - TXT
-        host:
-          type: string
-        data:
-          type: string
-        valid:
-          type: boolean
-        reason:
-          type: string
-        optional:
-          type: boolean
-      required:
-      - type
-      - host
-      - data
-      - valid
       type: object
       additionalProperties: false
   securitySchemes:

@@ -323,78 +323,12 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    EmailContentVersion: {}
-    EmailContent: {}
-    EmailMergeTag:
-      properties:
-        value:
-          type: string
-        label:
-          type: string
-      required:
-      - value
-      type: object
-      additionalProperties: false
     EmailMergeTags:
       items:
         $ref: '#/components/schemas/EmailMergeTag'
       type: array
-    Partial_IEmailContent_:
-      properties:
-        id:
-          type: number
-          format: double
-        archived:
-          type: boolean
-        isStandalone:
-          type: boolean
-        accountId:
-          type: number
-          format: double
-        name:
-          type: string
-        subject:
-          type: string
-        fromEmail:
-          type: string
-        fromName:
-          type: string
-        replyName:
-          type: string
-        replyEmail:
-          type: string
-        type:
-          type: string
-          enum:
-          - HTML
-          - text
-        html:
-          type: string
-        editor: {}
-        previewImage:
-          type: string
-        preheader:
-          type: string
-        cc:
-          type: string
-        bcc:
-          type: string
-        canSpamCompliance:
-          type: string
-          enum:
-          - approved
-          - pending
-          - rejected
-          - manually_approved
-        communicationCategoryId:
-          type: number
-          format: double
-        mergeTags:
-          $ref: '#/components/schemas/EmailMergeTags'
-        aiGenerated:
-          type: boolean
-      type: object
-      description: Make all properties in T optional
+    EmailContent: {}
+    EmailContentVersion: {}
     EmailContentCreate:
       properties:
         name:
@@ -464,6 +398,72 @@ components:
       - name
       - subject
       - fromEmail
+      type: object
+      additionalProperties: false
+    Partial_IEmailContent_:
+      properties:
+        id:
+          type: number
+          format: double
+        archived:
+          type: boolean
+        isStandalone:
+          type: boolean
+        accountId:
+          type: number
+          format: double
+        name:
+          type: string
+        subject:
+          type: string
+        fromEmail:
+          type: string
+        fromName:
+          type: string
+        replyName:
+          type: string
+        replyEmail:
+          type: string
+        type:
+          type: string
+          enum:
+          - HTML
+          - text
+        html:
+          type: string
+        editor: {}
+        previewImage:
+          type: string
+        preheader:
+          type: string
+        cc:
+          type: string
+        bcc:
+          type: string
+        canSpamCompliance:
+          type: string
+          enum:
+          - approved
+          - pending
+          - rejected
+          - manually_approved
+        communicationCategoryId:
+          type: number
+          format: double
+        mergeTags:
+          $ref: '#/components/schemas/EmailMergeTags'
+        aiGenerated:
+          type: boolean
+      type: object
+      description: Make all properties in T optional
+    EmailMergeTag:
+      properties:
+        value:
+          type: string
+        label:
+          type: string
+      required:
+      - value
       type: object
       additionalProperties: false
   securitySchemes:
