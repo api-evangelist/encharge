@@ -42,6 +42,9 @@ accessModel:
   generated: '2026-08-13'
   method: searched
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/encharge.png
+x-docs-platform: gitbook
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-10-03
 tags:
   - Email Marketing
   - Marketing Automation
@@ -261,6 +264,9 @@ apis:
   - type: OpenAPI
     url: openapi/encharge-email-templates-api-openapi.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/encharge-capability-edges.yml
+    name: Encharge Business Capability Map
   - type: OAuthScopes
     url: scopes/encharge-scopes.yml
   - type: AgenticAccess
