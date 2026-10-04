@@ -226,6 +226,24 @@ paths:
           type: string
 components:
   schemas:
+    EndUser:
+      type: object
+      description: This is the exposed EndUser class that proxies the unproxied one.
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      additionalProperties:
+        description: See [Person Fields](#tag/PersonFields) for other available properties.
     EndUserIdentifiers:
       properties:
         id:
@@ -248,24 +266,6 @@ components:
             At least one of id/userId/email must be specified.'
       additionalProperties: {}
       type: object
-    EndUser:
-      type: object
-      description: This is the exposed EndUser class that proxies the unproxied one.
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        userId:
-          type: string
-        name:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-      additionalProperties:
-        description: See [Person Fields](#tag/PersonFields) for other available properties.
   parameters:
     PeopleQuery:
       in: query
