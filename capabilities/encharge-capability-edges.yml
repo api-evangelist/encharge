@@ -1,0 +1,56 @@
+slug: encharge
+provider: Encharge
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Segments
+  spec_file: encharge-segments-api-openapi.yml
+  capability_id: BC-420.20
+  capability_id_l1: BC-420
+  capability_name: Customer Segmentation Management
+  confidence: 0.85
+  evidence: 'POST /segments CreateSegment; GET /segments/{segmentId}/people Get people in segment; schemas:
+    SegmentCondition, SegmentPropertyCondition'
+  reason: Defines rule-based segments of people and resolves segment membership — directly customer segmentation
+    management.
+- tag: Broadcasts
+  spec_file: encharge-broadcasts-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.75
+  evidence: POST /broadcasts/{id}/send  SendBroadcast  Send broadcast; schemas ABTestConfig, ABEmailTestVariant
+  reason: Sending email marketing broadcasts with A/B variants in a marketing automation platform — digital
+    marketing / marketing automation execution.
+- tag: People
+  spec_file: encharge-people-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.74
+  evidence: 'POST /people CreateUpdatePeople Create/Update People; POST /people/unsubscribe UnsubscribePerson;
+    schemas: EndUser, EndUserIdentifiers'
+  reason: Creates, updates, archives and unsubscribes contact/person records with identifiers — maintenance
+    of the marketing contact master record, i.e. customer data management. Some chance it is better read
+    as marketing list management, hence moderate confidence.
+- tag: Email Templates
+  spec_file: encharge-email-templates-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.72
+  evidence: 'POST /emails CreateEmail Create email; schemas: EmailContent, EmailContentVersion, EmailMergeTags
+    — within a platform described as ''email marketing automation'''
+  reason: Operations are CRUD plus versioning of marketing email content/templates with merge tags, i.e.
+    authoring assets for email marketing automation. Maps to Marketing Management; sub-capability split
+    between digital/marketing-automation and content production, so moderate confidence on BC-400.60.
