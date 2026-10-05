@@ -1,0 +1,12 @@
+{
+ "url": "https://app-encharge-resources.s3.amazonaws.com/merged.yaml",
+ "requested_url": "https://app-encharge-resources.s3.amazonaws.com/merged.yaml",
+ "status": 200,
+ "content_type": "application/yaml",
+ "bytes": 83731,
+ "sha256": "3eb42d6ecc175c00b9d9acc02ac4fad2997382f13a48fa805b0fdac8540e58f5",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.972), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
