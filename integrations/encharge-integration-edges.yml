@@ -28,7 +28,25 @@ edges:
       - Track
   detected_by: sweep-cdp.py
   first_seen: '2026-10-14'
+- partner_name: Stripe (own)
+  partner: stripe
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.stripe.com/apps/encharge
+  mirror_of: stripe/integrations/stripe-integration-edges.yml
+  apps:
+  - Encharge
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  category: marketing
 method: searched
 checked:
 - https://www.twilio.com/docs/segment/connections/destinations/catalog/encharge-cloud-actions
+- stripe/integrations/stripe-integration-edges.yml
 source: https://www.twilio.com/docs/segment/connections/destinations/catalog/encharge-cloud-actions
