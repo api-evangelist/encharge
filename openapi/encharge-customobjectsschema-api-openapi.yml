@@ -315,137 +315,8 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CustomObjectSchema:
-      properties:
-        associations:
-          items:
-            $ref: '#/components/schemas/CustomObjectSchemaAssociation'
-          type: array
-        fields:
-          items:
-            $ref: '#/components/schemas/CustomObjectField'
-          type: array
-          description: The fields of the custom object
-        secondaryFields:
-          items:
-            type: string
-          type: array
-          description: Designate a list of secondary field used when displaying this object.
-        primaryField:
-          type: string
-          description: Designate a primary field used when displaying this object.
-        searchableFields:
-          items:
-            type: string
-          type: array
-          description: Fields that will be indexed for searching.
-        displayNamePlural:
-          type: string
-          description: The display name of multiple instances the custom object. E.g. "Invoices"
-        displayNameSingular:
-          type: string
-          description: The display name of one instance the custom object. E.g. "Invoice"
-        description:
-          type: string
-          description: Description of the custom object
-        name:
-          type: string
-          description: The name of the custom object
-      required:
-      - displayNamePlural
-      - displayNameSingular
-      - name
-      type: object
-    Exclude_JSONSchema6TypeName.object-or-array-or-null_:
-      type: string
-      enum:
-      - string
-      - number
-      - boolean
-      - integer
-      - any
-      description: Exclude from T those types that are assignable to U
-    Partial_Omit_CustomObjectSchema.fields-or-associations-or-name__:
-      properties:
-        description:
-          type: string
-          description: Description of the custom object
-        displayNameSingular:
-          type: string
-          description: The display name of one instance the custom object. E.g. "Invoice"
-        displayNamePlural:
-          type: string
-          description: The display name of multiple instances the custom object. E.g. "Invoices"
-        searchableFields:
-          items:
-            type: string
-          type: array
-          description: Fields that will be indexed for searching.
-        primaryField:
-          type: string
-          description: Designate a primary field used when displaying this object.
-        secondaryFields:
-          items:
-            type: string
-          type: array
-          description: Designate a list of secondary field used when displaying this object.
-      type: object
-      description: Make all properties in T optional
-    Pick_CustomObjectSchemaCreatable.Exclude_keyofCustomObjectSchemaCreatable.searchableFields__:
-      properties:
-        name:
-          type: string
-          description: The name of the custom object
-        description:
-          type: string
-          description: Description of the custom object
-        displayNameSingular:
-          type: string
-          description: The display name of one instance the custom object. E.g. "Invoice"
-        displayNamePlural:
-          type: string
-          description: The display name of multiple instances the custom object. E.g. "Invoices"
-        primaryField:
-          type: string
-          description: Designate a primary field used when displaying this object.
-        secondaryFields:
-          items:
-            type: string
-          type: array
-          description: Designate a list of secondary field used when displaying this object.
-      required:
-      - name
-      - displayNameSingular
-      - displayNamePlural
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    FieldDisplayType:
-      type: string
-      enum:
-      - text
-      - textarea
-      - date
-      - datetime
-      - number
-      - select
-      - multiselect
-      - checkbox
-      - radio
-      - email
-      - url
-      - phone
-      - integer
-      - decimal
-      - currency
-      - currencyCents
-    PersonFieldFormat:
-      type:
-      - string
-      - 'null'
-      enum:
-      - date
-      - date-time
-      description: Format of the field. Applies to String fields only. JSON schema compatible
+    CustomObjectSchemaUpdatable:
+      $ref: '#/components/schemas/Partial_Omit_CustomObjectSchema.fields-or-associations-or-name__'
     IPersonField:
       description: Represents a field (i.e. property) of a person in Encharge.
       properties:
@@ -508,6 +379,43 @@ components:
       - type
       type: object
       additionalProperties: false
+    PersonFieldFormat:
+      type:
+      - string
+      - 'null'
+      enum:
+      - date
+      - date-time
+      description: Format of the field. Applies to String fields only. JSON schema compatible
+    Omit_CustomObjectSchemaAssociation.id_:
+      $ref: '#/components/schemas/Pick_CustomObjectSchemaAssociation.Exclude_keyofCustomObjectSchemaAssociation.id__'
+      description: Construct a type with the properties of T except for those in type K.
+    Pick_CustomObjectSchemaAssociation.Exclude_keyofCustomObjectSchemaAssociation.id__:
+      properties:
+        name:
+          type: string
+          description: Optional name of the association. E.g. if defining a relation between a Person and a Company this can be "Employee", "Owner", "Manager", etc.
+        type:
+          type: string
+          enum:
+          - '1:1'
+          - 1:M
+          - M:M
+          description: Type of the association. 1 to 1, 1 to many, many to many
+        fromObject:
+          type: string
+          description: The name of the custom object that's a side to this association. Associations are automatically defined as two-way. I.e. there is no need to associate from -> to and to -> from.
+        toObject:
+          type: string
+          description: The name of the custom object that's the other side of this association. Associations are automatically defined as two-way. I.e. there is no need to associate from -> to and to -> from.
+      required:
+      - type
+      - fromObject
+      - toObject
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    CustomObjectFieldEdit:
+      $ref: '#/components/schemas/Partial_Pick_CustomObjectField.title-or-tooltip-or-displayType-or-icon-or-enumNames-or-enum-or-type-or-format__'
     Partial_Pick_CustomObjectField.title-or-tooltip-or-displayType-or-icon-or-enumNames-or-enum-or-type-or-format__:
       properties:
         title:
@@ -542,6 +450,38 @@ components:
           description: Format of the field. Applies to String fields only. JSON schema compatible
       type: object
       description: Make all properties in T optional
+    CustomObjectSchemaAssociationCreatable:
+      $ref: '#/components/schemas/Omit_CustomObjectSchemaAssociation.id_'
+    CustomObjectField:
+      $ref: '#/components/schemas/IPersonField'
+    Pick_CustomObjectSchemaCreatable.Exclude_keyofCustomObjectSchemaCreatable.searchableFields__:
+      properties:
+        name:
+          type: string
+          description: The name of the custom object
+        description:
+          type: string
+          description: Description of the custom object
+        displayNameSingular:
+          type: string
+          description: The display name of one instance the custom object. E.g. "Invoice"
+        displayNamePlural:
+          type: string
+          description: The display name of multiple instances the custom object. E.g. "Invoices"
+        primaryField:
+          type: string
+          description: Designate a primary field used when displaying this object.
+        secondaryFields:
+          items:
+            type: string
+          type: array
+          description: Designate a list of secondary field used when displaying this object.
+      required:
+      - name
+      - displayNameSingular
+      - displayNamePlural
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
     PersonField:
       properties:
         name:
@@ -610,6 +550,76 @@ components:
       - createdBy
       type: object
       additionalProperties: false
+    Partial_Omit_CustomObjectSchema.fields-or-associations-or-name__:
+      properties:
+        description:
+          type: string
+          description: Description of the custom object
+        displayNameSingular:
+          type: string
+          description: The display name of one instance the custom object. E.g. "Invoice"
+        displayNamePlural:
+          type: string
+          description: The display name of multiple instances the custom object. E.g. "Invoices"
+        searchableFields:
+          items:
+            type: string
+          type: array
+          description: Fields that will be indexed for searching.
+        primaryField:
+          type: string
+          description: Designate a primary field used when displaying this object.
+        secondaryFields:
+          items:
+            type: string
+          type: array
+          description: Designate a list of secondary field used when displaying this object.
+      type: object
+      description: Make all properties in T optional
+    CustomObjectSchema:
+      properties:
+        associations:
+          items:
+            $ref: '#/components/schemas/CustomObjectSchemaAssociation'
+          type: array
+        fields:
+          items:
+            $ref: '#/components/schemas/CustomObjectField'
+          type: array
+          description: The fields of the custom object
+        secondaryFields:
+          items:
+            type: string
+          type: array
+          description: Designate a list of secondary field used when displaying this object.
+        primaryField:
+          type: string
+          description: Designate a primary field used when displaying this object.
+        searchableFields:
+          items:
+            type: string
+          type: array
+          description: Fields that will be indexed for searching.
+        displayNamePlural:
+          type: string
+          description: The display name of multiple instances the custom object. E.g. "Invoices"
+        displayNameSingular:
+          type: string
+          description: The display name of one instance the custom object. E.g. "Invoice"
+        description:
+          type: string
+          description: Description of the custom object
+        name:
+          type: string
+          description: The name of the custom object
+      required:
+      - displayNamePlural
+      - displayNameSingular
+      - name
+      type: object
+    Omit_CustomObjectSchemaCreatable.searchableFields_:
+      $ref: '#/components/schemas/Pick_CustomObjectSchemaCreatable.Exclude_keyofCustomObjectSchemaCreatable.searchableFields__'
+      description: Construct a type with the properties of T except for those in type K.
     CustomObjectSchemaAssociation:
       properties:
         type:
@@ -638,44 +648,34 @@ components:
       - fromObject
       - id
       type: object
-    CustomObjectField:
-      $ref: '#/components/schemas/IPersonField'
-    CustomObjectFieldEdit:
-      $ref: '#/components/schemas/Partial_Pick_CustomObjectField.title-or-tooltip-or-displayType-or-icon-or-enumNames-or-enum-or-type-or-format__'
-    CustomObjectSchemaAssociationCreatable:
-      $ref: '#/components/schemas/Omit_CustomObjectSchemaAssociation.id_'
-    Pick_CustomObjectSchemaAssociation.Exclude_keyofCustomObjectSchemaAssociation.id__:
-      properties:
-        name:
-          type: string
-          description: Optional name of the association. E.g. if defining a relation between a Person and a Company this can be "Employee", "Owner", "Manager", etc.
-        type:
-          type: string
-          enum:
-          - '1:1'
-          - 1:M
-          - M:M
-          description: Type of the association. 1 to 1, 1 to many, many to many
-        fromObject:
-          type: string
-          description: The name of the custom object that's a side to this association. Associations are automatically defined as two-way. I.e. there is no need to associate from -> to and to -> from.
-        toObject:
-          type: string
-          description: The name of the custom object that's the other side of this association. Associations are automatically defined as two-way. I.e. there is no need to associate from -> to and to -> from.
-      required:
-      - type
-      - fromObject
-      - toObject
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    CustomObjectSchemaUpdatable:
-      $ref: '#/components/schemas/Partial_Omit_CustomObjectSchema.fields-or-associations-or-name__'
-    Omit_CustomObjectSchemaAssociation.id_:
-      $ref: '#/components/schemas/Pick_CustomObjectSchemaAssociation.Exclude_keyofCustomObjectSchemaAssociation.id__'
-      description: Construct a type with the properties of T except for those in type K.
-    Omit_CustomObjectSchemaCreatable.searchableFields_:
-      $ref: '#/components/schemas/Pick_CustomObjectSchemaCreatable.Exclude_keyofCustomObjectSchemaCreatable.searchableFields__'
-      description: Construct a type with the properties of T except for those in type K.
+    FieldDisplayType:
+      type: string
+      enum:
+      - text
+      - textarea
+      - date
+      - datetime
+      - number
+      - select
+      - multiselect
+      - checkbox
+      - radio
+      - email
+      - url
+      - phone
+      - integer
+      - decimal
+      - currency
+      - currencyCents
+    Exclude_JSONSchema6TypeName.object-or-array-or-null_:
+      type: string
+      enum:
+      - string
+      - number
+      - boolean
+      - integer
+      - any
+      description: Exclude from T those types that are assignable to U
   securitySchemes:
     apiKeyHeader:
       description: "You can use API key authentication if you are using the API for your Encharge account. If you are building an app for others to use, please use the OAuth2 authentication below. Find your API key from https://app.encharge.io/account/info . \n\n While all operations in the API specify oauth2 security, instead you can use an API key in the header or query string."

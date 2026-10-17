@@ -47,23 +47,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    MetricCachedData:
-      properties:
-        delivered:
-          type: number
-          format: double
-        click:
-          type: number
-          format: double
-        open:
-          type: number
-          format: double
-      required:
-      - delivered
-      - click
-      - open
-      type: object
-      additionalProperties: false
     CachedMetric:
       properties:
         updatedAt:
@@ -75,24 +58,6 @@ components:
           type: boolean
       type: object
       additionalProperties: false
-    ABEmailTestVariant:
-      anyOf:
-      - $ref: '#/components/schemas/ABEmailTestVariantByEmail'
-      - $ref: '#/components/schemas/ABEmailTestVariantByEmailDetails'
-    ABEmailTestVariantByEmail:
-      properties:
-        emailId:
-          type: number
-          format: double
-        type:
-          type: string
-          enum:
-          - email
-        variantId:
-          type: string
-      required:
-      - type
-      type: object
     ABEmailTestVariantByEmailDetails:
       properties:
         preheader:
@@ -112,6 +77,62 @@ components:
       required:
       - type
       type: object
+    ABEmailTestVariantByEmail:
+      properties:
+        emailId:
+          type: number
+          format: double
+        type:
+          type: string
+          enum:
+          - email
+        variantId:
+          type: string
+      required:
+      - type
+      type: object
+    ABTestConfig:
+      properties:
+        enabled:
+          type: boolean
+        variants:
+          items:
+            $ref: '#/components/schemas/ABEmailTestVariant'
+          type: array
+        pickWinner:
+          type: boolean
+        pickWinnerBy:
+          type: string
+          enum:
+          - open
+          - click
+        waitBeforeWinnerPeriod:
+          type: number
+          format: double
+        waitBeforeWinnerPeriodType:
+          type: string
+          enum:
+          - hours
+          - days
+        winner:
+          $ref: '#/components/schemas/ABEmailTestVariant'
+        distribution:
+          items:
+            type: number
+            format: double
+          type: array
+        winnerPickedAt:
+          type: string
+      required:
+      - enabled
+      - variants
+      - pickWinner
+      type: object
+      additionalProperties: false
+    ABEmailTestVariant:
+      anyOf:
+      - $ref: '#/components/schemas/ABEmailTestVariantByEmail'
+      - $ref: '#/components/schemas/ABEmailTestVariantByEmailDetails'
     Broadcast:
       properties:
         id:
@@ -241,42 +262,21 @@ components:
       - peopleExited
       type: object
       additionalProperties: false
-    ABTestConfig:
+    MetricCachedData:
       properties:
-        enabled:
-          type: boolean
-        variants:
-          items:
-            $ref: '#/components/schemas/ABEmailTestVariant'
-          type: array
-        pickWinner:
-          type: boolean
-        pickWinnerBy:
-          type: string
-          enum:
-          - open
-          - click
-        waitBeforeWinnerPeriod:
+        delivered:
           type: number
           format: double
-        waitBeforeWinnerPeriodType:
-          type: string
-          enum:
-          - hours
-          - days
-        winner:
-          $ref: '#/components/schemas/ABEmailTestVariant'
-        distribution:
-          items:
-            type: number
-            format: double
-          type: array
-        winnerPickedAt:
-          type: string
+        click:
+          type: number
+          format: double
+        open:
+          type: number
+          format: double
       required:
-      - enabled
-      - variants
-      - pickWinner
+      - delivered
+      - click
+      - open
       type: object
       additionalProperties: false
   securitySchemes:
