@@ -58,40 +58,6 @@ edges:
     builder: unknown (community connector; contributor not in the record)
   detected_by: sweep-data-integration.py
   first_seen: '2026-10-18'
-- partner_name: Chargebee (own)
-  partner: chargebee
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://marketplace.chargebee.com/apps/['encharge']
-  mirror_of: chargebee/integrations/chargebee-integration-edges.yml
-  apps:
-  - Encharge
-  listing_count: 1
-  detected: '2026-10-19'
-  detected_by: mirror-platform-listings.py
-  category: Marketing Automation
-- partner_name: Stripe (own)
-  partner: stripe
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://marketplace.stripe.com/apps/encharge
-  mirror_of: stripe/integrations/stripe-integration-edges.yml
-  apps:
-  - Encharge
-  listing_count: 1
-  detected: '2026-10-15'
-  detected_by: mirror-platform-listings.py
-  category: marketing
 - partner_name: Zapier
   partner: zapier
   partner_match: aggregator
@@ -143,6 +109,57 @@ edges:
     builder: Pipedream repo (component)
   detected_by: sweep-workflow-automation.py
   first_seen: '2026-10-15'
+- partner_name: Chargebee (own)
+  partner: chargebee
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.chargebee.com/apps/['encharge']
+  mirror_of: chargebee/integrations/chargebee-integration-edges.yml
+  apps:
+  - Encharge
+  listing_count: 1
+  detected: '2026-10-19'
+  detected_by: mirror-platform-listings.py
+  category: Marketing Automation
+- partner_name: Stripe (own)
+  partner: stripe
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.stripe.com/apps/encharge
+  mirror_of: stripe/integrations/stripe-integration-edges.yml
+  apps:
+  - Encharge
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  category: marketing
+- partner_name: HubSpot (own)
+  partner: hubspot
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/encharge
+  mirror_of: hubspot/integrations/hubspot-integration-edges.yml
+  apps:
+  - Encharge
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: MARKETING_AUTOMATION
 method: searched
 checked:
 - chargebee/integrations/chargebee-integration-edges.yml
@@ -153,4 +170,5 @@ checked:
 - https://www.twilio.com/docs/segment/connections/destinations/catalog/encharge-cloud-actions
 - https://zapier.com/api/v4/apps/
 - stripe/integrations/stripe-integration-edges.yml
+- hubspot/integrations/hubspot-integration-edges.yml
 source: https://www.twilio.com/docs/segment/connections/destinations/catalog/encharge-cloud-actions

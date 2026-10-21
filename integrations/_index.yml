@@ -45,32 +45,6 @@
     builder: unknown (community connector; contributor not in the record)
   status: not-a-workflow
   arazzo: null
-- slug: encharge-chargebee-own
-  label: Chargebee (own)
-  partner: chargebee
-  partner_name: Chargebee (own)
-  category: Marketing Automation
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://marketplace.chargebee.com/apps/['encharge']
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
-- slug: encharge-stripe-own
-  label: Stripe (own)
-  partner: stripe
-  partner_name: Stripe (own)
-  category: marketing
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://marketplace.stripe.com/apps/encharge
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: encharge-zapier
   label: Zapier
   partner: zapier
@@ -120,5 +94,44 @@
     actions: true
     sources: true
     builder: Pipedream repo (component)
+  status: not-a-workflow
+  arazzo: null
+- slug: encharge-chargebee-own
+  label: Chargebee (own)
+  partner: chargebee
+  partner_name: Chargebee (own)
+  category: Marketing Automation
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.chargebee.com/apps/['encharge']
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: encharge-stripe-own
+  label: Stripe (own)
+  partner: stripe
+  partner_name: Stripe (own)
+  category: marketing
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.stripe.com/apps/encharge
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: encharge-hubspot-own
+  label: HubSpot (own)
+  partner: hubspot
+  partner_name: HubSpot (own)
+  category: MARKETING_AUTOMATION
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/encharge
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null
