@@ -135,3 +135,16 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
+- slug: encharge-intercom-own
+  label: Intercom (own)
+  partner: intercom
+  partner_name: Intercom (own)
+  category: Marketing & Campaigns
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://www.intercom.com/app-store/?app_package_code=encharge
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null

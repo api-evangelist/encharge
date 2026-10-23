@@ -160,6 +160,23 @@ edges:
   detected: '2026-10-21'
   detected_by: mirror-platform-listings.py
   category: MARKETING_AUTOMATION
+- partner_name: Intercom (own)
+  partner: intercom
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://www.intercom.com/app-store/?app_package_code=encharge
+  mirror_of: intercom/integrations/intercom-integration-edges.yml
+  apps:
+  - Encharge
+  listing_count: 1
+  detected: '2026-10-23'
+  detected_by: mirror-platform-listings.py
+  category: Marketing & Campaigns
 method: searched
 checked:
 - chargebee/integrations/chargebee-integration-edges.yml
@@ -171,4 +188,5 @@ checked:
 - https://zapier.com/api/v4/apps/
 - stripe/integrations/stripe-integration-edges.yml
 - hubspot/integrations/hubspot-integration-edges.yml
+- intercom/integrations/intercom-integration-edges.yml
 source: https://www.twilio.com/docs/segment/connections/destinations/catalog/encharge-cloud-actions
