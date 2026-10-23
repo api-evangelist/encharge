@@ -115,3 +115,9 @@ components:
           tokenUrl: https://api.encharge.io/v1/oauth/token
           refreshUrl: https://api.encharge.io/v1/oauth/token
           scopes: {}
+x-provenance:
+  method: harvested
+  publisher: Encharge
+  source: https://app-encharge-resources.s3.amazonaws.com/merged.yaml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
