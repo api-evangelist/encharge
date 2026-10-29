@@ -1,4 +1,4 @@
-# Encharge (encharge)
+# Encharge
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,101 +64,183 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Encharge is a behavior-based marketing automation platform built for SaaS companies, with a visual flow builder, broadcasts, segments, lead scoring, A/B testing, and 50+ native integrations (HubSpot, Stripe, Salesforce, Facebook Ads, and more). The platform combines email marketing automation, user profiles, and product-event tracking to send targeted emails based on what users do (or do not do) in a SaaS product. Encharge exposes REST, Ingest, and Transactional Email APIs authenticated with an API token.
+Encharge is a behavior-based marketing automation platform built for SaaS companies, with a visual flow builder, broadcasts, segments, lead scoring, A/B testing, native forms, custom objects, and 50+ native integrations (HubSpot, Stripe, Salesforce, Segment, Facebook Ads, and more). The platform combines email marketing automation, user profiles, and product-event tracking to send targeted emails based on what users do (or do not do) in a SaaS product. Encharge exposes three developer surfaces: a REST API of 69 operations covering people, person fields, segments, tags, broadcasts, email templates, sending domains, custom objects and event subscriptions, described by a published OpenAPI 3.0 definition; a prose-documented Transactional Email API; and an Ingest API for streaming people and product events from a backend. All three authenticate with the same account token, passed in the X-Encharge-Token header or a token query parameter, with OAuth 2 available for partner apps.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/encharge/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/encharge/refs/heads/main/apis.yml)
+**Areas:** Email Marketing · Marketing Automation · Transactional Email · Software-as-a-Service · Behavioral Email · Customer Engagement · Customer Data · Webhook
 
-## Scope
+## Encharge on APIs.io
 
-- **Type:** Index
+Everything profiled for Encharge is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/encharge/](https://apis.io/providers/encharge/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (15)
 
-- Email Marketing
-- Marketing Automation
-- Transactional Email
-- SaaS
-- Behavioral Email
-- Customer Engagement
+- [Encharge Transactional Email API](https://apis.io/apis/encharge/transactional-email-api/) — REST API for sending transactional emails through Encharge. Accepts JSON at POST /v1/emails/send with exactly one of template, html or text, returns 202…
+- [Encharge Ingest API](https://apis.io/apis/encharge/ingest-api/) — Single-endpoint Ingest API for creating/updating people and submitting product events into Encharge from an application backend. POSTs JSON to…
+- [Encharge Account API](https://apis.io/apis/encharge/encharge-account-api/) — The Account API from Encharge — 2 operation(s) for account information.
+- [Encharge Broadcasts API](https://apis.io/apis/encharge/encharge-broadcasts-api/) — The Broadcasts API from Encharge — 1 operation(s) for sending broadcasts.
+- [Encharge Custom Objects Schema API](https://apis.io/apis/encharge/encharge-customobjectsschema-api/) — The Custom Objects Schema API from Encharge — 10 operation(s) for defining object types, their fields, and the associations between them.
+- [Encharge Folders API](https://apis.io/apis/encharge/encharge-folders-api/) — The Folders API from Encharge — 2 operation(s) for organizing assets into folders.
+- [Encharge People API](https://apis.io/apis/encharge/encharge-people-api/) — The People API from Encharge — 5 operation(s) for creating, updating, reading, unsubscribing and archiving people.
+- [Encharge Person Fields API](https://apis.io/apis/encharge/encharge-personfields-api/) — The Person Fields API from Encharge — 4 operation(s) for managing person fields.
+- [Encharge Segments API](https://apis.io/apis/encharge/encharge-segments-api/) — The Segments API from Encharge — 4 operation(s) for dynamic segments.
+- [Encharge Email Domain Settings API](https://apis.io/apis/encharge/encharge-settings-api/) — The email settings API from Encharge — 5 operation(s) for adding and verifying sending domains.
+- [Encharge Tags API](https://apis.io/apis/encharge/encharge-tags-api/) — The Tags API from Encharge — 2 operation(s) for tagging and untagging people.
+- [Encharge Tags Management API](https://apis.io/apis/encharge/encharge-tags-management-api/) — The Tags Management API from Encharge — 5 operation(s) for the account tag registry and tag counts.
+- [Encharge Webhooks API](https://apis.io/apis/encharge/encharge-webhooks-api/) — The Webhooks API from Encharge — 2 operation(s) for creating and deleting event subscriptions against Encharge's event catalog.
+- [Encharge Custom Objects API](https://apis.io/apis/encharge/encharge-custom-objects-api/) — The Custom Objects API from Encharge — 11 operation(s) for custom objects.
+- [Encharge Email Templates API](https://apis.io/apis/encharge/encharge-email-templates-api/) — The Email Templates API from Encharge — 7 operation(s) for email templates.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-11
-- **Modified:** 2026-05-11
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### AsyncAPI (1)
 
-### Encharge REST API
+Event-driven and webhook contracts.
 
-REST API (v1) for managing people, segments, tags, fields, flows, broadcasts, and events in Encharge. Authentication is via an API key passed as the token query parameter or X-Encharge-Token header.
+- [Encharge Webhooks](https://apis.io/asyncapis/encharge/encharge-webhooks/)
 
-- **Human URL:** [https://docs.encharge.io/api-documentation](https://docs.encharge.io/api-documentation)
-- **Base URL:** `https://api.encharge.io/v1`
+#### MCP servers (1)
 
-#### Tags
+Model Context Protocol servers that expose the API to agents.
 
-- Marketing Automation
-- Email Marketing
-- SaaS
+- [encharge](https://apis.io/servers/encharge/encharge/)
 
-#### Properties
+#### Agentic access (1)
 
-- [Documentation](https://docs.encharge.io/api-documentation)
-- [Developer  Documentation](https://docs.encharge.io)
-- [Postman Collection](collections/encharge.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/encharge.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### Encharge Transactional Email API
+- [Encharge Agentic Access](https://apis.io/agentic-access/encharge/encharge-agentic-access/)
 
-REST API for sending transactional emails through Encharge. Accepts JSON payloads at POST /v1/emails/send and authenticates via the same API token used by the core REST API.
+#### Collections (9)
 
-- **Human URL:** [https://docs.encharge.io/transactional-email-api/overview](https://docs.encharge.io/transactional-email-api/overview)
-- **Base URL:** `https://api.encharge.io/v1`
+Postman and Open Collection request collections.
 
-#### Tags
+- [Encharge REST API](https://apis.io/collections/encharge/open-encharge/)
+- [Encharge REST Account API](https://apis.io/collections/encharge/open-encharge-account-api/)
+- [Encharge REST Account Events API](https://apis.io/collections/encharge/open-encharge-events-api/)
+- [Encharge REST Account Fields API](https://apis.io/collections/encharge/open-encharge-fields-api/)
+- [Encharge REST Account Ingest API](https://apis.io/collections/encharge/open-encharge-ingest-api/)
+- [Encharge REST Account People API](https://apis.io/collections/encharge/open-encharge-people-api/)
+- [Encharge REST Account Segments API](https://apis.io/collections/encharge/open-encharge-segments-api/)
+- [Encharge REST Account Tags API](https://apis.io/collections/encharge/open-encharge-tags-api/)
+- [Encharge REST Account Transactional Email API](https://apis.io/collections/encharge/open-encharge-transactional-email-api/)
 
-- Transactional Email
-- Email
+#### Overlays (14)
 
-#### Properties
+OpenAPI overlays, including conversational phrasing for each operation.
 
-- [Documentation](https://docs.encharge.io/transactional-email-api/overview)
-- [Authentication](https://docs.encharge.io/transactional-email-api/authentication)
-- [Reference](https://docs.encharge.io/transactional-email-api/reference)
-- [Postman Collection](collections/encharge.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/encharge.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Encharge Account Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-account-api-phrasing-overlay/)
+- [Encharge Broadcasts Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-broadcasts-api-phrasing-overlay/)
+- [Encharge Custom Objects Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-custom-objects-api-phrasing-overlay/)
+- [Encharge Customobjectsschema Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-customobjectsschema-api-phrasing-overlay/)
+- [Encharge Email Templates Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-email-templates-api-phrasing-overlay/)
+- [Encharge Folders Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-folders-api-phrasing-overlay/)
+- [Encharge Openapi Overlay](https://apis.io/overlays/encharge/encharge-openapi-overlay/)
+- [Encharge People Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-people-api-phrasing-overlay/)
+- [Encharge Personfields Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-personfields-api-phrasing-overlay/)
+- [Encharge Segments Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-segments-api-phrasing-overlay/)
+- [Encharge Settings Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-settings-api-phrasing-overlay/)
+- [Encharge Tags Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-tags-api-phrasing-overlay/)
+- [Encharge Tags Management Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-tags-management-api-phrasing-overlay/)
+- [Encharge Webhooks Api Phrasing Overlay](https://apis.io/overlays/encharge/encharge-webhooks-api-phrasing-overlay/)
 
-### Encharge Ingest API
+#### Security (4)
 
-Ingest API for streaming people and activity events into Encharge from backend systems. Posts JSON payloads to ingest.encharge.io/v1/ using the same API token.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api](https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api)
-- **Base URL:** `https://ingest.encharge.io/v1`
+- [Encharge Authentication](https://apis.io/security/encharge/encharge-authentication/)
+- [Encharge Domain Security](https://apis.io/security/encharge/encharge-domain-security/)
+- [Encharge Trust Center](https://apis.io/security/encharge/encharge-trust-center/)
+- [Encharge Vulnerability Disclosure](https://apis.io/security/encharge/encharge-vulnerability-disclosure/)
 
-#### Tags
+#### OAuth scopes (1)
 
-- Events
-- Ingestion
-- Customer Data
+The permissions the API asks for.
 
-#### Properties
+- [Encharge Scopes](https://apis.io/scopes/encharge/encharge-scopes/)
 
-- [Documentation](https://docs.encharge.io/getting-started/connecting-your-app-to-encharge/ingest-api)
-- [Postman Collection](collections/encharge.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/encharge.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Plans and pricing (1)
 
-## Common Properties
+Published plans, tiers and prices.
 
-- [LinkedIn](https://www.linkedin.com/company/encharge)
+- [Encharge Plans Pricing](https://apis.io/plans/encharge/encharge-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Encharge Rate Limits](https://apis.io/rate-limits/encharge/encharge-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://encharge.io)
 - [Documentation](https://docs.encharge.io)
-- [A P I  Documentation](https://docs.encharge.io/api-documentation)
+- [Getting started](https://docs.encharge.io/getting-started/connecting-your-app-to-encharge)
+- [API reference](https://app-encharge-resources.s3.amazonaws.com/redoc.html)
 - [Pricing](https://encharge.io/pricing)
-- [Sign Up](https://app.encharge.io/signup)
-- [A P I  Integration](https://encharge.io/integrations/api/)
-- [L L Ms Txt](https://docs.encharge.io/llms.txt)
+- [Sign up](https://app.encharge.io/signup)
+- [Support](https://help.encharge.io)
+- [Changelog](https://encharge.noorahq.com/changelog)
+- [Blog](https://encharge.io/feed/)
+- [Security](https://encharge.io/responsible-disclosure/)
+- [Compliance](https://gdpr.encharge.io/)
+- [Terms of service](https://encharge.io/terms-of-service/)
+- [Privacy policy](https://encharge.io/privacy-policy/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 67.3** — exemplar · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 52.7 |
+| Contract governance | 4.5 |
+| Operational transparency | 34.2 |
+| Developer ergonomics | 61.3 |
+| Access clarity | 78.9 |
+
+**Agent readiness 36.5** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | documented (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 45.1** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/encharge/](https://apis.io/providers/encharge/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Encharge: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/encharge/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
